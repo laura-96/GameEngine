@@ -7,7 +7,8 @@
 #include "ModuleSceneIntro.h"
 
 #include "Imgui/imgui.h"
-#include "Imgui/imgui_impl_sdl_gl3.h"
+//#include "Imgui/imgui_impl_sdl_gl3.h"
+#include "Imgui/imgui_impl_sdl.h"
 
 #include <Windows.h>
 #include "Glew/include/glew.h"
@@ -30,7 +31,7 @@ bool GUI::Init()
 {
 	bool ret = true;
 
-	ImGui_ImplSdlGL3_Init(App->window->GetWindow());
+	ImGui_ImplSdl_Init(App->window->GetWindow());
 	ImGuiIO& io = ImGui::GetIO();
 	LOG("Initializing GUI. Imgui library version %s", ImGui::GetVersion());
 
@@ -47,7 +48,7 @@ bool GUI::Start()
 update_status GUI::PreUpdate(float dt)
 {
 	
-	ImGui_ImplSdlGL3_NewFrame(App->window->GetWindow());
+	ImGui_ImplSdl_NewFrame(App->window->GetWindow());
 	ImGuiIO& io = ImGui::GetIO();
 	
 	capture_keyboard = io.WantCaptureKeyboard;
@@ -82,16 +83,21 @@ update_status GUI::PostUpdate(float dt)
 {
 	update_status ret = UPDATE_CONTINUE;
 	
-	
+	return ret;
+}
+
+bool GUI::Draw()
+{
+
 	ImGui::Render();
 
-	return ret;
+	return true;
 }
 
 bool GUI::CleanUp()
 {
 
-	ImGui_ImplSdlGL3_Shutdown();
+	ImGui_ImplSdl_Shutdown();
 
 	return true;
 }

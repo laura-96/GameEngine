@@ -3,6 +3,8 @@
 #include "ModuleRenderer3D.h"
 #include "ModuleWindow.h"
 #include "ModuleCamera3D.h"
+#include "ModuleSceneIntro.h"
+#include "GUI.h"
 
 #include <Windows.h>
 #include "Glew/include/glew.h"
@@ -109,6 +111,8 @@ bool ModuleRenderer3D::Init()
 		lights[0].Active(true);
 		glEnable(GL_LIGHTING);
 		glEnable(GL_COLOR_MATERIAL);
+
+
 	}
 
 	// Projection matrix for
@@ -138,7 +142,11 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
+	App->scene_intro->Draw();
+	
+	App->imgui->Draw();
 	SDL_GL_SwapWindow(App->window->window);
+
 	return UPDATE_CONTINUE;
 }
 

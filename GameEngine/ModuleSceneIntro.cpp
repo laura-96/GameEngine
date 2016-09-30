@@ -15,6 +15,7 @@ ModuleSceneIntro::~ModuleSceneIntro()
 bool ModuleSceneIntro::Start()
 {
 	LOG("Loading Intro assets");
+	b = new DirectCube();
 	bool ret = true;
 
 	return ret;
@@ -31,9 +32,16 @@ bool ModuleSceneIntro::CleanUp()
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
+
+	return UPDATE_CONTINUE;
+}
+
+bool ModuleSceneIntro::Draw()
+{
+	b->Render();
 	Plane p(0, 1, 0, 0);
 	p.axis = true;
 	p.Render();
 
-	return UPDATE_CONTINUE;
+	return true;
 }

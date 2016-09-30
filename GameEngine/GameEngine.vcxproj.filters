@@ -99,6 +99,9 @@
     <ClInclude Include="Imgui\stb_truetype.h">
       <Filter>Helpers\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="Geometry.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -169,6 +172,9 @@
     </ClCompile>
     <ClCompile Include="Imgui\imgui_impl_sdl_gl3.cpp">
       <Filter>Helpers\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry.cpp">
+      <Filter>Containers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
