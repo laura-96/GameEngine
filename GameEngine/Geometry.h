@@ -3,6 +3,14 @@
 #include "glmath.h"
 #include "Color.h"
 
+#include "Globals.h"
+
+#include <Windows.h>
+#include "Glew/include/glew.h"
+#include "SDL/include/SDL_opengl.h"
+#include <gl/GL.h>
+#include <gl/GLU.h>
+
 enum GeometryTypes
 {
 	Direct_Cube,	//Cube drawn in direct mode
@@ -52,8 +60,13 @@ public:
 	VxCube();
 	VxCube(float sizeX, float sizeY, float sizeZ);
 	void InnerRender() const;
+
 public:
 	vec3 size;
+
+private:
+	GLfloat vertices[108];
+	uint vertex = 0;
 };
 
 
@@ -62,7 +75,12 @@ class InCube : public Geometry
 public:
 	InCube();
 	InCube(float sizeX, float sizeY, float sizeZ);
-	//void InnerRender() const;
+	void InnerRender() const;
 public:
 	vec3 size;
+private:
+	GLubyte indices[36];
+	GLfloat vertices[24];
+	uint index;
+	uint vertex;
 };

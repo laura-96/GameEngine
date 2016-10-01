@@ -27,6 +27,6 @@ public:
 
 public:
 	list<Geometry*> geometries;
-	VxCube* b;
+	InCube* b;
 	//PhysBody3D* b;
 };

@@ -15,7 +15,7 @@ ModuleSceneIntro::~ModuleSceneIntro()
 bool ModuleSceneIntro::Start()
 {
 	LOG("Loading Intro assets");
-	b = new VxCube();
+	b = new InCube();
 	bool ret = true;
 
 	return ret;
@@ -39,6 +39,7 @@ update_status ModuleSceneIntro::Update(float dt)
 bool ModuleSceneIntro::Draw()
 {
 	b->Render();
+	
 	Plane p(0, 1, 0, 0);
 	p.axis = true;
 	p.Render();
