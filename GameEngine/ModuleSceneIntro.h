@@ -26,6 +26,7 @@ public:
 	//void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 
 public:
-	DirectCube* b;
+	list<Geometry*> geometries;
+	VxCube* b;
 	//PhysBody3D* b;
 };

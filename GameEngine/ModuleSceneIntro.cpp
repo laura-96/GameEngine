@@ -15,7 +15,7 @@ ModuleSceneIntro::~ModuleSceneIntro()
 bool ModuleSceneIntro::Start()
 {
 	LOG("Loading Intro assets");
-	b = new DirectCube();
+	b = new VxCube();
 	bool ret = true;
 
 	return ret;
@@ -25,7 +25,7 @@ bool ModuleSceneIntro::Start()
 bool ModuleSceneIntro::CleanUp()
 {
 	LOG("Unloading Intro scene");
-
+	delete b;
 	return true;
 }
 

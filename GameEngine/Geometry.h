@@ -5,7 +5,9 @@
 
 enum GeometryTypes
 {
-	Direct_Cube,
+	Direct_Cube,	//Cube drawn in direct mode
+	In_Cube,		//Cube drawn with indices arrays
+	Vx_Cube,		//Cube drawn with vertex arrays
 	Model,
 	Point
 };
@@ -43,14 +45,24 @@ public:
 	vec3 size;
 };
 
-/*
-class Cube : public Geometry
+
+class VxCube : public Geometry
 {
 public:
-	Cube();
-	Cube(float sizeX, float sizeY, float sizeZ);
+	VxCube();
+	VxCube(float sizeX, float sizeY, float sizeZ);
 	void InnerRender() const;
 public:
 	vec3 size;
 };
-*/
+
+
+class InCube : public Geometry
+{
+public:
+	InCube();
+	InCube(float sizeX, float sizeY, float sizeZ);
+	//void InnerRender() const;
+public:
+	vec3 size;
+};

@@ -190,3 +190,96 @@ void DirectCube::InnerRender() const
 
 	glEnd();
 }
+
+// Vx Cube
+
+VxCube::VxCube() : Geometry(), size(1.0f, 1.0f, 1.0f)
+{
+	type = GeometryTypes::Vx_Cube;
+}
+
+VxCube::VxCube(float sizeX, float sizeY, float sizeZ) : Geometry(), size(sizeX, sizeY, sizeZ)
+{
+	type = GeometryTypes::Vx_Cube;
+}
+
+void VxCube::InnerRender() const
+{
+	float sx = size.x * 0.5f;
+	float sy = size.y * 0.5f;
+	float sz = size.z * 0.5f;
+	
+	uint vertex = -1;
+	glGenBuffers(1, (GLuint*) &(vertex));
+
+
+	GLfloat vertices[] = {	//FRONT FACE
+			sx, sy, sz,
+			-sx, sy, sz,
+			-sx, -sy, sz,
+			-sx, -sy, sz,
+			sx, -sy, sz,
+			sx, sy, sz,
+			//TOP FACE
+			sx, sy, sz,
+			sx, sy, -sz,
+			-sx, sy, -sz,
+			-sx, sy, -sz,
+			-sx, sy, sz,
+			sx, sy, sz,
+			//RIGHT FACE
+			sx, sy, sz,
+			sx, -sy, sz,
+			sx, -sy, -sz,
+			sx, -sy, -sz,
+			sx, sy, -sz,
+			sx, sy, sz,
+			//BACK FACE
+			-sx, -sy, -sz,
+			-sx, sy, -sz,
+			sx, sy, -sz,
+			sx, sy, -sz,
+			sx, -sy, -sz,
+			-sx, -sy, -sz,
+			//BOTTOM FACE
+			-sx, -sy, -sz,
+			sx, -sy, -sz,
+			sx, -sy, sz,
+			sx, -sy, sz,
+			-sx, -sy, sz,
+			-sx, -sy, -sz,
+			//LEFT FACE
+			-sx, -sy, -sz,
+			-sx, -sy, sz,
+			-sx, sy, sz,
+			-sx, sy, sz,
+			-sx, sy, -sz,
+			-sx, -sy, -sz
+		}; // 36 of vertex coords
+
+	glBindBuffer(GL_ARRAY_BUFFER, vertex);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) *36* 3, vertices, GL_STATIC_DRAW);
+
+	
+	// activate and specify pointer to vertex array
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+
+	// draw a cube
+	glDrawArrays(GL_TRIANGLES, 0, 36* 3);
+
+	// deactivate vertex arrays after drawing
+	glDisableClientState(GL_VERTEX_ARRAY);
+}
+
+// In Cube
+
+InCube::InCube() : Geometry(), size(1.0f, 1.0f, 1.0f)
+{
+	type = GeometryTypes::In_Cube;
+}
+
+InCube::InCube(float sizeX, float sizeY, float sizeZ) : Geometry(), size(sizeX, sizeY, sizeZ)
+{
+	type = GeometryTypes::In_Cube;
+}
