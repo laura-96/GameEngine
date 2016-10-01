@@ -61,6 +61,16 @@ bool Mesh::LoadMesh(const char* file)
 		}
 
 		aiReleaseImport(scene);
+
+		glGenBuffers(1, (GLuint*) &(model->id_index));
+		glGenBuffers(1, (GLuint*) &(model->id_vertex));
+
+		glBindBuffer(GL_ARRAY_BUFFER, model->id_vertex);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * model->vertex * 3, model->vertices, GL_STATIC_DRAW);
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, model->id_index);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * model->index, model->indices, GL_STATIC_DRAW);
+
 	}
 
 	else 
@@ -81,15 +91,6 @@ void Mesh::Render() const
 
 		glColor4f(model->color.r, model->color.g, model->color.b, 1);
 		
-		glGenBuffers(1, (GLuint*) &(model->id_index));
-		glGenBuffers(1, (GLuint*) &(model->id_vertex));
-
-		glBindBuffer(GL_ARRAY_BUFFER, model->id_vertex);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * model->vertex * 3, model->vertices, GL_STATIC_DRAW);
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, model->id_index);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * model->index, model->indices, GL_STATIC_DRAW);
-
 		glEnableClientState(GL_VERTEX_ARRAY);
 
 		glBindBuffer(GL_ARRAY_BUFFER, model->id_vertex);
