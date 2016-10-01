@@ -4,7 +4,7 @@
 #include "ModuleWindow.h"
 #include "ModuleCamera3D.h"
 #include "ModuleSceneIntro.h"
-#include "GUI.h"
+#include "UIEditor.h"
 
 #include <Windows.h>
 #include "Glew/include/glew.h"
@@ -40,6 +40,8 @@ bool ModuleRenderer3D::Init()
 	}
 
 	GLenum err = glewInit();
+
+	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
 
 	if (err != GLEW_OK)
 	{
@@ -90,6 +92,12 @@ bool ModuleRenderer3D::Init()
 			LOG("Error initializing OpenGL! %s\n", gluErrorString(error));
 			ret = false;
 		}
+
+
+		LOG("Vendor: %s", glGetString(GL_VENDOR));
+		LOG("Renderer: %s", glGetString(GL_RENDERER));
+		LOG("OpenGL version supported: %s", glGetString(GL_VERSION));
+		LOG("GLSL: %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
 		GLfloat LightModelAmbient[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, LightModelAmbient);

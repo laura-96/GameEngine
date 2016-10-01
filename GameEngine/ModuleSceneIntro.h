@@ -4,6 +4,7 @@
 #include "Globals.h"
 #include "Primitive.h"
 #include "Geometry.h"
+#include "Mesh.h"
 
 #include <list>
 //#include "PhysBody3D.h"
@@ -26,7 +27,9 @@ public:
 	//void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 
 public:
-	list<Geometry*> geometries;
-	InCube* b;
+	
+	Mesh* m;
+	//list<Geometry*> geometries;
+	//InCube* b;
 	//PhysBody3D* b;
 };

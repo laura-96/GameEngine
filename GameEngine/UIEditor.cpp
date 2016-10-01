@@ -1,7 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 
-#include "GUI.h"
+#include "UIEditor.h"
 
 #include "ModuleWindow.h"
 
@@ -16,17 +16,17 @@
 #include <gl/GLU.h>
 
 
-GUI::GUI(Application* app, bool start_enabled ) : Module(app, start_enabled)
+UIEditor::UIEditor(Application* app, bool start_enabled ) : Module(app, start_enabled)
 {
 
 }
 
-GUI::~GUI()
+UIEditor::~UIEditor()
 {
 
 }
 
-bool GUI::Init()
+bool UIEditor::Init()
 {
 	bool ret = true;
 
@@ -37,14 +37,14 @@ bool GUI::Init()
 	return ret;
 }
 
-bool GUI::Start()
+bool UIEditor::Start()
 {
 	bool ret = true;
 
 	return ret;
 }
 
-update_status GUI::PreUpdate(float dt)
+update_status UIEditor::PreUpdate(float dt)
 {
 	
 	ImGui_ImplSdl_NewFrame(App->window->GetWindow());
@@ -56,7 +56,7 @@ update_status GUI::PreUpdate(float dt)
 	return UPDATE_CONTINUE;
 }
 
-update_status GUI::Update(float dt)
+update_status UIEditor::Update(float dt)
 {
 	update_status ret = UPDATE_CONTINUE;
 
@@ -72,20 +72,35 @@ update_status GUI::Update(float dt)
 			ImGui::EndMenu();
 		}
 
+		if (ImGui::BeginMenu("Help"))
+		{
+			if (ImGui::MenuItem("Repository"))
+			{
+				const char* link = "https://github.com/laura-96/GameEngine";
+				ShellExecuteA(NULL, "open", link, NULL, NULL, SW_SHOWNORMAL);
+			}
+			if (ImGui::MenuItem("Report bugs"))
+			{
+				const char* link1 = "https://github.com/laura-96/GameEngine/issues";
+				ShellExecuteA(NULL, "open", link1, NULL, NULL, SW_SHOWNORMAL);
+			}
+
+			ImGui::EndMenu();
+		}
 		ImGui::EndMainMenuBar();
 	}
 
 	return ret;
 }
 
-update_status GUI::PostUpdate(float dt)
+update_status UIEditor::PostUpdate(float dt)
 {
 	update_status ret = UPDATE_CONTINUE;
 	
 	return ret;
 }
 
-bool GUI::Draw()
+bool UIEditor::Draw()
 {
 
 	ImGui::Render();
@@ -93,7 +108,7 @@ bool GUI::Draw()
 	return true;
 }
 
-bool GUI::CleanUp()
+bool UIEditor::CleanUp()
 {
 
 	ImGui_ImplSdl_Shutdown();

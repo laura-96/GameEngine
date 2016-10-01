@@ -12,7 +12,7 @@ class ModuleSceneIntro;
 class ModuleRenderer3D;
 class ModuleCamera3D;
 class ModulePhysics3D;
-class GUI;
+class UIEditor;
 
 using namespace std;
 
@@ -27,7 +27,7 @@ public:
 	ModuleRenderer3D* renderer3D;
 	ModuleCamera3D* camera;
 	ModulePhysics3D* physics;
-	GUI* imgui;
+	UIEditor* imgui;
 	//ModulePlayer* player;
 
 private:

@@ -2,12 +2,12 @@
 
 #include "Module.h"
 
-class GUI : public Module
+class UIEditor : public Module
 {
 
 public:
-	GUI(Application* app, bool start_enabled = true);
-	~GUI();
+	UIEditor(Application* app, bool start_enabled = true);
+	~UIEditor();
 
 	bool Init();
 	bool Start();

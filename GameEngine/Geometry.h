@@ -16,7 +16,6 @@ enum GeometryTypes
 	Direct_Cube,	//Cube drawn in direct mode
 	In_Cube,		//Cube drawn with indices arrays
 	Vx_Cube,		//Cube drawn with vertex arrays
-	Model,
 	Point
 };
 

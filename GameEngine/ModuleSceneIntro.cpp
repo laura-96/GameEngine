@@ -15,7 +15,9 @@ ModuleSceneIntro::~ModuleSceneIntro()
 bool ModuleSceneIntro::Start()
 {
 	LOG("Loading Intro assets");
-	b = new InCube();
+	m = new Mesh();
+	m->LoadMesh("Game/Assets/warrior.FBX");
+	//b = new InCube();
 	bool ret = true;
 
 	return ret;
@@ -25,7 +27,8 @@ bool ModuleSceneIntro::Start()
 bool ModuleSceneIntro::CleanUp()
 {
 	LOG("Unloading Intro scene");
-	delete b;
+	m->CleanUp();
+	//delete b;
 	return true;
 }
 
@@ -38,11 +41,13 @@ update_status ModuleSceneIntro::Update(float dt)
 
 bool ModuleSceneIntro::Draw()
 {
-	b->Render();
+	//b->Render();
 	
 	Plane p(0, 1, 0, 0);
 	p.axis = true;
 	p.Render();
+
+	m->Render();
 
 	return true;
 }
