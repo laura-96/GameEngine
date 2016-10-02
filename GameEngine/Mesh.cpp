@@ -93,10 +93,10 @@ void Mesh::Render() const
 		
 		glEnableClientState(GL_VERTEX_ARRAY);
 
-		glBindBuffer(GL_ARRAY_BUFFER, model->id_vertex);
+		//glBindBuffer(GL_ARRAY_BUFFER, model->id_vertex);
 		glVertexPointer(3, GL_FLOAT, 0, NULL);
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, model->id_index);
+		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, model->id_index);
 
 		glDrawElements(GL_TRIANGLES, model->index, GL_UNSIGNED_INT, NULL);
 

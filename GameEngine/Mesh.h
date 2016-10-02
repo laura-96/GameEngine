@@ -25,8 +25,8 @@ public:
 	uint index = 0;
 	uint vertex = 0;
 
-	uint id_index = 0;
-	uint id_vertex = 0;
+	uint id_index = -1;
+	uint id_vertex = -1;
 
 	mat4x4 transform;
 	Color color = White;

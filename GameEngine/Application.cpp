@@ -1,6 +1,7 @@
 #include "Application.h"
 
 #include "Module.h"
+#include "ModuleFileSystem.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
 #include "ModuleAudio.h"
@@ -12,6 +13,7 @@
 
 Application::Application()
 {
+	file_sys = new ModuleFileSystem(this);
 	window = new ModuleWindow(this);
 	input = new ModuleInput(this);
 	audio = new ModuleAudio(this, true);
@@ -28,6 +30,7 @@ Application::Application()
 	// They will CleanUp() in reverse order
 
 	// Main Modules
+	AddModule(file_sys);
 	AddModule(window);
 	AddModule(camera);
 	AddModule(input);

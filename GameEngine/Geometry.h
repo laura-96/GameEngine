@@ -65,7 +65,7 @@ public:
 
 private:
 	GLfloat vertices[108];
-	uint vertex = 0;
+	uint vertex = -1;
 };
 
 
@@ -80,6 +80,6 @@ public:
 private:
 	GLubyte indices[36];
 	GLfloat vertices[24];
-	uint index;
-	uint vertex;
+	uint index = -1;
+	uint vertex = -1;
 };

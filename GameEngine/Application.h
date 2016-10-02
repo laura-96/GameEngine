@@ -5,6 +5,7 @@
 #include "Timer.h"
 
 class Module;
+class ModuleFileSystem;
 class ModuleWindow;
 class ModuleInput;
 class ModuleAudio;
@@ -20,6 +21,7 @@ class Application
 {
 public:
 	
+	ModuleFileSystem* file_sys;
 	ModuleWindow* window;
 	ModuleInput* input;
 	ModuleAudio* audio;

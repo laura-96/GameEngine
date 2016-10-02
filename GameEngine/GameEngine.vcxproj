@@ -75,6 +75,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -117,11 +118,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="cJSON.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="glmath.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="ModuleFileSystem.h" />
     <ClInclude Include="UIEditor.h" />
     <ClInclude Include="Imgui\imconfig.h" />
     <ClInclude Include="Imgui\imgui.h" />
@@ -147,10 +150,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="cJSON.c" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="glmath.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="ModuleFileSystem.cpp" />
     <ClCompile Include="UIEditor.cpp" />
     <ClCompile Include="Imgui\imgui.cpp" />
     <ClCompile Include="Imgui\imgui_demo.cpp" />

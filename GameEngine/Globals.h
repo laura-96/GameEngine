@@ -3,6 +3,32 @@
 #include <Windows.h>
 #include <stdio.h>
 
+// Deletes a buffer
+#define RELEASE( x ) \
+    {                        \
+    if( x != NULL )        \
+	    {                      \
+      delete x;            \
+	  x = NULL;              \
+	    }                      \
+    }
+
+// Deletes an array of buffers
+#define RELEASE_ARRAY( x ) \
+    {                              \
+    if( x != NULL )              \
+	    {                            \
+      delete[] x;                \
+	  x = NULL;                    \
+	    }                            \
+                              \
+    }
+
+#define IN_RANGE( value, min, max ) ( ((value) >= (min) && (value) <= (max)) ? 1 : 0 )
+#define MIN( a, b ) ( ((a) < (b)) ? (a) : (b) )
+#define MAX( a, b ) ( ((a) > (b)) ? (a) : (b) )
+#define TO_BOOL( a )  ( (a != 0) ? true : false )
+
 #define LOG(format, ...) log(__FILE__, __LINE__, format, __VA_ARGS__);
 
 void log(const char file[], int line, const char* format, ...);
