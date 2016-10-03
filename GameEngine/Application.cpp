@@ -65,6 +65,10 @@ bool Application::Init()
 {
 	bool ret = true;
 
+	title = "Game Engine";
+	organization = "Box";
+
+
 	// Call Init() in all modules
 	list<Module*>::iterator it = list_modules.begin();
 
@@ -87,6 +91,7 @@ bool Application::Init()
 	}
 
 	ms_timer.Start();
+
 	return ret;
 }
 
@@ -153,4 +158,14 @@ bool Application::CleanUp()
 void Application::AddModule(Module* mod)
 {
 	list_modules.push_back(mod);
+}
+
+const char* Application::GetTitle() const
+{
+	return title.c_str();
+}
+
+const char* Application::GetOrganization() const
+{
+	return organization.c_str();
 }

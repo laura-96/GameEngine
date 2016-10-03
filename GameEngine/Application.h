@@ -33,10 +33,16 @@ public:
 	//ModulePlayer* player;
 
 private:
-
+	string	title;
+	string	organization;
 	Timer	ms_timer;
 	float	dt;
 	list<Module*> list_modules;
+
+public:
+	const char* GetTitle() const;
+	const char* GetOrganization() const;
+
 
 public:
 
