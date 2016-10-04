@@ -10,18 +10,21 @@
 #include "ModuleCamera3D.h"
 #include "ModulePhysics3D.h"
 #include "UIEditor.h"
+#include "cJSON.h"
+
+using namespace std;
 
 Application::Application()
 {
-	file_sys = new ModuleFileSystem(this);
-	window = new ModuleWindow(this);
-	input = new ModuleInput(this);
-	audio = new ModuleAudio(this, true);
-	scene_intro = new ModuleSceneIntro(this);
-	renderer3D = new ModuleRenderer3D(this);
-	camera = new ModuleCamera3D(this);
-	physics = new ModulePhysics3D(this);
-	imgui = new UIEditor(this);
+	file_sys = new ModuleFileSystem(this, "File_System");
+	window = new ModuleWindow(this, "Window");
+	input = new ModuleInput(this, "Input");
+	audio = new ModuleAudio(this, "Audio", true);
+	scene_intro = new ModuleSceneIntro(this, "Scene_Intro");
+	renderer3D = new ModuleRenderer3D(this, "Renderer");
+	camera = new ModuleCamera3D(this, "Camera");
+	physics = new ModulePhysics3D(this, "Physics");
+	imgui = new UIEditor(this, "UI_Editor");
 	
 	//player = new ModulePlayer(this); 
 
@@ -65,8 +68,18 @@ bool Application::Init()
 {
 	bool ret = true;
 
-	title = "Game Engine";
-	organization = "Box";
+	char* buff = nullptr;
+	file_sys->Load("Config.json", &buff);
+
+	if (buff != nullptr)
+	{
+		root = cJSON_Parse(buff);
+
+		cJSON * App = cJSON_GetObjectItem(root, "App");
+		title = cJSON_GetObjectItem(App, "Title")->valuestring;
+		organization = App->child->next->valuestring;
+		
+	}
 
 
 	// Call Init() in all modules
@@ -74,7 +87,7 @@ bool Application::Init()
 
 	while (it != list_modules.end() && ret == true)
 	{
-		ret = (*it)->Init();
+		ret = (*it)->Init(cJSON_GetObjectItem(root, (*it)->GetName()));
 		it++;
 	}
 
@@ -151,6 +164,7 @@ bool Application::CleanUp()
 		ret = (*it)->CleanUp();
 		it++;
 	}
+
 
 	return ret;
 }

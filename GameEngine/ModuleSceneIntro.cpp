@@ -4,7 +4,7 @@
 #include "Primitive.h"
 #include "PhysBody3D.h"
 
-ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
+ModuleSceneIntro::ModuleSceneIntro(Application* app, const char* name, bool start_enabled) : Module(app, name, start_enabled)
 {
 }
 
@@ -16,11 +16,18 @@ bool ModuleSceneIntro::Start()
 {
 	LOG("Loading Intro assets");
 	m = new Mesh();
-	m->LoadMesh("Game/Assets/warrior.FBX");
+	m->LoadMesh("Game/Assets/Brute.fbx");
 	//b = new InCube();
 	bool ret = true;
 
 	return ret;
+}
+
+bool ModuleSceneIntro::Init(cJSON* node)
+{
+	 //m->LoadMesh(cJSON_GetObjectItem(node, "Mesh")->valuestring);
+
+	return true;
 }
 
 // Load assets
@@ -43,7 +50,7 @@ bool ModuleSceneIntro::Draw()
 {
 	//b->Render();
 	
-	Plane p(0, 1, 0, 0);
+	PPlane p(0, 1, 0, 0);
 	p.axis = true;
 	p.Render();
 

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __ModuleInput_H__
+#define __ModuleInput_H__
 
 #include "Module.h"
 #include "Globals.h"
@@ -17,10 +18,10 @@ class ModuleInput : public Module
 {
 public:
 
-	ModuleInput(Application* app, bool start_enabled = true);
+	ModuleInput(Application* app, const char* name, bool start_enabled = true);
 	~ModuleInput();
 
-	bool Init();
+	bool Init(cJSON* node);
 	update_status PreUpdate(float dt);
 	bool CleanUp();
 
@@ -69,3 +70,5 @@ private:
 	int mouse_y_motion;
 	//int mouse_z_motion;
 };
+
+#endif // __ModuleInput_H__

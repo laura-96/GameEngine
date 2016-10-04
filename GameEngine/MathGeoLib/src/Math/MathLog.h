@@ -64,11 +64,11 @@ void PrintToConsole(MathLogChannel channel, const char *str);
 #define LOGW_NS(...) PrintToConsoleVariadic(MathLogWarningNoCallstack, __VA_ARGS__)
 #define LOGE(...) PrintToConsoleVariadic(MathLogError, __VA_ARGS__)
 #define LOGE_NS(...) PrintToConsoleVariadic(MathLogErrorNoCallstack, __VA_ARGS__)
-#define LOG(channel, ...) PrintToConsoleVariadic(channel, __VA_ARGS__)
+//#define LOG(channel, ...) PrintToConsoleVariadic(channel, __VA_ARGS__)
 
 #else
 
-#define LOG(...) ((void)0)
+//#define LOG(...) ((void)0)
 #define LOGW(...) ((void)0)
 #define LOGW_NS(...) ((void)0)
 #define LOGE(...) ((void)0)

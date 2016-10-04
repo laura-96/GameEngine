@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __Mesh_H__
+#define __Mesh_H__
 
 #include "glmath.h"
 #include "Globals.h"
@@ -13,7 +14,6 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
-//using namespace std;
 
 class mesh {
 public:
@@ -45,3 +45,5 @@ public:
 	//list<mesh*> models;
 	mesh* model;
 };
+
+#endif // __Mesh_H__

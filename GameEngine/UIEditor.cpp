@@ -6,7 +6,7 @@
 #include "ModuleWindow.h"
 
 #include "Imgui/imgui.h"
-//#include "Imgui/imgui_impl_sdl_gl3.h"
+#include "Imgui/imgui_impl_sdl_gl3.h"
 #include "Imgui/imgui_impl_sdl.h"
 
 #include <Windows.h>
@@ -16,7 +16,7 @@
 #include <gl/GLU.h>
 
 
-UIEditor::UIEditor(Application* app, bool start_enabled ) : Module(app, start_enabled)
+UIEditor::UIEditor(Application* app, const char* name, bool start_enabled ) : Module(app, name, start_enabled)
 {
 
 }
@@ -26,14 +26,13 @@ UIEditor::~UIEditor()
 
 }
 
-bool UIEditor::Init()
+bool UIEditor::Init(cJSON* node)
 {
 	bool ret = true;
 
-	ImGui_ImplSdl_Init(App->window->GetWindow());
+	ImGui_ImplSdlGL3_Init(App->window->GetWindow());
 	ImGuiIO& io = ImGui::GetIO();
 	LOG("Initializing GUI. Imgui library version %s", ImGui::GetVersion());
-
 	return ret;
 }
 
@@ -47,7 +46,7 @@ bool UIEditor::Start()
 update_status UIEditor::PreUpdate(float dt)
 {
 	
-	ImGui_ImplSdl_NewFrame(App->window->GetWindow());
+	ImGui_ImplSdlGL3_NewFrame(App->window->GetWindow());
 	ImGuiIO& io = ImGui::GetIO();
 	
 	capture_keyboard = io.WantCaptureKeyboard;
@@ -111,7 +110,7 @@ bool UIEditor::Draw()
 bool UIEditor::CleanUp()
 {
 
-	ImGui_ImplSdl_Shutdown();
+	ImGui_ImplSdlGL3_Shutdown();
 
 	return true;
 }

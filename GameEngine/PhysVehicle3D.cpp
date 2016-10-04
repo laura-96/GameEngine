@@ -23,7 +23,7 @@ PhysVehicle3D::~PhysVehicle3D()
 // ----------------------------------------------------------------------------
 void PhysVehicle3D::Render()
 {
-	Cylinder wheel;
+	PCylinder wheel;
 
 	wheel.color = Blue;
 
@@ -40,7 +40,7 @@ void PhysVehicle3D::Render()
 
 
 	// LLUM  ESQUERRE
-	Sphere light;
+	PSphere light;
 	light.radius = 0.3f;
 	vehicle->getChassisWorldTransform().getOpenGLMatrix(&light.transform);
 	btQuaternion qLight = vehicle->getChassisWorldTransform().getRotation();
@@ -58,7 +58,7 @@ void PhysVehicle3D::Render()
 	light.Render();
 
 	// LLUM  DRET
-	Sphere light2;
+	PSphere light2;
 	light2.radius = 0.3f;
 	vehicle->getChassisWorldTransform().getOpenGLMatrix(&light2.transform);
 	btQuaternion qLight2 = vehicle->getChassisWorldTransform().getRotation();
@@ -76,7 +76,7 @@ void PhysVehicle3D::Render()
 
 
 	//CHASSIS ROJO
-	Cube chassis(info.chassis_size.x, info.chassis_size.y, info.chassis_size.z);
+	PCube chassis(info.chassis_size.x, info.chassis_size.y, info.chassis_size.z);
 	vehicle->getChassisWorldTransform().getOpenGLMatrix(&chassis.transform);
 	btQuaternion q = vehicle->getChassisWorldTransform().getRotation();
 	btVector3 offset(info.chassis_offset.x, info.chassis_offset.y, info.chassis_offset.z);
@@ -93,7 +93,7 @@ void PhysVehicle3D::Render()
 
 
 	// CHASSIS VERDE
-	Cube chassis2(info.chassis2_size.x, info.chassis2_size.y, info.chassis2_size.z);
+	PCube chassis2(info.chassis2_size.x, info.chassis2_size.y, info.chassis2_size.z);
 	vehicle->getChassisWorldTransform().getOpenGLMatrix(&chassis2.transform);
 	btQuaternion q2 = vehicle->getChassisWorldTransform().getRotation();
 	btVector3 offset2(info.chassis2_offset.x, info.chassis2_offset.y, info.chassis2_offset.z);
@@ -110,7 +110,7 @@ void PhysVehicle3D::Render()
 	chassis2.Render();
 
 	// GUARDABARRO
-	Cube fender(info.fender_size.x + 2.5f, info.fender_size.y + 0.5f, info.fender_size.z + 0.5f);
+	PCube fender(info.fender_size.x + 2.5f, info.fender_size.y + 0.5f, info.fender_size.z + 0.5f);
 	vehicle->getChassisWorldTransform().getOpenGLMatrix(&fender.transform);
 	btQuaternion q3 = vehicle->getChassisWorldTransform().getRotation();
 	btVector3 offset3(info.fender_offset.x, info.fender_offset.y, info.fender_offset.z);
@@ -127,7 +127,7 @@ void PhysVehicle3D::Render()
 	fender.Render();
 
 	// GUARDABARRO TRASERO
-	Cube fender2(info.fender2_size.x + 2.5f, info.fender2_size.y + 0.5f, info.fender2_size.z + 0.5f);
+	PCube fender2(info.fender2_size.x + 2.5f, info.fender2_size.y + 0.5f, info.fender2_size.z + 0.5f);
 	vehicle->getChassisWorldTransform().getOpenGLMatrix(&fender2.transform);
 	btQuaternion q4 = vehicle->getChassisWorldTransform().getRotation();
 	btVector3 offset4(info.fender2_offset.x, info.fender2_offset.y, info.fender2_offset.z);
@@ -144,7 +144,7 @@ void PhysVehicle3D::Render()
 	fender2.Render();
 
 	//TECHO
-	Cube roof(info.roof_size.x + 1.6, info.roof_size.y + 0.2, info.roof_size.z + 2.2);
+	PCube roof(info.roof_size.x + 1.6, info.roof_size.y + 0.2, info.roof_size.z + 2.2);
 	vehicle->getChassisWorldTransform().getOpenGLMatrix(&roof.transform);
 	btQuaternion qR = vehicle->getChassisWorldTransform().getRotation();
 	btVector3 offsetR(info.roof_offset.x, info.roof_offset.y, info.roof_offset.z);

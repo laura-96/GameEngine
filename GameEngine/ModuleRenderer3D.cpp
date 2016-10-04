@@ -16,7 +16,7 @@
 #pragma comment (lib, "opengl32.lib")
 #pragma comment (lib, "Glew/libx86/glew32.lib")
 
-ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
+ModuleRenderer3D::ModuleRenderer3D(Application* app, const char* name, bool start_enabled) : Module(app, name, start_enabled)
 {
 }
 
@@ -25,7 +25,7 @@ ModuleRenderer3D::~ModuleRenderer3D()
 {}
 
 // Called before render is available
-bool ModuleRenderer3D::Init()
+bool ModuleRenderer3D::Init(cJSON* node)
 {
 	LOG("Creating 3D Renderer context");
 	bool ret = true;
@@ -125,7 +125,7 @@ bool ModuleRenderer3D::Init()
 
 	// Projection matrix for
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
-
+	
 	return ret;
 }
 

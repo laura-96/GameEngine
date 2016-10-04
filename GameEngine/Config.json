@@ -1,0 +1,17 @@
+{
+  "App": {
+    "Title": "Game Engine",
+    "Organization": "Laura upc"
+  },
+  "File_System": { },
+  "Window": { },
+  "Input": { },
+  "Audio": { },
+  "Scene_Intro": {
+    "Mesh":  "Game/Assets/Brute.fbx"
+  },
+  "Renderer": { },
+  "Camera": { },
+  "Physics": { },
+  "UI_Editor": { }
+}

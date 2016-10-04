@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __ModulePhysics3D_H__
+#define __ModulePhysics3D_H__
+
 #include "Module.h"
 #include "Globals.h"
 #include <list>
@@ -7,7 +9,6 @@
 
 #include "Bullet/src/btBulletDynamicsCommon.h"
 
-using namespace std;
 
 // Recommended scale is 1.0f == 1 meter, no less than 0.2 objects
 #define GRAVITY btVector3(0.0f, -10.0f, 0.0f) 
@@ -20,19 +21,19 @@ struct VehicleInfo;
 class ModulePhysics3D : public Module
 {
 public:
-	ModulePhysics3D(Application* app, bool start_enabled = true);
+	ModulePhysics3D(Application* app, const char* name, bool start_enabled = true);
 	~ModulePhysics3D();
 
-	bool Init();
+	bool Init(cJSON* node);
 	bool Start();
 	update_status PreUpdate(float dt);
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
-	PhysBody3D* AddBody(const Sphere& sphere, float mass = 1.0f);
-	PhysBody3D* AddBody(const Cube& cube, float mass = 1.0f);
-	PhysBody3D* AddBody(const Cylinder& cylinder, float mass = 1.0f);
+	PhysBody3D* AddBody(const PSphere& sphere, float mass = 1.0f);
+	PhysBody3D* AddBody(const PCube& cube, float mass = 1.0f);
+	PhysBody3D* AddBody(const PCylinder& cylinder, float mass = 1.0f);
 	PhysVehicle3D* AddVehicle(const VehicleInfo& info);
 
 	void AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB);
@@ -50,11 +51,11 @@ private:
 	btDefaultVehicleRaycaster*			vehicle_raycaster;
 	DebugDrawer*						debug_draw;
 	
-	list<btCollisionShape*> shapes;
-	list<PhysBody3D*> bodies;
-	list<btDefaultMotionState*> motions;
-	list<btTypedConstraint*> constraints;
-	list<PhysVehicle3D*> vehicles;
+	std::list<btCollisionShape*> shapes;
+	std::list<PhysBody3D*> bodies;
+	std::list<btDefaultMotionState*> motions;
+	std::list<btTypedConstraint*> constraints;
+	std::list<PhysVehicle3D*> vehicles;
 };
 
 class DebugDrawer : public btIDebugDraw
@@ -71,6 +72,8 @@ public:
 	int	 getDebugMode() const;
 
 	DebugDrawModes mode;
-	Line line;
+	PLine line;
 	Primitive point;
 };
+
+#endif // __ModulePhysics3D_H__

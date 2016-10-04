@@ -9,7 +9,7 @@
 
 using namespace std;
 
-ModuleFileSystem::ModuleFileSystem(Application* app, const char* game_path) : Module(app, true)
+ModuleFileSystem::ModuleFileSystem(Application* app, const char* name, const char* game_path) : Module(app, name, true)
 {
 	// need to be created before Awake so other modules can use it
 	char* base_path = SDL_GetBasePath();
@@ -28,7 +28,7 @@ ModuleFileSystem::ModuleFileSystem(Application* app, const char* game_path) : Mo
 
 }
 
-bool ModuleFileSystem::Init()
+bool ModuleFileSystem::Init(cJSON* node)
 {
 	LOG("Loading File System");
 	bool ret = true;
@@ -55,7 +55,7 @@ bool ModuleFileSystem::Init()
 	}
 
 	SDL_free(write_path);
-
+	
 	return ret;
 }
 

@@ -1,5 +1,5 @@
-#ifndef __MODULE_FILESYSTEM_H__
-#define __MODULE_FILESYSTEM_H__
+#ifndef __ModuleFileSystem_H__
+#define __ModuleFileSystem_H__
 
 #include "Module.h"
 #include "Globals.h"
@@ -9,8 +9,6 @@
 
 #include "cJSON.h"
 #include <vector>
-
-
 
 
 struct SDL_RWops;
@@ -23,12 +21,12 @@ class ModuleFileSystem : public Module
 {
 public:
 
-	ModuleFileSystem(Application* app, const char* game_path = nullptr);
+	ModuleFileSystem(Application* app, const char* name, const char* game_path = nullptr);
 
 	// Destructor
 	~ModuleFileSystem();
 	
-	bool Init();
+	bool Init(cJSON* node);
 	bool CleanUp();
 	
 	bool AddPath(const char* path_or_zip, const char* mount_point = nullptr);
@@ -46,4 +44,4 @@ public:
 	
 };
 
-#endif
+#endif // __ModuleFileSystem_H__

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __Globals_H__
+#define __Globals_H__
 
 #include <Windows.h>
 #include <stdio.h>
@@ -54,3 +55,5 @@ enum update_status
 #define WIN_FULLSCREEN_DESKTOP false
 #define VSYNC true
 #define TITLE "Game Engine"
+
+#endif // __Globals_H__

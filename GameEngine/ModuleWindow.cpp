@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 
-ModuleWindow::ModuleWindow(Application* app, bool start_enabled) : Module(app, start_enabled)
+ModuleWindow::ModuleWindow(Application* app, const char* name, bool start_enabled) : Module(app, name, start_enabled)
 {
 	window = NULL;
 	screen_surface = NULL;
@@ -12,7 +12,7 @@ ModuleWindow::~ModuleWindow()
 {
 }
 
-bool ModuleWindow::Init()
+bool ModuleWindow::Init(cJSON* node)
 {
 	LOG("Init SDL window & surface");
 	bool ret = true;

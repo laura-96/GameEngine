@@ -5,7 +5,6 @@
 #include <list>
 #include "SDL_Mixer/include/SDL_mixer.h"
 
-using namespace std;
 
 #define DEFAULT_MUSIC_FADE_TIME 2.0f
 
@@ -13,10 +12,10 @@ class ModuleAudio : public Module
 {
 public:
 
-	ModuleAudio(Application* app, bool start_enabled = true);
+	ModuleAudio(Application* app, const char* name, bool start_enabled = true);
 	~ModuleAudio();
 
-	bool Init();
+	bool Init(cJSON* node);
 	bool CleanUp();
 
 	// Play a music file
@@ -31,7 +30,7 @@ public:
 private:
 
 	Mix_Music*			music;
-	list<Mix_Chunk*>	fx;
+	std::list<Mix_Chunk*>	fx;
 };
 
-#endif // __ModuleAudio_H__#pragma once
+#endif // __ModuleAudio_H__

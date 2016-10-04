@@ -1,5 +1,5 @@
-#ifndef __TIMER_H__
-#define __TIMER_H__
+#ifndef __Timer_H__
+#define __Timer_H__
 
 #include "Globals.h"
 #include "SDL/include/SDL.h"
@@ -22,4 +22,4 @@ private:
 	Uint32	stopped_at;
 };
 
-#endif //__TIMER_H__
+#endif // __Timer_H__

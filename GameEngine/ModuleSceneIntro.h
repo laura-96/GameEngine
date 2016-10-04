@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __ModuleSceneIntro_H__
+#define __ModuleSceneIntro_H__
 
 #include "Module.h"
 #include "Globals.h"
@@ -15,9 +16,10 @@ class ModuleSceneIntro : public Module
 {
 public:
 
-	ModuleSceneIntro(Application* app, bool start_enabled = true);
+	ModuleSceneIntro(Application* app, const char* name, bool start_enabled = true);
 	~ModuleSceneIntro();
 
+	bool Init(cJSON* node);
 	bool Start();
 	update_status Update(float dt);
 
@@ -33,3 +35,5 @@ public:
 	//InCube* b;
 	//PhysBody3D* b;
 };
+
+#endif // __ModuleSceneIntro_H__

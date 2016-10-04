@@ -2,8 +2,8 @@
 #define __PhysBody3D_H__
 
 #include <list>
+//#include "glmath.h"
 
-using namespace std;
 
 class btRigidBody;
 class Module;
@@ -18,7 +18,7 @@ enum sensor_type {
 
 };
 
-struct PhysBody3D
+class PhysBody3D
 {
 	friend class ModulePhysics3D;
 public:
@@ -40,7 +40,7 @@ private:
 	sensor_type sens_type;
 
 public:
-	list<Module*> collision_listeners;
+	std::list<Module*> collision_listeners;
 	bool can_change_colour = false;
 };
 

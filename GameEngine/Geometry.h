@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __Geometry_H__
+#define __Geometry_H__
 
 #include "glmath.h"
 #include "Color.h"
@@ -83,3 +84,5 @@ private:
 	uint index = -1;
 	uint vertex = -1;
 };
+
+#endif //__Geometry_H__

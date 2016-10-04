@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __Application_H__
+#define __Application_H__
 
 #include <list>
 #include "Globals.h"
@@ -14,8 +15,8 @@ class ModuleRenderer3D;
 class ModuleCamera3D;
 class ModulePhysics3D;
 class UIEditor;
+class cJSON;
 
-using namespace std;
 
 class Application
 {
@@ -33,11 +34,12 @@ public:
 	//ModulePlayer* player;
 
 private:
-	string	title;
-	string	organization;
+	cJSON* root;
+	std::string	title;
+	std::string	organization;
 	Timer	ms_timer;
 	float	dt;
-	list<Module*> list_modules;
+	std::list<Module*> list_modules;
 
 public:
 	const char* GetTitle() const;
@@ -61,3 +63,5 @@ private:
 
 
 };
+
+#endif // __Application_H__
