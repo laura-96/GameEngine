@@ -94,11 +94,30 @@ void Geometry::Scale(float x, float y, float z)
 DirectCube::DirectCube() : Geometry(), size(1.0f, 1.0f, 1.0f)
 {
 	type = GeometryTypes::Direct_Cube;
+	for (int i = 0; i < CHECKERS_HEIGHT; i++) {
+		for (int j = 0; j < CHECKERS_WIDTH; j++) {
+			int c = ((((i & 0x8) == 0) ^ ((j & 0x8)) == 0)) * 255;
+			checkImage[i][j][0] = (GLubyte)c;
+			checkImage[i][j][1] = (GLubyte)c;
+			checkImage[i][j][2] = (GLubyte)c;
+			checkImage[i][j][3] = (GLubyte)255;
+		}
+	}
 }
 
 DirectCube::DirectCube(float sizeX, float sizeY, float sizeZ) : Geometry(), size(sizeX, sizeY, sizeZ)
 {
 	type = GeometryTypes::Direct_Cube;
+
+	for (int i = 0; i < CHECKERS_HEIGHT; i++) {
+		for (int j = 0; j < CHECKERS_WIDTH; j++) {
+			int c = ((((i & 0x8) == 0) ^ ((j & 0x8)) == 0)) * 255;
+			checkImage[i][j][0] = (GLubyte)c;
+			checkImage[i][j][1] = (GLubyte)c;
+			checkImage[i][j][2] = (GLubyte)c;
+			checkImage[i][j][3] = (GLubyte)255;
+		}
+	}
 }
 
 void DirectCube::InnerRender() const
@@ -106,82 +125,135 @@ void DirectCube::InnerRender() const
 	float sx = size.x * 0.5f;
 	float sy = size.y * 0.5f;
 	float sz = size.z * 0.5f;
+	
+	glClearColor(0, 0, 0, 0);
+	
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	
+	glGenTextures(1, (GLuint*) &imageName);
+	glBindTexture(GL_TEXTURE_2D, imageName);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_HEIGHT, CHECKERS_WIDTH, 0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
+
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, imageName);
 
 	glBegin(GL_TRIANGLES);
 
 	//FRONT FACE ------------------------------
 
 	//1 triangle vx0, vx1, vx2
+	glTexCoord2f(1.0f, 1.0f);
 	glVertex3f(sx, sy, sz);
+	glTexCoord2f(0.0f, 1.0f);
 	glVertex3f(-sx, sy, sz);
+	glTexCoord2f(0.0f, 0.0f);
 	glVertex3f(-sx, -sy, sz);
 	
 	//2 triangle vx2, vx3, vx0
+	glTexCoord2f(0.0f, 0.0f);
 	glVertex3f(-sx, -sy, sz);
+	glTexCoord2f(1.0f, 0.0f);
 	glVertex3f(sx, -sy, sz);
+	glTexCoord2f(1.0f, 1.0f);
 	glVertex3f(sx, sy, sz);
 
 	//TOP FACE --------------------------------
 
 	//1 triangle vx0, vx5, vx6
+	glTexCoord2f(1.0f, 0.0f);
 	glVertex3f(sx, sy, sz);
+	glTexCoord2f(1.0f, 1.0f);
 	glVertex3f(sx, sy, -sz);
+	glTexCoord2f(0.0f, 1.0f);
 	glVertex3f(-sx, sy, -sz);
 
 	//2 triangle vx6, vx1, vx0
+	glTexCoord2f(0.0f, 1.0f);
 	glVertex3f(-sx, sy, -sz);
+	glTexCoord2f(0.0f, 0.0f);
 	glVertex3f(-sx, sy, sz);
+	glTexCoord2f(1.0f, 0.0f);
 	glVertex3f(sx, sy, sz);
 
 	//RIGHT FACE -------------------------------
 
 	//1 triangle vx0, vx3, vx4
+	glTexCoord2f(0.0f, 1.0f);
 	glVertex3f(sx, sy, sz);
+	glTexCoord2f(0.0f, 0.0f);
 	glVertex3f(sx, -sy, sz);
+	glTexCoord2f(1.0f, 0.0f);
 	glVertex3f(sx, -sy, -sz);
 
 	//2 triangle vx4, vx5, vx0
+	glTexCoord2f(1.0f, 0.0f);
 	glVertex3f(sx, -sy, -sz);
+	glTexCoord2f(1.0f, 1.0f);
 	glVertex3f(sx, sy, -sz);
+	glTexCoord2f(0.0f, 1.0f);
 	glVertex3f(sx, sy, sz);
 
 	//BACK FACE -------------------------------
 
 	//1 triangle vx7, vx6, vx5
+	glTexCoord2f(1.0f, 0.0f);
 	glVertex3f(-sx, -sy, -sz);
+	glTexCoord2f(1.0f, 1.0f);
 	glVertex3f(-sx, sy, -sz);
+	glTexCoord2f(0.0f, 1.0f);
 	glVertex3f(sx, sy, -sz);
 
 	//2 triangle vx5, vx4, vx7
+	glTexCoord2f(0.0f, 1.0f);
 	glVertex3f(sx, sy, -sz);
+	glTexCoord2f(0.0f, 0.0f);
 	glVertex3f(sx, -sy, -sz);
+	glTexCoord2f(1.0f, 0.0f);
 	glVertex3f(-sx, -sy, -sz);
 
 	//BOTTOM FACE ----------------------------
 
 	//1 triangle vx7, vx4, vx3
+	glTexCoord2f(1.0f, 1.0f);
 	glVertex3f(-sx, -sy, -sz);
+	glTexCoord2f(0.0f, 1.0f);
 	glVertex3f(sx, -sy, -sz);
+	glTexCoord2f(0.0f, 0.0f);
 	glVertex3f(sx, -sy, sz);
 
 	//2 triangle vx3, vx2, vx7
+	glTexCoord2f(0.0f, 0.0f);
 	glVertex3f(sx, -sy, sz);
+	glTexCoord2f(1.0f, 0.0f);
 	glVertex3f(-sx, -sy, sz);
+	glTexCoord2f(1.0f, 1.0f);
 	glVertex3f(-sx, -sy, -sz);
 
 	//LEFT FACE ------------------------------
 
 	//1 triangle vx7, vx2, vx1
+	glTexCoord2f(0.0f, 0.0f);
 	glVertex3f(-sx, -sy, -sz);
+	glTexCoord2f(1.0f, 0.0f);
 	glVertex3f(-sx, -sy, sz);
+	glTexCoord2f(1.0f, 1.0f);
 	glVertex3f(-sx, sy, sz);
 
 	//2 triangle vx1, vx6, vx7
+	glTexCoord2f(1.0f, 1.0f);
 	glVertex3f(-sx, sy, sz);
+	glTexCoord2f(0.0f, 1.0f);
 	glVertex3f(-sx, sy, -sz);
+	glTexCoord2f(0.0f, 0.0f);
 	glVertex3f(-sx, -sy, -sz);
 
 	glEnd();
+	glDisable(GL_TEXTURE_2D);
 }
 
 // Vx Cube

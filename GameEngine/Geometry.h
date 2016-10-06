@@ -12,6 +12,10 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
+#define CHECKERS_HEIGHT 64
+#define CHECKERS_WIDTH 64
+
+
 enum GeometryTypes
 {
 	Direct_Cube,	//Cube drawn in direct mode
@@ -51,6 +55,8 @@ public:
 	void InnerRender() const;
 public:
 	vec3 size;
+	GLubyte checkImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
+	GLuint imageName = -1;
 };
 
 

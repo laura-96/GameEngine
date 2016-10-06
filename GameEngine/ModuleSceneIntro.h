@@ -32,7 +32,7 @@ public:
 	
 	Mesh* m;
 	//list<Geometry*> geometries;
-	//InCube* b;
+	DirectCube* b;
 	//PhysBody3D* b;
 };
 

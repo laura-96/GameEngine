@@ -1,7 +1,11 @@
 #ifndef __Mesh_H__
 #define __Mesh_H__
 
+#include "MathGeoLib/src/MathGeoLib.h"
+#include "MathGeoLib/src/MathBuildConfig.h"
+
 #include "glmath.h"
+
 #include "Globals.h"
 #include "Color.h"
 
@@ -14,8 +18,7 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
-
-class mesh {
+struct mesh {
 public:
 	mesh() : index(0), vertex(0) {};
 	mesh(uint _vertex) : vertex(_vertex) { };
@@ -28,7 +31,8 @@ public:
 	uint id_index = -1;
 	uint id_vertex = -1;
 
-	mat4x4 transform;
+	mat4x4 transform = IdentityMatrix;
+	//float4x4 transform = float4x4::identity;
 	Color color = White;
 };
 
@@ -42,7 +46,6 @@ public:
 
 	bool CleanUp();
 
-	//list<mesh*> models;
 	mesh* model;
 };
 

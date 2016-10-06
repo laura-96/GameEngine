@@ -16,8 +16,9 @@ bool ModuleSceneIntro::Start()
 {
 	LOG("Loading Intro assets");
 	m = new Mesh();
+	
 	m->LoadMesh("Game/Assets/Brute.fbx");
-	//b = new InCube();
+	b = new DirectCube();
 	bool ret = true;
 
 	return ret;
@@ -25,8 +26,7 @@ bool ModuleSceneIntro::Start()
 
 bool ModuleSceneIntro::Init(cJSON* node)
 {
-	 //m->LoadMesh(cJSON_GetObjectItem(node, "Mesh")->valuestring);
-
+	 
 	return true;
 }
 
@@ -35,7 +35,7 @@ bool ModuleSceneIntro::CleanUp()
 {
 	LOG("Unloading Intro scene");
 	m->CleanUp();
-	//delete b;
+	delete b;
 	return true;
 }
 
@@ -48,13 +48,13 @@ update_status ModuleSceneIntro::Update(float dt)
 
 bool ModuleSceneIntro::Draw()
 {
-	//b->Render();
+	b->Render();
 	
 	PPlane p(0, 1, 0, 0);
 	p.axis = true;
 	p.Render();
 
 	m->Render();
-
+	
 	return true;
 }

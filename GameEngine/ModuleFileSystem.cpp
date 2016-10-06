@@ -169,7 +169,8 @@ ModuleFileSystem::~ModuleFileSystem()
 
 bool ModuleFileSystem::CleanUp()
 {
-
+	//RELEASE(AssimpIO);
+	
 	return true;
 }
 

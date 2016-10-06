@@ -165,6 +165,10 @@ bool Application::CleanUp()
 		it++;
 	}
 
+	if (root != nullptr)
+	{
+		cJSON_Delete(root);
+	}
 
 	return ret;
 }
