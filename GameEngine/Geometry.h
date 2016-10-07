@@ -82,6 +82,11 @@ public:
 	InCube();
 	InCube(float sizeX, float sizeY, float sizeZ);
 	void InnerRender() const;
+
+	//Utilities
+	void LoadChecker();
+	void GenBuffers();
+
 public:
 	vec3 size;
 private:

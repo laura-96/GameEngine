@@ -613,14 +613,73 @@ InCube::InCube() : Geometry(), size(1.0f, 1.0f, 1.0f)
 {
 	type = GeometryTypes::In_Cube;
 
-	float sx = size.x * 0.5f;
-	float sy = size.y * 0.5f;
-	float sz = size.z * 0.5f;
+	LoadChecker();
+	GenBuffers();
+	
+}
 
-	glGenBuffers(1, (GLuint*) &(index));
-	glGenBuffers(1, (GLuint*) &(vertex));
-	glGenBuffers(1, (GLuint*) &(uvs));
+InCube::InCube(float sizeX, float sizeY, float sizeZ) : Geometry(), size(sizeX, sizeY, sizeZ)
+{
+	type = GeometryTypes::In_Cube;
 
+	LoadChecker();
+	GenBuffers();
+
+	/*	   6 __________	5 			
+		   /|		  /|			
+		  /	|		 / |			
+	   1 /__|_______/0 |
+		 |  |		|  |
+		 | 7|_______|__| 4
+		 |  /		|  /
+		 | /		| /	
+	   2 |/_________|/3
+	*/
+
+
+}
+
+void InCube::InnerRender() const
+{
+	glClearColor(0, 0, 0, 0);
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+	glGenTextures(1, (GLuint*) &imageName);
+	glBindTexture(GL_TEXTURE_2D, imageName);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_HEIGHT, CHECKERS_WIDTH, 0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
+
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, imageName);
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, vertex);
+
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index);
+
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, uvs);
+	glTexCoordPointer(3, GL_FLOAT, 0, NULL);
+
+	glPushMatrix();
+
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, NULL);
+
+	glPopMatrix();
+
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisable(GL_TEXTURE_2D);
+}
+
+void InCube::LoadChecker()
+{
 	for (int i = 0; i < CHECKERS_HEIGHT; i++) {
 		for (int j = 0; j < CHECKERS_WIDTH; j++) {
 			int c = ((((i & 0x8) == 0) ^ ((j & 0x8)) == 0)) * 255;
@@ -629,7 +688,19 @@ InCube::InCube() : Geometry(), size(1.0f, 1.0f, 1.0f)
 			checkImage[i][j][2] = (GLubyte)c;
 			checkImage[i][j][3] = (GLubyte)255;
 		}
-	}	
+	}
+}
+
+void InCube::GenBuffers()
+{
+
+	float sx = size.x * 0.5f;
+	float sy = size.y * 0.5f;
+	float sz = size.z * 0.5f;
+
+	glGenBuffers(1, (GLuint*) &(index));
+	glGenBuffers(1, (GLuint*) &(vertex));
+	glGenBuffers(1, (GLuint*) &(uvs));
 
 	//vx0
 	vertices[0] = sx;
@@ -834,165 +905,4 @@ InCube::InCube() : Geometry(), size(1.0f, 1.0f, 1.0f)
 
 	glBindBuffer(GL_ARRAY_BUFFER, uvs);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 48, UVs, GL_STATIC_DRAW);
-	
-}
-
-InCube::InCube(float sizeX, float sizeY, float sizeZ) : Geometry(), size(sizeX, sizeY, sizeZ)
-{
-	type = GeometryTypes::In_Cube;
-
-	float sx = size.x * 0.5f;
-	float sy = size.y * 0.5f;
-	float sz = size.z * 0.5f;
-
-	glGenBuffers(1, (GLuint*) &(index));
-	glGenBuffers(1, (GLuint*) &(vertex));
-
-	/*	   6 __________	5 			
-		   /|		  /|			
-		  /	|		 / |			
-	   1 /__|_______/0 |
-		 |  |		|  |
-		 | 7|_______|__| 4
-		 |  /		|  /
-		 | /		| /	
-	   2 |/_________|/3
-	*/
-
-
-	//vx0
-	vertices[0] = sx;
-	vertices[1] = sy;
-	vertices[2] = sz;
-
-	//vx1
-	vertices[3] = -sx;
-	vertices[4] = sy;
-	vertices[5] = sz;
-
-	//vx2
-	vertices[6] = -sx;
-	vertices[7] = -sy;
-	vertices[8] = sz;
-
-	//vx3
-	vertices[9] = sx;
-	vertices[10] = -sy;
-	vertices[11] = sz;
-
-	//vx4
-	vertices[12] = sx;
-	vertices[13] = -sy;
-	vertices[14] = -sz;
-
-	//vx5
-	vertices[15] = sx;
-	vertices[16] = sy;
-	vertices[17] = -sz;
-
-	//vx6
-	vertices[18] = -sx;
-	vertices[19] = sy;
-	vertices[20] = -sz;
-
-	//vx7
-	vertices[21] = -sx;
-	vertices[22] = -sy;
-	vertices[23] = -sz;
-
-
-
-
-	glBindBuffer(GL_ARRAY_BUFFER, vertex);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 48, vertices, GL_STATIC_DRAW);
-
-	//FRONT FACE ---------------------------------
-	indices[0] = 0;
-	indices[1] = 1;
-	indices[2] = 2;
-	indices[3] = 2;
-	indices[4] = 3;
-	indices[5] = 0;
-
-	//TOP FACE ---------------------------------
-	indices[6] = 0;
-	indices[7] = 5;
-	indices[8] = 6;
-	indices[9] = 6;
-	indices[10] = 1;
-	indices[11] = 0;
-
-	//RIGHT FACE ---------------------------------
-	indices[12] = 0;
-	indices[13] = 3;
-	indices[14] = 4;
-	indices[15] = 4;
-	indices[16] = 5;
-	indices[17] = 0;
-
-	//BACK FACE ---------------------------------
-	indices[18] = 7;
-	indices[19] = 6;
-	indices[20] = 5;
-	indices[21] = 5;
-	indices[22] = 4;
-	indices[23] = 7;
-
-	//BOTTOM FACE ---------------------------------
-	indices[24] = 7;
-	indices[25] = 4;
-	indices[26] = 3;
-	indices[27] = 3;
-	indices[28] = 2;
-	indices[29] = 7;
-
-	//BOTTOM FACE ---------------------------------
-	indices[30] = 7;
-	indices[31] = 2;
-	indices[32] = 1;
-	indices[33] = 1;
-	indices[34] = 6;
-	indices[35] = 7;
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * 36, indices, GL_STATIC_DRAW);
-}
-
-void InCube::InnerRender() const
-{
-	glClearColor(0, 0, 0, 0);
-
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-	glGenTextures(1, (GLuint*) &imageName);
-	glBindTexture(GL_TEXTURE_2D, imageName);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_HEIGHT, CHECKERS_WIDTH, 0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
-
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, imageName);
-
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, vertex);
-
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index);
-
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, uvs);
-	glTexCoordPointer(3, GL_FLOAT, 0, NULL);
-
-	glPushMatrix();
-
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, NULL);
-
-	glPopMatrix();
-
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState(GL_VERTEX_ARRAY);
-	glDisable(GL_TEXTURE_2D);
 }
