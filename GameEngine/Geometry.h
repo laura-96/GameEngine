@@ -86,9 +86,15 @@ public:
 	vec3 size;
 private:
 	GLubyte indices[36];
-	GLfloat vertices[24];
+	GLfloat vertices[48];
+	GLfloat UVs[48];
+	
 	uint index = -1;
 	uint vertex = -1;
+	uint uvs = -1;
+
+	GLubyte checkImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
+	GLuint imageName = -1;
 };
 
 #endif //__Geometry_H__

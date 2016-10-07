@@ -619,6 +619,17 @@ InCube::InCube() : Geometry(), size(1.0f, 1.0f, 1.0f)
 
 	glGenBuffers(1, (GLuint*) &(index));
 	glGenBuffers(1, (GLuint*) &(vertex));
+	glGenBuffers(1, (GLuint*) &(uvs));
+
+	for (int i = 0; i < CHECKERS_HEIGHT; i++) {
+		for (int j = 0; j < CHECKERS_WIDTH; j++) {
+			int c = ((((i & 0x8) == 0) ^ ((j & 0x8)) == 0)) * 255;
+			checkImage[i][j][0] = (GLubyte)c;
+			checkImage[i][j][1] = (GLubyte)c;
+			checkImage[i][j][2] = (GLubyte)c;
+			checkImage[i][j][3] = (GLubyte)255;
+		}
+	}	
 
 	//vx0
 	vertices[0] = sx;
@@ -660,8 +671,50 @@ InCube::InCube() : Geometry(), size(1.0f, 1.0f, 1.0f)
 	vertices[22] = -sy;
 	vertices[23] = -sz;
 
+	//Should add repeated vertices for fitting UVs
+
+	//vx8
+	vertices[24] = sx;
+	vertices[25] = sy;
+	vertices[26] = sz;
+
+	//vx9
+	vertices[27] = sx;
+	vertices[28] = sy;
+	vertices[29] = -sz;
+
+	//vx10
+	vertices[30] = sx;
+	vertices[31] = -sy;
+	vertices[32] = -sz;
+
+	//vx11
+	vertices[33] = sx;
+	vertices[34] = -sy;
+	vertices[35] = sz;
+
+	//vx12
+	vertices[36] = -sx;
+	vertices[37] = sy;
+	vertices[38] = sz;
+
+	//vx13
+	vertices[39] = -sx;
+	vertices[40] = sy;
+	vertices[41] = -sz;
+
+	//vx14
+	vertices[42] = -sx;
+	vertices[43] = -sy;
+	vertices[44] = -sz;
+
+	//vx15
+	vertices[45] = -sx;
+	vertices[46] = -sy;
+	vertices[47] = sz;
+
 	glBindBuffer(GL_ARRAY_BUFFER, vertex);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 8 * 3, vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 48, vertices, GL_STATIC_DRAW);
 
 	//FRONT FACE ---------------------------------
 	indices[0] = 0;
@@ -672,47 +725,116 @@ InCube::InCube() : Geometry(), size(1.0f, 1.0f, 1.0f)
 	indices[5] = 0;
 
 	//TOP FACE ---------------------------------
-	indices[6] = 0;
-	indices[7] = 5;
+	indices[6] = 1;
+	indices[7] = 0;
 	indices[8] = 6;
 	indices[9] = 6;
-	indices[10] = 1;
-	indices[11] = 0;
+	indices[10] = 0;
+	indices[11] = 5;
 
 	//RIGHT FACE ---------------------------------
-	indices[12] = 0;
-	indices[13] = 3;
-	indices[14] = 4;
-	indices[15] = 4;
-	indices[16] = 5;
-	indices[17] = 0;
+	indices[12] = 8;
+	indices[13] = 11;
+	indices[14] = 10;
+	indices[15] = 10;
+	indices[16] = 9;
+	indices[17] = 8;
 
 	//BACK FACE ---------------------------------
-	indices[18] = 7;
-	indices[19] = 6;
-	indices[20] = 5;
-	indices[21] = 5;
-	indices[22] = 4;
-	indices[23] = 7;
+	indices[18] = 6;
+	indices[19] = 4;
+	indices[20] = 7;
+	indices[21] = 6;
+	indices[22] = 5;
+	indices[23] = 4;
 
 	//BOTTOM FACE ---------------------------------
 	indices[24] = 7;
-	indices[25] = 4;
-	indices[26] = 3;
-	indices[27] = 3;
-	indices[28] = 2;
-	indices[29] = 7;
+	indices[25] = 3;
+	indices[26] = 2;
+	indices[27] = 7;
+	indices[28] = 4;
+	indices[29] = 3;
 
-	//BOTTOM FACE ---------------------------------
-	indices[30] = 7;
-	indices[31] = 2;
-	indices[32] = 1;
-	indices[33] = 1;
-	indices[34] = 6;
-	indices[35] = 7;
+	//LEFT FACE ---------------------------------
+	indices[30] = 12;
+	indices[31] = 13;
+	indices[32] = 14;
+	indices[33] = 12;
+	indices[34] = 14;
+	indices[35] = 15;
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * 36, indices, GL_STATIC_DRAW);
+
+
+	UVs[0] = 1.0f;
+	UVs[1] = 1.0f;
+	UVs[2] = 0.0f;
+
+	UVs[3] = 0.0f;
+	UVs[4] = 1.0f;
+	UVs[5] = 0.0f;
+
+	UVs[6] = 0.0f;
+	UVs[7] = 0.0f;
+	UVs[8] = 0.0f;
+
+	UVs[9] = 1.0f;
+	UVs[10] = 0.0f;
+	UVs[11] = 0.0f;
+
+	UVs[12] = 1.0f;
+	UVs[13] = 1.0f;
+	UVs[14] = 0.0f;
+
+	UVs[15] = 1.0f;
+	UVs[16] = 0.0f;
+	UVs[17] = 0.0f;
+
+	UVs[18] = 0.0f;
+	UVs[19] = 0.0f;
+	UVs[20] = 0.0f;
+
+	UVs[21] = 0.0f;
+	UVs[22] = 1.0f;
+	UVs[23] = 0.0f;
+
+	UVs[24] = 0.0f;
+	UVs[25] = 1.0f;
+	UVs[26] = 0.0f;
+
+	UVs[27] = 1.0f;
+	UVs[28] = 1.0f;
+	UVs[29] = 0.0f;
+
+	UVs[30] = 1.0f;
+	UVs[31] = 0.0f;
+	UVs[32] = 0.0f;
+
+	UVs[33] = 0.0f;
+	UVs[34] = 0.0f;
+	UVs[35] = 0.0f;
+
+	UVs[36] = 1.0f;
+	UVs[37] = 1.0f;
+	UVs[38] = 0.0f;
+
+	UVs[39] = 0.0f;
+	UVs[40] = 1.0f;
+	UVs[41] = 0.0f;
+
+	UVs[42] = 0.0f;
+	UVs[43] = 0.0f;
+	UVs[44] = 0.0f;
+
+	UVs[45] = 1.0f;
+	UVs[46] = 0.0f;
+	UVs[47] = 0.0f;
+
+	glBindBuffer(GL_ARRAY_BUFFER, uvs);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 48, UVs, GL_STATIC_DRAW);
+	
 }
 
 InCube::InCube(float sizeX, float sizeY, float sizeZ) : Geometry(), size(sizeX, sizeY, sizeZ)
@@ -726,6 +848,18 @@ InCube::InCube(float sizeX, float sizeY, float sizeZ) : Geometry(), size(sizeX, 
 	glGenBuffers(1, (GLuint*) &(index));
 	glGenBuffers(1, (GLuint*) &(vertex));
 
+	/*	   6 __________	5 			
+		   /|		  /|			
+		  /	|		 / |			
+	   1 /__|_______/0 |
+		 |  |		|  |
+		 | 7|_______|__| 4
+		 |  /		|  /
+		 | /		| /	
+	   2 |/_________|/3
+	*/
+
+
 	//vx0
 	vertices[0] = sx;
 	vertices[1] = sy;
@@ -766,8 +900,11 @@ InCube::InCube(float sizeX, float sizeY, float sizeZ) : Geometry(), size(sizeX, 
 	vertices[22] = -sy;
 	vertices[23] = -sz;
 
+
+
+
 	glBindBuffer(GL_ARRAY_BUFFER, vertex);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 8 * 3, vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 48, vertices, GL_STATIC_DRAW);
 
 	//FRONT FACE ---------------------------------
 	indices[0] = 0;
@@ -823,13 +960,31 @@ InCube::InCube(float sizeX, float sizeY, float sizeZ) : Geometry(), size(sizeX, 
 
 void InCube::InnerRender() const
 {
-	
+	glClearColor(0, 0, 0, 0);
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+	glGenTextures(1, (GLuint*) &imageName);
+	glBindTexture(GL_TEXTURE_2D, imageName);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_HEIGHT, CHECKERS_WIDTH, 0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
+
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, imageName);
+
 	glEnableClientState(GL_VERTEX_ARRAY);
-
 	glBindBuffer(GL_ARRAY_BUFFER, vertex);
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index);
+
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, uvs);
+	glTexCoordPointer(3, GL_FLOAT, 0, NULL);
 
 	glPushMatrix();
 
@@ -837,5 +992,7 @@ void InCube::InnerRender() const
 
 	glPopMatrix();
 
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisable(GL_TEXTURE_2D);
 }

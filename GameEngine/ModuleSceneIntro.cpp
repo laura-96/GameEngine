@@ -18,7 +18,7 @@ bool ModuleSceneIntro::Start()
 	m = new Mesh();
 	
 	m->LoadMesh("Game/Assets/Brute.fbx");
-	b = new DirectCube();
+	b = new InCube();
 	bool ret = true;
 
 	return ret;
