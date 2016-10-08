@@ -113,6 +113,7 @@ private:
 
 	//Image
 	GLuint imageId = -1;
+	GLuint texture[1];
 	std::string path;
 };
 

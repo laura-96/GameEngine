@@ -927,23 +927,13 @@ void InCube::RenderText()
 {
 
 	LoadTexture(path.c_str());
-	
-
-	glClearColor(0, 0, 0, 0);
-
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 	ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
-	glGenTextures(1, (GLuint*)&imageId);
-	glBindTexture(GL_TEXTURE_2D, imageId);
-	
-	uint W = ilGetInteger(IL_IMAGE_WIDTH);
-	uint H = ilGetInteger(IL_IMAGE_HEIGHT);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, W, H, 0, GL_RGBA, GL_UNSIGNED_BYTE, ilGetData());
-	
+	texture[0] = ilutGLBindTexImage();
+
+	glBindTexture(GL_TEXTURE_2D, texture[0]);
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, imageId);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ARRAY_BUFFER, vertex);
@@ -974,6 +964,9 @@ bool InCube::LoadTexture(const char* tex_file)
 	//ilInit() should only be done once per application
 	//Just as a trial, I'll initialize it here, so as to check its functionallity, just ONCE with Lenna Texture
 	ilInit();
+	ilutInit();
+
+	ilutRenderer(ILUT_OPENGL);
 	ilGenImages(1, &imageId);
 	ilBindImage(imageId);
 	
