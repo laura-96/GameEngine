@@ -102,7 +102,7 @@ void Mesh::Render() const
 			}
 		}
 		*/
-		glMultMatrixf(model->transform.M);
+		//glMultMatrixf(model->transform.M);
 
 		glColor4f(model->color.r, model->color.g, model->color.b, 1);
 		

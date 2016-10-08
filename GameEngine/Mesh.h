@@ -1,10 +1,10 @@
 #ifndef __Mesh_H__
 #define __Mesh_H__
 
-#include "MathGeoLib/src/MathGeoLib.h"
 #include "MathGeoLib/src/MathBuildConfig.h"
+#include "MathGeoLib/src/MathGeoLib.h"
 
-#include "glmath.h"
+//#include "glmath.h"
 
 #include "Globals.h"
 #include "Color.h"
@@ -31,8 +31,9 @@ public:
 	uint id_index = -1;
 	uint id_vertex = -1;
 
-	mat4x4 transform = IdentityMatrix;
-	//float4x4 transform = float4x4::identity;
+	math::float4x4 transform = math::float4x4::identity;
+	//mat4x4 transform = IdentityMatrix;
+	
 	Color color = White;
 };
 
