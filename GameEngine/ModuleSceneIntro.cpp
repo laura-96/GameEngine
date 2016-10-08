@@ -18,7 +18,7 @@ bool ModuleSceneIntro::Start()
 	m = new Mesh();
 	
 	m->LoadMesh("Game/Assets/Brute.fbx");
-	b = new InCube();
+	b = new InCube("Game/Assets/Textures/Lenna.png");
 	bool ret = true;
 
 	return ret;
@@ -48,8 +48,8 @@ update_status ModuleSceneIntro::Update(float dt)
 
 bool ModuleSceneIntro::Draw()
 {
-	b->Render();
-	
+	//b->Render();
+	b->RenderText();
 	PPlane p(0, 1, 0, 0);
 	p.axis = true;
 	p.Render();

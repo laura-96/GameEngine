@@ -6,6 +6,7 @@
 
 #include "Globals.h"
 
+#include <string>
 #include <Windows.h>
 #include "Glew/include/glew.h"
 #include "SDL/include/SDL_opengl.h"
@@ -53,6 +54,8 @@ public:
 	DirectCube();
 	DirectCube(float sizeX, float sizeY, float sizeZ);
 	void InnerRender() const;
+
+
 public:
 	vec3 size;
 	GLubyte checkImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
@@ -81,11 +84,17 @@ class InCube : public Geometry
 public:
 	InCube();
 	InCube(float sizeX, float sizeY, float sizeZ);
+	InCube(const char* texture_path);
+
 	void InnerRender() const;
+	
+	//Rendering if texture
+	void RenderText(); //calling LoadTexture() inside, so it cannot be const
 
 	//Utilities
 	void LoadChecker();
 	void GenBuffers();
+	bool LoadTexture(const char* tex_file);
 
 public:
 	vec3 size;
@@ -98,8 +107,13 @@ private:
 	uint vertex = -1;
 	uint uvs = -1;
 
+	//Checker
 	GLubyte checkImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
 	GLuint imageName = -1;
+
+	//Image
+	GLuint imageId = -1;
+	std::string path;
 };
 
 #endif //__Geometry_H__

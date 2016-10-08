@@ -1,5 +1,11 @@
 #include "Geometry.h"
 
+#include "Devil/include/il.h"
+#include "Devil/include/ilut.h"
+
+#pragma comment( lib, "Devil/libx86/DevIL.lib" )
+#pragma comment( lib, "Devil/libx86/ILU.lib" )
+#pragma comment( lib, "Devil/libx86/ILUT.lib" )
 
 Geometry::Geometry() : transform(IdentityMatrix), color(White), wire(false), axis(false), type(GeometryTypes::Point)
 {
@@ -639,6 +645,15 @@ InCube::InCube(float sizeX, float sizeY, float sizeZ) : Geometry(), size(sizeX, 
 
 }
 
+InCube::InCube(const char* texture_path) : Geometry(), size(1.0f, 1.0f, 1.0f)
+{
+	type = GeometryTypes::In_Cube;
+	
+	path = texture_path;
+	GenBuffers();
+	
+}
+
 void InCube::InnerRender() const
 {
 	glClearColor(0, 0, 0, 0);
@@ -905,4 +920,72 @@ void InCube::GenBuffers()
 
 	glBindBuffer(GL_ARRAY_BUFFER, uvs);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 48, UVs, GL_STATIC_DRAW);
+}
+
+
+void InCube::RenderText()
+{
+
+	LoadTexture(path.c_str());
+	
+
+	glClearColor(0, 0, 0, 0);
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+	ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+	glGenTextures(1, (GLuint*)&imageId);
+	glBindTexture(GL_TEXTURE_2D, imageId);
+	
+	uint W = ilGetInteger(IL_IMAGE_WIDTH);
+	uint H = ilGetInteger(IL_IMAGE_HEIGHT);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, W, H, 0, GL_RGBA, GL_UNSIGNED_BYTE, ilGetData());
+	
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, imageId);
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, vertex);
+
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index);
+
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, uvs);
+	glTexCoordPointer(3, GL_FLOAT, 0, NULL);
+
+	glPushMatrix();
+
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, NULL);
+
+	glPopMatrix();
+
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisable(GL_TEXTURE_2D);
+
+	ilDisable(IL_ORIGIN_SET);
+}
+
+
+bool InCube::LoadTexture(const char* tex_file)
+{
+	//ilInit() should only be done once per application
+	//Just as a trial, I'll initialize it here, so as to check its functionallity, just ONCE with Lenna Texture
+	ilInit();
+	ilGenImages(1, &imageId);
+	ilBindImage(imageId);
+	
+	ilEnable(IL_ORIGIN_SET);
+	//LOOK UP Not sure about what mode IL_ORIGIN_LOWER_LEFT is
+	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
+
+	if (!ilLoadImage(tex_file))
+	{
+		ilDeleteImages(1, &imageId);
+		return false;
+	}
+
+	return true;
 }
