@@ -227,5 +227,8 @@
     <ClCompile Include="GOManager.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="MeshComponent.cpp">
+      <Filter>Containers\Component</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

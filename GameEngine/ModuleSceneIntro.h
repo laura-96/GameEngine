@@ -30,9 +30,9 @@ public:
 
 public:
 	
-	Mesh* m;
+	//Mesh* m;
 	//list<Geometry*> geometries;
-	InCube* b;
+	//InCube* b;
 	//PhysBody3D* b;
 };
 

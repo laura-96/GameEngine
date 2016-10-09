@@ -18,6 +18,7 @@ public:
 	Component();
 	Component(ComponentType type, GameObject* _GO_belong);
 	ComponentType GetType() const;
+	virtual void Draw() {};
 
 public:
 	ComponentType comp_type = None;

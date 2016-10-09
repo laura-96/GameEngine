@@ -47,6 +47,7 @@ MeshComponent* GameObject::CreateMeshComponent()
 	return ret;
 }
 
+//Doesn't enter FindComponent
 Component* GameObject::FindComponent(Component::ComponentType _type) const
 {
 	Component* ret = nullptr;
@@ -69,3 +70,23 @@ const char* GameObject::GetName() const
 	return (name.c_str());
 }
 
+void GameObject::Update()
+{
+	if (GO_parent != nullptr)
+	{
+		if (GO_parent->active != active)
+		{
+			active = GO_parent->active;
+		}
+	}
+
+	if (active)
+	{
+		if (components.size() > 0)
+		{
+			vector<Component*>::iterator m = components.begin();//= FindComponent(Component::ComponentType::Mesh);
+			(*m)->Draw();
+		}
+		
+	}
+}

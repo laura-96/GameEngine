@@ -163,6 +163,7 @@
     <ClCompile Include="glmath.cpp" />
     <ClCompile Include="GOManager.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="MeshComponent.cpp" />
     <ClCompile Include="ModuleFileSystem.cpp" />
     <ClCompile Include="UIEditor.cpp" />
     <ClCompile Include="Imgui\imgui.cpp" />

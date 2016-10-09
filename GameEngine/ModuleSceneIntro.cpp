@@ -15,10 +15,10 @@ ModuleSceneIntro::~ModuleSceneIntro()
 bool ModuleSceneIntro::Start()
 {
 	LOG("Loading Intro assets");
-	m = new Mesh();
+	//m = new Mesh();
 	
-	m->LoadMesh("Game/Assets/Brute.fbx");
-	b = new InCube("Game/Assets/Textures/Lenna.png");
+	//m->LoadMesh("Game/Assets/Brute.fbx");
+	//b = new InCube("Game/Assets/Textures/Lenna.png");
 	bool ret = true;
 
 	return ret;
@@ -34,8 +34,8 @@ bool ModuleSceneIntro::Init(cJSON* node)
 bool ModuleSceneIntro::CleanUp()
 {
 	LOG("Unloading Intro scene");
-	m->CleanUp();
-	delete b;
+	//m->CleanUp();
+	//delete b;
 	return true;
 }
 
@@ -49,12 +49,12 @@ update_status ModuleSceneIntro::Update(float dt)
 bool ModuleSceneIntro::Draw()
 {
 	//b->Render();
-	b->RenderText();
+	//b->RenderText();
 	PPlane p(0, 1, 0, 0);
 	p.axis = true;
 	p.Render();
 
-	m->Render();
+	//m->Render();
 	
 	return true;
 }

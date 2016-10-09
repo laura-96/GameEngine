@@ -20,13 +20,14 @@ public:
 	Component* FindComponent(Component::ComponentType _type) const;
 	const char* GetName() const;
 
-	//void Update();
+	void Update();
 
 	std::vector<uint> id_tree; //Used to know the position of a game object in the tree
 	
 private:
 
 	std::vector<Component*> components;
+public:
 	std::list<GameObject*> children;
 
 	GameObject* GO_parent = nullptr;

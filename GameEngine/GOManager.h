@@ -20,13 +20,15 @@ public:
 	GameObject* CreateGo(const char* name, GameObject* parent) const;
 	GameObject* FindGoParent(GameObject* child) const;
 
-	//void LoadComponentInfo(GameObject* game_object, Component::ComponentType type) const;
 	bool LoadFBXObjects(const char* FBX);
 	
-	std::vector<const char*> FBXs;
 
+	update_status Update(float dt);
+	void DrawGOs() const;
+
+
+	bool load_fbx = true;
 	GameObject* root_GO = nullptr;
-	cJSON* GOs_node = nullptr;
 };
 
 

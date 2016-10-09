@@ -7,7 +7,9 @@
   "Window": { },
   "Input": { },
   "Audio": { },
-  "Go_Manager": {},
+  "Go_Manager": {
+    "FBXs": "Game/Assets/Brute.fbx"
+  },
   "Scene_Intro": {
     "Mesh":  "Game/Assets/Brute.fbx"
   },
