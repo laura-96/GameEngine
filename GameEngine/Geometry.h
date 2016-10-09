@@ -98,6 +98,7 @@ public:
 
 public:
 	vec3 size;
+
 private:
 	GLubyte indices[36];
 	GLfloat vertices[48];

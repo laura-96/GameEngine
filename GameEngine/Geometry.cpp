@@ -131,8 +131,7 @@ void DirectCube::InnerRender() const
 	float sx = size.x * 0.5f;
 	float sy = size.y * 0.5f;
 	float sz = size.z * 0.5f;
-	
-	glClearColor(0, 0, 0, 0);
+
 	
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	
@@ -656,7 +655,6 @@ InCube::InCube(const char* texture_path) : Geometry(), size(1.0f, 1.0f, 1.0f)
 
 void InCube::InnerRender() const
 {
-	glClearColor(0, 0, 0, 0);
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 

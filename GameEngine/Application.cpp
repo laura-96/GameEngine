@@ -6,6 +6,7 @@
 #include "ModuleInput.h"
 #include "ModuleAudio.h"
 #include "ModuleSceneIntro.h"
+#include "GOManager.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
 #include "ModulePhysics3D.h"
@@ -20,6 +21,7 @@ Application::Application()
 	window = new ModuleWindow(this, "Window");
 	input = new ModuleInput(this, "Input");
 	audio = new ModuleAudio(this, "Audio", true);
+	go_manager = new GOManager(this, "Go_Manager");
 	scene_intro = new ModuleSceneIntro(this, "Scene_Intro");
 	renderer3D = new ModuleRenderer3D(this, "Renderer");
 	camera = new ModuleCamera3D(this, "Camera");
@@ -41,6 +43,7 @@ Application::Application()
 	AddModule(physics);
 
 	// Scenes
+	AddModule(go_manager);
 	AddModule(scene_intro);
 
 	// Renderer

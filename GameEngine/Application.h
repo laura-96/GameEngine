@@ -10,6 +10,7 @@ class ModuleFileSystem;
 class ModuleWindow;
 class ModuleInput;
 class ModuleAudio;
+class GOManager;
 class ModuleSceneIntro;
 class ModuleRenderer3D;
 class ModuleCamera3D;
@@ -26,6 +27,7 @@ public:
 	ModuleWindow* window;
 	ModuleInput* input;
 	ModuleAudio* audio;
+	GOManager* go_manager;
 	ModuleSceneIntro* scene_intro;
 	ModuleRenderer3D* renderer3D;
 	ModuleCamera3D* camera;

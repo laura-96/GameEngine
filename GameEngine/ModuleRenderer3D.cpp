@@ -83,6 +83,7 @@ bool ModuleRenderer3D::Init(cJSON* node)
 		glClearDepth(1.0f);
 
 		//Initialize clear color
+		//BLACK: 
 		glClearColor(0.f, 0.f, 0.f, 1.f);
 
 		//Check for error
