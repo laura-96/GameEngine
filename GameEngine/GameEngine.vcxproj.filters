@@ -31,6 +31,9 @@
     <Filter Include="Containers\Resources">
       <UniqueIdentifier>{1074fd74-0ed2-403b-bb15-768fff955142}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Config">
+      <UniqueIdentifier>{a6288d1a-798a-4e4d-9f4c-a3f3df7ed04b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -56,15 +59,6 @@
     </ClInclude>
     <ClInclude Include="Application.h">
       <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysBody3D.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysVehicle3D.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="Primitive.h">
-      <Filter>Containers</Filter>
     </ClInclude>
     <ClInclude Include="Color.h">
       <Filter>Helpers</Filter>
@@ -135,6 +129,18 @@
     <ClInclude Include="MeshComponent.h">
       <Filter>Containers\Component</Filter>
     </ClInclude>
+    <ClInclude Include="MaterialComponent.h">
+      <Filter>Containers\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysBody3D.h">
+      <Filter>Containers\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysVehicle3D.h">
+      <Filter>Containers\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Primitive.h">
+      <Filter>Containers\Resources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -160,15 +166,6 @@
     </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="PhysBody3D.cpp">
-      <Filter>Containers</Filter>
-    </ClCompile>
-    <ClCompile Include="PhysVehicle3D.cpp">
-      <Filter>Containers</Filter>
-    </ClCompile>
-    <ClCompile Include="Primitive.cpp">
-      <Filter>Containers</Filter>
     </ClCompile>
     <ClCompile Include="Color.cpp">
       <Filter>Helpers</Filter>
@@ -230,5 +227,19 @@
     <ClCompile Include="MeshComponent.cpp">
       <Filter>Containers\Component</Filter>
     </ClCompile>
+    <ClCompile Include="PhysBody3D.cpp">
+      <Filter>Containers\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysVehicle3D.cpp">
+      <Filter>Containers\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Primitive.cpp">
+      <Filter>Containers\Resources</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Config.json">
+      <Filter>Config</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -7,6 +7,7 @@
 #include "Component.h"
 #include "GameObject.h"
 #include "MeshComponent.h"
+#include "MaterialComponent.h"
 
 #include <Windows.h>
 #include "Glew/include/glew.h"
@@ -21,6 +22,13 @@
 
 #pragma comment (lib, "Assimp/libx86/assimp.lib")
 
+#include "Devil/include/il.h"
+#include "Devil/include/ilut.h"
+
+#pragma comment( lib, "Devil/libx86/DevIL.lib" )
+#pragma comment( lib, "Devil/libx86/ILU.lib" )
+#pragma comment( lib, "Devil/libx86/ILUT.lib" )
+
 GOManager::GOManager(Application* app, const char* name, bool start_enabled) : Module(app, name, start_enabled)
 {}
 
@@ -32,6 +40,11 @@ bool GOManager::Init(cJSON* node)
 	
 	if (load_fbx == true)
 	{
+		ilInit();
+		ilutInit();
+
+		ilutRenderer(ILUT_OPENGL);
+
 		struct aiLogStream stream;
 		stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
 		aiAttachLogStream(&stream);
@@ -46,10 +59,7 @@ update_status GOManager::Update(float dt)
 {
 	if (load_fbx)
 	{
-		GameObject* o = root_GO->GetChildAt(0);
-		(*root_GO->children.begin())->Update();
-		//o->Update();
-		DrawGOs();
+		root_GO->Update();
 	}
 
 	return UPDATE_CONTINUE;
@@ -57,32 +67,115 @@ update_status GOManager::Update(float dt)
 
 void GOManager::DrawGOs() const
 {
-	root_GO->GetChildAt(0)->Update();
+	//root_GO->GetChildAt(0)->Update();
 }
-
 
 bool GOManager::LoadFBXObjects(const char* FBX)
 {
 	bool ret = true;
 	const aiScene* scene = aiImportFile(FBX, aiProcessPreset_TargetRealtime_MaxQuality);
-
+	
 	if (scene != nullptr && scene->mRootNode != nullptr && scene->HasMeshes())
 	{
-		aiNode* rec_node = scene->mRootNode;
+		aiNode* node = scene->mRootNode;
+		std::vector<aiNode*> closed_nodes;
+	
+		GameObject* new_go = CreateGo(node->mName.C_Str(), nullptr);
 
-		GameObject* new_GO = CreateGo(rec_node->mName.C_Str(), nullptr);
-		new_GO->id_tree.push_back(0);
-
-		root_GO = new_GO;
-
-		if (rec_node->mNumMeshes > 0)
+		if (!LoadComponents(scene, node, new_go))
 		{
+			ret = false;
+		}
+		root_GO = &(*new_go);
 
-			MeshComponent* mesh = new_GO->CreateMeshComponent();
-
-			for (uint i = 0; i < scene->mNumMeshes; i++)
+		while (node != nullptr)
+		{
+			if (node->mNumChildren > 0)
 			{
-				aiMesh* meshes = scene->mMeshes[i];
+				uint i = 0;
+
+				for (uint j = 0; j < closed_nodes.size(); j++)
+				{
+					if (closed_nodes[j] == node->mChildren[i])
+					{
+						i++;
+					}
+				}
+				
+				if (i >= node->mNumChildren)
+				{
+					closed_nodes.push_back(node);
+				}
+
+				else
+				{
+					node = node->mChildren[i];
+					new_go = CreateGo(node->mName.C_Str(), new_go);
+
+					if (!LoadComponents(scene, node, new_go))
+					{
+						ret = false;
+					}
+
+					if (node->mParent != nullptr)
+					{
+						LOG("Parent: %s ---- Node name: %s", node->mParent->mName.C_Str(), node->mName.C_Str());
+						LOG("GO Parent: %s ---- Node name: %s", new_go->GO_parent->GetName(), new_go->GetName());
+					}
+					else
+					{
+						LOG("Node name: %s", node->mName.C_Str());
+					}
+				}
+			}
+
+			else
+			{
+				closed_nodes.push_back(node);
+			}
+
+			for (uint j = 0; j < closed_nodes.size(); j++)
+			{
+				if (closed_nodes[j] == node)
+				{
+					node = node->mParent;
+					new_go = new_go->GO_parent;
+				}
+			}
+		}
+		closed_nodes.clear();
+	}
+
+	else
+	{
+		ret = false;
+		LOG("Error loading scene: %s", FBX);
+	}
+
+	aiReleaseImport(scene);
+
+	return ret;
+}
+
+bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObject* go) const
+{
+	bool ret = false;
+
+	if (go != nullptr && node != nullptr)
+	{
+		ret = true;
+
+		uint material = -1;
+
+		if (node->mNumMeshes > 0)
+		{
+			MeshComponent* mesh = go->CreateMeshComponent();
+
+			for (uint i = 0; i < node->mNumMeshes; i++)
+			{
+				uint index_scene = node->mMeshes[i];
+
+				aiMesh* meshes = scene->mMeshes[index_scene];
 				
 				mesh->num_vertex = meshes->mNumVertices;
 				mesh->vertices = new float[mesh->num_vertex * 3];
@@ -95,7 +188,7 @@ bool GOManager::LoadFBXObjects(const char* FBX)
 				{
 					mesh->num_index = meshes->mNumFaces * 3;
 					mesh->indices = new uint[mesh->num_index];
-					
+
 					for (uint j = 0; j < meshes->mNumFaces; ++j)
 					{
 						if (meshes->mFaces[j].mNumIndices != 3)
@@ -108,14 +201,26 @@ bool GOManager::LoadFBXObjects(const char* FBX)
 							memcpy(&mesh->indices[j * 3], meshes->mFaces[j].mIndices, 3 * sizeof(uint));
 						}
 					}
+				}
+				if (meshes->HasTextureCoords(0))
+				{
+					mesh->uvs = new float[mesh->num_vertex * 3];
+				
+					memcpy(mesh->uvs, meshes->mTextureCoords[0], sizeof(float) * mesh->num_vertex * 3);
 
 				}
-			}
 
-			aiReleaseImport(scene);
+				mesh->index_material = meshes->mMaterialIndex;
+				if (mesh->index_material >= 0)
+				{
+					mesh->has_material = true;
+				}
+				material = mesh->index_material;
+			}
 
 			glGenBuffers(1, (GLuint*) &(mesh->id_index));
 			glGenBuffers(1, (GLuint*) &(mesh->id_vertex));
+			glGenBuffers(1, (GLuint*) &(mesh->id_uvs));
 
 			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_vertex * 3, mesh->vertices, GL_STATIC_DRAW);
@@ -123,123 +228,55 @@ bool GOManager::LoadFBXObjects(const char* FBX)
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_index);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_index, mesh->indices, GL_STATIC_DRAW);
 
+			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uvs);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_vertex * 3, mesh->uvs, GL_STATIC_DRAW);
+
 		}
-		std::list<aiNode*> closed_nodes;
-		GameObject* last_parent = nullptr;
 
-		while (rec_node != nullptr)
+		if (scene->mNumMaterials > 0 && node->mNumMeshes > 0)
 		{
+			aiMaterial* mat = scene->mMaterials[material];
+			
+			assert(mat);
 
-			//Close node if it's got no children
-			if (rec_node->mNumChildren == 0)
+			if (mat->GetTextureCount(aiTextureType::aiTextureType_DIFFUSE) > 0)
 			{
-				closed_nodes.push_back(rec_node);
-			}
+				aiString path;
+				mat->GetTexture(aiTextureType::aiTextureType_DIFFUSE, 0, &path);
 
-			else
-			{
-				//Check if children are closed
-				int i = 0;
-				bool closed_children = false;
+				MaterialComponent* mat_component = go->CreateMaterialComponent();
+				mat_component->path.clear();
 
-				for (std::list<aiNode*>::iterator it = closed_nodes.begin(); it != closed_nodes.end() && !closed_children; it++)
+				if (mat_component->path.length() < path.length)
 				{
-					if ((*it) == rec_node->mChildren[i])
-					{
-						i++;
-						it = closed_nodes.begin();
-
-						if (i >= rec_node->mNumChildren)
-						{
-							closed_children = true;
-						}
-					}
+					mat_component->path.reserve(path.length);
 				}
+				else if (mat_component->path.length() > path.length)
+				{
+					mat_component->path.resize(path.length);
+				}
+
+				mat_component->path = path.C_Str();
+				mat_component->material_id = material;
+
+				LOG("MATERIAL 1 - %s ___ 2 - %s", mat_component->path.c_str(), path.C_Str());
 				
-				//If they are, close node
-				if (closed_children)
-				{
-					closed_nodes.push_back(rec_node);
-				}
+				ilGenImages(1, &mat_component->id_image);
+				ilBindImage(mat_component->id_image);
 
-				//If not, node is children node
-				else
-				{
-					rec_node = rec_node->mChildren[i];
+				ilEnable(IL_ORIGIN_SET);
+				ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
 
-					last_parent = new_GO;
-					new_GO = CreateGo(rec_node->mName.C_Str(), last_parent);
-					
-					new_GO->id_tree = last_parent->id_tree;
-					new_GO->id_tree.push_back(i);
+				ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 
-					if (rec_node->mNumMeshes > 0)
-					{
-						MeshComponent* mesh = new_GO->CreateMeshComponent();
+				mat_component->texture[0] = ilutGLBindTexImage();
 
-						for (uint i = 0; i < scene->mNumMeshes; i++)
-						{
-							aiMesh* meshes = scene->mMeshes[i];
-
-							mesh->num_vertex = meshes->mNumVertices;
-							mesh->vertices = new float[mesh->num_vertex * 3];
-
-							memcpy(mesh->vertices, meshes->mVertices, sizeof(float) * mesh->num_vertex * 3);
-
-							LOG("New mesh with %d vertices", mesh->num_vertex);
-
-							if (meshes->HasFaces())
-							{
-								mesh->num_index = meshes->mNumFaces * 3;
-								mesh->indices = new uint[mesh->num_index];
-
-								for (uint j = 0; j < meshes->mNumFaces; ++j)
-								{
-									if (meshes->mFaces[j].mNumIndices != 3)
-									{
-										LOG("WARNING! Geometry face with %d indices", meshes->mFaces[j].mNumIndices);
-									}
-
-									else
-									{
-										memcpy(&mesh->indices[j * 3], meshes->mFaces[j].mIndices, 3 * sizeof(uint));
-									}
-								}
-							}
-						}
-
-						aiReleaseImport(scene);
-
-						glGenBuffers(1, (GLuint*) &(mesh->id_index));
-						glGenBuffers(1, (GLuint*) &(mesh->id_vertex));
-
-						glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex);
-						glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_vertex * 3, mesh->vertices, GL_STATIC_DRAW);
-
-						glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_index);
-						glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_index, mesh->indices, GL_STATIC_DRAW);
-					}
-
-				}
 			}
 
-			//Check if node is closed
-			for (std::list<aiNode*>::iterator it = closed_nodes.begin(); it != closed_nodes.end(); it++)
-			{
-				if ((*it) == rec_node)
-				{			
-					rec_node = rec_node->mParent;
-					new_GO = FindGoParent(new_GO);
-					it = closed_nodes.begin();
-				}
-			}
-		}	
+		}
 	}
-	else
-	{
-		ret = false;
-		LOG("Error loading scene: %s", FBX);
-	}
+
+	return ret;
 }
 
 
@@ -250,47 +287,3 @@ GameObject* GOManager::CreateGo(const char* name, GameObject* parent) const
 
 	return ret;
 }
-
-GameObject* GOManager::FindGoParent(GameObject* child) const
-{
-	GameObject* ret = root_GO;
-	
-	uint size = child->id_tree.size() - 1;
-
-	for (uint i = 1; i < size; i++)
-	{
-		ret = ret->GetChildAt(child->id_tree[i]);
-	}
-	
-	return ret;
-}
-
-/*
-
-const aiScene* scene = aiImportFile(file, aiProcessPreset_TargetRealtime_MaxQuality);
-if (scene != nullptr && scene->HasMeshes())
-{
-
-
-}
-//models.push_back(model);
-}
-
-aiReleaseImport(scene);
-
-glGenBuffers(1, (GLuint*) &(model->id_index));
-glGenBuffers(1, (GLuint*) &(model->id_vertex));
-
-glBindBuffer(GL_ARRAY_BUFFER, model->id_vertex);
-glBufferData(GL_ARRAY_BUFFER, sizeof(float) * model->vertex * 3, model->vertices, GL_STATIC_DRAW);
-
-glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, model->id_index);
-glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * model->index, model->indices, GL_STATIC_DRAW);
-
-}
-
-
-}
-
-
-*/

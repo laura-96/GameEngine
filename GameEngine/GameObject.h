@@ -13,18 +13,18 @@ class GameObject
 public:
 	GameObject(GameObject* _parent, const char* _name);
 
-	GameObject* GetChildAt(uint index) const;
 
 	MeshComponent* CreateMeshComponent();
+	MaterialComponent* CreateMaterialComponent();
 
-	Component* FindComponent(Component::ComponentType _type) const;
+	Component* FindComponent(const Component::ComponentType _type) const;
 	const char* GetName() const;
 
 	void Update();
 
 	std::vector<uint> id_tree; //Used to know the position of a game object in the tree
 	
-private:
+public:
 
 	std::vector<Component*> components;
 public:

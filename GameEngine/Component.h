@@ -3,6 +3,7 @@
 
 class GameObject;
 class MeshComponent;
+class MaterialComponent;
 
 class Component 
 {
@@ -19,9 +20,10 @@ public:
 	Component(ComponentType type, GameObject* _GO_belong);
 	ComponentType GetType() const;
 	virtual void Draw() {};
+	const GameObject* GetGO() const;
 
 public:
-	ComponentType comp_type = None;
+	ComponentType comp_type = ComponentType::None;
 	GameObject* GO_belong = nullptr;
 };
 

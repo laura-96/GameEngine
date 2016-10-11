@@ -40,11 +40,11 @@ public:
 	SDL_RWops* Load(const char* file) const;
 
 	unsigned int Save(const char* file, const char* buffer, unsigned int size) const;
-	aiFileIO* GetAiFileIO() const;
+	//aiFileIO* GetAiFileIO() const;
 
 private:
 
-	aiFileIO* assimp_file = nullptr;
+	aiFileIO* ai_file = nullptr;
 };
 
 #endif // __ModuleFileSystem_H__

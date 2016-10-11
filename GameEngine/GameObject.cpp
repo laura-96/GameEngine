@@ -1,8 +1,11 @@
 #include "GameObject.h"
 
+#include "Component.h"
 #include "MeshComponent.h"
+#include "MaterialComponent.h"
 
 using namespace std;
+
 
 
 GameObject::GameObject(GameObject* _parent, const char* _name)
@@ -16,26 +19,6 @@ GameObject::GameObject(GameObject* _parent, const char* _name)
 	}
 }
 
-GameObject* GameObject::GetChildAt(uint index) const
-{
-	GameObject* ret = nullptr;
-
-	if (!children.empty() && index <= (children.size() - 1))
-	{
-		list<GameObject*>::const_iterator it = children.begin();
-		
-		uint i = 1;
-		while(i <= index)
-		{
-			it++;
-			i++;
-		}
-		ret = (*it);
-	}
-
-	return ret;
-}
-
 
 MeshComponent* GameObject::CreateMeshComponent()
 {
@@ -47,18 +30,29 @@ MeshComponent* GameObject::CreateMeshComponent()
 	return ret;
 }
 
+MaterialComponent* GameObject::CreateMaterialComponent()
+{
+	MaterialComponent* ret = new MaterialComponent((GameObject*)this);
+
+	Component* comp = ret;
+	components.push_back(comp);
+
+	return ret;
+}
+
 //Doesn't enter FindComponent
-Component* GameObject::FindComponent(Component::ComponentType _type) const
+Component* GameObject::FindComponent(const Component::ComponentType _type) const
 {
 	Component* ret = nullptr;
-
-	vector<Component*>::const_iterator it = components.begin();
-
-	for ( ; (*it)->GetType() != _type && it != components.end(); it++)
+	if (!components.empty())
 	{
-		if ((*it)->GetType() == _type)
+		for (uint i = 0; i < components.size(); i++)
 		{
-			ret = (*it);
+			if (components[i]->comp_type == _type)
+			{
+				ret = components[i];
+				break;
+			}
 		}
 	}
 	
@@ -88,5 +82,13 @@ void GameObject::Update()
 			(*m)->Draw();
 		}
 		
+	}
+	
+	if (!children.empty())
+	{
+		for (std::list<GameObject*>::iterator it = children.begin(); it != children.end(); it++)
+		{
+			(*it)->Update();
+		}
 	}
 }

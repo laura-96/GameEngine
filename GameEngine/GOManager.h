@@ -7,6 +7,8 @@
 #include <vector>
 
 class Application;
+class aiScene;
+class aiNode;
 
 class GOManager : public Module
 {
@@ -18,10 +20,9 @@ public:
 	//bool CleanUp();
 	
 	GameObject* CreateGo(const char* name, GameObject* parent) const;
-	GameObject* FindGoParent(GameObject* child) const;
-
-	bool LoadFBXObjects(const char* FBX);
 	
+	bool LoadFBXObjects(const char* FBX);
+	bool LoadComponents(const aiScene* scene, const aiNode* node, GameObject* go) const;
 
 	update_status Update(float dt);
 	void DrawGOs() const;

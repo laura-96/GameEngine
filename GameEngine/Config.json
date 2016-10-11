@@ -8,7 +8,7 @@
   "Input": { },
   "Audio": { },
   "Go_Manager": {
-    "FBXs": "Game/Assets/Brute.fbx"
+    "FBXs": "Game/Assets/Town/Street.FBX"
   },
   "Scene_Intro": {
     "Mesh":  "Game/Assets/Brute.fbx"
