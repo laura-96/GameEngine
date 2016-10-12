@@ -23,7 +23,7 @@
 void MeshComponent::Draw()
 {
 	
-	if (has_material)
+	/*if (!has_material)
 	{
 		MaterialComponent* mat = (MaterialComponent*)GO_belong->FindComponent(Component::ComponentType::Material);
 		
@@ -55,23 +55,24 @@ void MeshComponent::Draw()
 
 		}
 
-		else
-		{
-			glPushMatrix();
-
-			glColor4f(255, 0, 0, 1);
-
-			glEnableClientState(GL_VERTEX_ARRAY);
-
-			glVertexPointer(3, GL_FLOAT, 0, NULL);
-
-			glDrawElements(GL_TRIANGLES, num_index, GL_UNSIGNED_INT, NULL);
-
-			glPopMatrix();
-
-			glDisableClientState(GL_VERTEX_ARRAY);
-
-		}
-
 	}
+
+
+	else
+	{*/
+		glPushMatrix();
+
+		glColor4f(255, 0, 0, 1);
+
+		glEnableClientState(GL_VERTEX_ARRAY);
+
+		glVertexPointer(3, GL_FLOAT, 0, NULL);
+
+		glDrawElements(GL_TRIANGLES, num_index, GL_UNSIGNED_INT, NULL);
+
+		glPopMatrix();
+
+		glDisableClientState(GL_VERTEX_ARRAY);
+
+	//}
 }

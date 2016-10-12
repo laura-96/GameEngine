@@ -49,7 +49,7 @@ bool GOManager::Init(cJSON* node)
 		stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
 		aiAttachLogStream(&stream);
 
-		LoadFBXObjects(node->child->valuestring);
+		LoadFBXObjects("Game/Assets/Town/Street.FBX");
 	}
 
 	return true;
@@ -202,25 +202,25 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 						}
 					}
 				}
-				if (meshes->HasTextureCoords(0))
+				/*if (meshes->HasTextureCoords(0))
 				{
 					mesh->uvs = new float[mesh->num_vertex * 3];
 				
 					memcpy(mesh->uvs, meshes->mTextureCoords[0], sizeof(float) * mesh->num_vertex * 3);
 
-				}
-
+				}*/
+				/*
 				mesh->index_material = meshes->mMaterialIndex;
 				if (mesh->index_material >= 0)
 				{
 					mesh->has_material = true;
 				}
-				material = mesh->index_material;
+				material = mesh->index_material;*/
 			}
 
 			glGenBuffers(1, (GLuint*) &(mesh->id_index));
 			glGenBuffers(1, (GLuint*) &(mesh->id_vertex));
-			glGenBuffers(1, (GLuint*) &(mesh->id_uvs));
+			//glGenBuffers(1, (GLuint*) &(mesh->id_uvs));
 
 			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_vertex * 3, mesh->vertices, GL_STATIC_DRAW);
@@ -228,11 +228,11 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_index);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_index, mesh->indices, GL_STATIC_DRAW);
 
-			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uvs);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_vertex * 3, mesh->uvs, GL_STATIC_DRAW);
+			//glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uvs);
+			//glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_vertex * 3, mesh->uvs, GL_STATIC_DRAW);
 
 		}
-
+		/*
 		if (scene->mNumMaterials > 0 && node->mNumMeshes > 0)
 		{
 			aiMaterial* mat = scene->mMaterials[material];
@@ -273,7 +273,7 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 
 			}
 
-		}
+		}*/
 	}
 
 	return ret;
@@ -286,4 +286,31 @@ GameObject* GOManager::CreateGo(const char* name, GameObject* parent) const
 	GameObject* ret = new GameObject(parent, name);
 
 	return ret;
+}
+
+bool GOManager::CleanUp()
+{
+	GameObject* it = root_GO;
+	while (it != root_GO)
+	{
+		while (!it->children.empty())
+		{
+			it = (*it->children.begin());
+		}
+
+		GameObject* parent = it->GO_parent;
+
+		std::list<GameObject*>::iterator i = parent->children.begin();
+		while (i != parent->children.end())
+		{
+			(*i)->Clear();
+			i++;
+		}
+
+		it = parent;
+	}
+	
+	it->Clear();
+
+	return true;
 }

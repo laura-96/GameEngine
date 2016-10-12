@@ -17,7 +17,7 @@ public:
 	~GOManager();
 
 	bool Init(cJSON* node);
-	//bool CleanUp();
+	bool CleanUp();
 	
 	GameObject* CreateGo(const char* name, GameObject* parent) const;
 	

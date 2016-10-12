@@ -1,6 +1,8 @@
 #ifndef __Component_H__
 #define __Component_H__
 
+#include "Globals.h"
+
 class GameObject;
 class MeshComponent;
 class MaterialComponent;
@@ -20,6 +22,7 @@ public:
 	Component(ComponentType type, GameObject* _GO_belong);
 	ComponentType GetType() const;
 	virtual void Draw() {};
+
 	const GameObject* GetGO() const;
 
 public:

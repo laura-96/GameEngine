@@ -22,7 +22,7 @@ GameObject::GameObject(GameObject* _parent, const char* _name)
 
 MeshComponent* GameObject::CreateMeshComponent()
 {
-	MeshComponent* ret = new MeshComponent((GameObject*)this);
+	MeshComponent* ret = new MeshComponent(this);
 	
 	Component* comp = ret;
 	components.push_back(comp);
@@ -32,7 +32,7 @@ MeshComponent* GameObject::CreateMeshComponent()
 
 MaterialComponent* GameObject::CreateMaterialComponent()
 {
-	MaterialComponent* ret = new MaterialComponent((GameObject*)this);
+	MaterialComponent* ret = new MaterialComponent(this);
 
 	Component* comp = ret;
 	components.push_back(comp);
@@ -91,4 +91,23 @@ void GameObject::Update()
 			(*it)->Update();
 		}
 	}
+}
+
+void GameObject::Clear()
+{
+	name.clear();
+	active = false;
+
+	if (!children.empty())
+	{
+		children.clear();
+	}
+
+	for (uint i = 0; i < components.size(); i++)
+	{
+		RELEASE(components[i]);
+	}
+	components.clear();
+
+	delete (this);
 }

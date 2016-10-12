@@ -21,13 +21,11 @@ public:
 	const char* GetName() const;
 
 	void Update();
+	void Clear(); //Cleans up GameObject
 
-	std::vector<uint> id_tree; //Used to know the position of a game object in the tree
-	
 public:
 
 	std::vector<Component*> components;
-public:
 	std::list<GameObject*> children;
 
 	GameObject* GO_parent = nullptr;

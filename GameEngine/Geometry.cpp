@@ -649,7 +649,13 @@ InCube::InCube(const char* texture_path) : Geometry(), size(1.0f, 1.0f, 1.0f)
 	type = GeometryTypes::In_Cube;
 	
 	path = texture_path;
+	ilInit();
+	ilutInit();
+
+	ilutRenderer(ILUT_OPENGL);
 	GenBuffers();
+
+	LoadTexture(path.c_str());
 	
 }
 
@@ -924,8 +930,6 @@ void InCube::GenBuffers()
 void InCube::RenderText()
 {
 
-	LoadTexture(path.c_str());
-
 	ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 
 	texture[0] = ilutGLBindTexImage();
@@ -959,12 +963,6 @@ void InCube::RenderText()
 
 bool InCube::LoadTexture(const char* tex_file)
 {
-	//ilInit() should only be done once per application
-	//Just as a trial, I'll initialize it here, so as to check its functionallity, just ONCE with Lenna Texture
-	ilInit();
-	ilutInit();
-
-	ilutRenderer(ILUT_OPENGL);
 	ilGenImages(1, &imageId);
 	ilBindImage(imageId);
 	
