@@ -22,10 +22,11 @@ public:
 	Component(ComponentType type, GameObject* _GO_belong);
 	ComponentType GetType() const;
 	virtual void Draw() {};
-
+	bool Enable(bool en_dis_able);
 	const GameObject* GetGO() const;
 
 public:
+	bool enable = true;
 	ComponentType comp_type = ComponentType::None;
 	GameObject* GO_belong = nullptr;
 };

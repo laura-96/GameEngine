@@ -24,3 +24,10 @@ const GameObject* Component::GetGO() const
 {
 	return(GO_belong);
 }
+
+bool Component::Enable(bool en_dis_able)
+{
+	enable = en_dis_able;
+
+	return enable;
+}

@@ -58,18 +58,11 @@ bool GOManager::Init(cJSON* node)
 update_status GOManager::Update(float dt)
 {
 	if (load_fbx)
-	{/*
-		*/
+	{
+		root_GO->Update();
 	}
 
-	root_GO->Update();
-
 	return UPDATE_CONTINUE;
-}
-
-void GOManager::DrawGOs() const
-{
-	//root_GO->GetChildAt(0)->Update();
 }
 
 bool GOManager::LoadFBXObjects(const char* FBX)
@@ -167,7 +160,7 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 	{
 		ret = true;
 
-		uint material = -1;
+		int material = -1;
 
 		if (node->mNumMeshes > 0)
 		{
@@ -204,25 +197,22 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 						}
 					}
 				}
-				/*if (meshes->HasTextureCoords(0))
+				if (meshes->HasTextureCoords(0))
 				{
 					mesh->uvs = new float[mesh->num_vertex * 3];
 				
 					memcpy(mesh->uvs, meshes->mTextureCoords[0], sizeof(float) * mesh->num_vertex * 3);
 
-				}*/
-				/*
-				mesh->index_material = meshes->mMaterialIndex;
-				if (mesh->index_material >= 0)
-				{
-					mesh->has_material = true;
 				}
-				material = mesh->index_material;*/
+				
+				mesh->index_material = meshes->mMaterialIndex;
+				
+				material = mesh->index_material;
 			}
 
 			glGenBuffers(1, (GLuint*) &(mesh->id_index));
 			glGenBuffers(1, (GLuint*) &(mesh->id_vertex));
-			//glGenBuffers(1, (GLuint*) &(mesh->id_uvs));
+			glGenBuffers(1, (GLuint*) &(mesh->id_uvs));
 
 			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_vertex * 3, mesh->vertices, GL_STATIC_DRAW);
@@ -230,11 +220,11 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_index);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_index, mesh->indices, GL_STATIC_DRAW);
 
-			//glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uvs);
-			//glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_vertex * 3, mesh->uvs, GL_STATIC_DRAW);
+			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uvs);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_vertex * 3, mesh->uvs, GL_STATIC_DRAW);
 
 		}
-		/*
+		
 		if (scene->mNumMaterials > 0 && node->mNumMeshes > 0)
 		{
 			aiMaterial* mat = scene->mMaterials[material];
@@ -257,7 +247,7 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 				{
 					mat_component->path.resize(path.length);
 				}
-
+				
 				mat_component->path = path.C_Str();
 				mat_component->material_id = material;
 
@@ -269,13 +259,19 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 				ilEnable(IL_ORIGIN_SET);
 				ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
 
+				if (!ilLoadImage(path.C_Str()))
+				{
+					ilDeleteImages(1, &mat_component->id_image);
+					return false;
+				}
+
 				ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 
 				mat_component->texture[0] = ilutGLBindTexImage();
 
 			}
 
-		}*/
+		}
 	}
 
 	return ret;

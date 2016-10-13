@@ -25,8 +25,6 @@ public:
 	bool LoadComponents(const aiScene* scene, const aiNode* node, GameObject* go) const;
 
 	update_status Update(float dt);
-	void DrawGOs() const;
-
 
 	bool load_fbx = true;
 	GameObject* root_GO = nullptr;

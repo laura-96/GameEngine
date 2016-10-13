@@ -26,9 +26,9 @@ public:
 	uint id_index = -1;
 	uint id_vertex = -1;
 	uint id_uvs = -1;
-	uint index_material = 0;
 
-	bool has_material = false;
+	int index_material = -1;
+
 };
 
 #endif //__MeshComponent_H__
