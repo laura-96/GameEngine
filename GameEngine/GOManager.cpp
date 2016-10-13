@@ -3,7 +3,6 @@
 
 #include "GOManager.h"
 
-
 #include "Component.h"
 #include "GameObject.h"
 #include "MeshComponent.h"
@@ -50,6 +49,7 @@ bool GOManager::Init(cJSON* node)
 		aiAttachLogStream(&stream);
 
 		LoadFBXObjects("Game/Assets/Town/Street.FBX");
+		//LoadFBXObjects("Game/Assets/Brute.fbx");
 	}
 
 	return true;
@@ -58,9 +58,11 @@ bool GOManager::Init(cJSON* node)
 update_status GOManager::Update(float dt)
 {
 	if (load_fbx)
-	{
-		root_GO->Update();
+	{/*
+		*/
 	}
+
+	root_GO->Update();
 
 	return UPDATE_CONTINUE;
 }
@@ -170,7 +172,7 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 		if (node->mNumMeshes > 0)
 		{
 			MeshComponent* mesh = go->CreateMeshComponent();
-
+			LOG("Mesh component from: %s", mesh->GetGO()->name.c_str());
 			for (uint i = 0; i < node->mNumMeshes; i++)
 			{
 				uint index_scene = node->mMeshes[i];
@@ -290,27 +292,62 @@ GameObject* GOManager::CreateGo(const char* name, GameObject* parent) const
 
 bool GOManager::CleanUp()
 {
-	GameObject* it = root_GO;
-	while (it != root_GO)
+	if (root_GO)
 	{
-		while (!it->children.empty())
+		GameObject* it = root_GO;
+		std::vector<GameObject*> clear_nodes;
+
+		while (it != nullptr)
 		{
-			it = (*it->children.begin());
+			if (!it->children.empty())
+			{
+				bool closed_child = false;
+				std::list<GameObject*>::iterator i = it->children.begin();
+
+				for (uint j = 0; j < clear_nodes.size(); j++)
+				{
+					if (clear_nodes[j] == (*i))
+					{
+						if ((*i) == it->children.back())
+						{
+							closed_child = true;
+						}
+						else
+						{
+							i++;
+						}
+					}
+				}
+				if (!closed_child)
+				{
+					it = (*i);
+				}
+				else
+				{
+					clear_nodes.push_back(it);
+				}
+			}
+			else
+			{
+				clear_nodes.push_back(it);
+			}
+
+			for (uint j = 0; j < clear_nodes.size(); j++)
+			{
+				if (clear_nodes[j] == it)
+				{
+					it = it->GO_parent;
+				}
+			}
 		}
 
-		GameObject* parent = it->GO_parent;
-
-		std::list<GameObject*>::iterator i = parent->children.begin();
-		while (i != parent->children.end())
+		for (uint i = 0; i < clear_nodes.size(); i++)
 		{
-			(*i)->Clear();
-			i++;
+			clear_nodes[i]->Clear();
 		}
 
-		it = parent;
+		clear_nodes.clear();
 	}
 	
-	it->Clear();
-
 	return true;
 }

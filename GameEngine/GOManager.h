@@ -33,4 +33,4 @@ public:
 };
 
 
-#endif
+#endif // __GOManager_H__

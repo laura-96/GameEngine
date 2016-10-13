@@ -22,7 +22,7 @@ GameObject::GameObject(GameObject* _parent, const char* _name)
 
 MeshComponent* GameObject::CreateMeshComponent()
 {
-	MeshComponent* ret = new MeshComponent(this);
+	MeshComponent* ret = new MeshComponent((GameObject*)this);
 	
 	Component* comp = ret;
 	components.push_back(comp);
@@ -32,7 +32,7 @@ MeshComponent* GameObject::CreateMeshComponent()
 
 MaterialComponent* GameObject::CreateMaterialComponent()
 {
-	MaterialComponent* ret = new MaterialComponent(this);
+	MaterialComponent* ret = new MaterialComponent((GameObject*)this);
 
 	Component* comp = ret;
 	components.push_back(comp);
@@ -81,14 +81,13 @@ void GameObject::Update()
 			vector<Component*>::iterator m = components.begin();//= FindComponent(Component::ComponentType::Mesh);
 			(*m)->Draw();
 		}
-		
-	}
-	
-	if (!children.empty())
-	{
-		for (std::list<GameObject*>::iterator it = children.begin(); it != children.end(); it++)
+
+		if (!children.empty())
 		{
-			(*it)->Update();
+			for (std::list<GameObject*>::iterator it = children.begin(); it != children.end(); it++)
+			{
+				(*it)->Update();
+			}
 		}
 	}
 }

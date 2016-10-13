@@ -109,7 +109,6 @@ bool UIEditor::Draw()
 
 bool UIEditor::CleanUp()
 {
-
 	ImGui_ImplSdlGL3_Shutdown();
 
 	return true;
