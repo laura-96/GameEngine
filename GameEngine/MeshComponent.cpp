@@ -47,7 +47,7 @@ void MeshComponent::Draw()
 
 				glPushMatrix();
 
-				glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, NULL);
+				glDrawElements(GL_TRIANGLES, num_index, GL_UNSIGNED_BYTE, NULL);
 
 				glPopMatrix();
 
@@ -60,11 +60,13 @@ void MeshComponent::Draw()
 			{
 				glPushMatrix();
 
-				glColor4f(255, 0, 0, 1);
+				glColor4f(255, 255, 255, 1);
 
 				glEnableClientState(GL_VERTEX_ARRAY);
+				glBindBuffer(GL_ARRAY_BUFFER, id_vertex);
 
 				glVertexPointer(3, GL_FLOAT, 0, NULL);
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_index);
 
 				glDrawElements(GL_TRIANGLES, num_index, GL_UNSIGNED_INT, NULL);
 
@@ -81,11 +83,14 @@ void MeshComponent::Draw()
 		{
 			glPushMatrix();
 
-			glColor4f(255, 0, 0, 1);
+			glColor4f(255, 255, 255, 1);
+
 
 			glEnableClientState(GL_VERTEX_ARRAY);
+			glBindBuffer(GL_ARRAY_BUFFER, id_vertex);
 
 			glVertexPointer(3, GL_FLOAT, 0, NULL);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_index);
 
 			glDrawElements(GL_TRIANGLES, num_index, GL_UNSIGNED_INT, NULL);
 

@@ -172,16 +172,18 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 		if (node->mNumMeshes > 0)
 		{
 			//While node has got meshes, create a mesh component with its values stored
+			MeshComponent* mesh = nullptr;
 
 			for (uint i = 0; i < node->mNumMeshes; i++)
 			{
-				MeshComponent* mesh = go->CreateMeshComponent();
+				mesh = go->CreateMeshComponent();
 				LOG("Mesh component from: %s", mesh->GetGO()->name.c_str());
 
 				uint index_scene = node->mMeshes[i];
 
 				aiMesh* meshes = scene->mMeshes[index_scene];
 				
+				//Setting mesh vertices
 				mesh->num_vertex = meshes->mNumVertices;
 				mesh->vertices = new float[mesh->num_vertex * 3];
 
@@ -191,6 +193,7 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 
 				if (meshes->HasFaces())
 				{
+					//Setting mesh indices
 					mesh->num_index = meshes->mNumFaces * 3;
 					mesh->indices = new uint[mesh->num_index];
 
@@ -203,16 +206,34 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 
 						else
 						{
-							memcpy(&mesh->indices[j * 3], meshes->mFaces[j].mIndices, 3 * sizeof(uint));
+							//Store the three indices of each face to mesh's array of indices
+							memcpy(&mesh->indices[j * 3], meshes->mFaces[j].mIndices, sizeof(uint) * 3);
 						}
 					}
 				}
 				if (meshes->HasTextureCoords(0))
 				{
-					mesh->uvs = new float[mesh->num_vertex * 3];
-				
-					memcpy(mesh->uvs, meshes->mTextureCoords[0], sizeof(float) * mesh->num_vertex * 3);
+					mesh->uvs = new float[mesh->num_vertex * 2];
+					mesh->num_uvs = mesh->num_vertex;
+					
+					//Got an acces violation if used:
+					//aiVector3D* buff = &meshes->mTextureCoords[0][mesh->indices[j]];
+					//Copying to mesh->uvs the pair of coords of each vertex
 
+					//Method finally used: getting all textureCoords in an aiVector3D
+					aiVector3D* buff = meshes->mTextureCoords[0];
+
+					//Copying x and y coordinates to its suitable uvs
+					for (uint i = 0; i < mesh->num_vertex * 2; i = i + 2)
+					{
+						
+						mesh->uvs[i] = buff->x;
+						mesh->uvs[i + 1] = buff->y;
+						
+						buff++;
+						//I was getting error trying to do it through memcpy
+						//memcpy(&mesh->uvs[j * 2], buff, sizeof(float) * 2);
+					}
 				}
 				
 				mesh->index_material = meshes->mMaterialIndex;
@@ -231,7 +252,7 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_index, mesh->indices, GL_STATIC_DRAW);
 
 			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uvs);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_vertex * 3, mesh->uvs, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_vertex * 2, mesh->uvs, GL_STATIC_DRAW);
 
 		}
 		
@@ -255,7 +276,6 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 
 				for (uint i = 0; i < path.length; i++)
 				{
-
 					if (buffer[i] == '\\')
 					{
 						for (uint j = 0; j <= i; j++)
@@ -281,8 +301,6 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 		
 				mat_component->material_id = material;
 
-				LOG("MATERIAL 1 - %s ___ 2 - %s", mat_component->path.c_str(), path.C_Str());
-				
 				ilGenImages(1, &mat_component->id_image);
 				ilBindImage(mat_component->id_image);
 
@@ -298,7 +316,6 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 				ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 
 				mat_component->texture[0] = ilutGLBindTexImage();
-
 			}
 
 		}
