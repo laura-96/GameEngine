@@ -6,6 +6,7 @@
 class GameObject;
 class MeshComponent;
 class MaterialComponent;
+class TransformComponent;
 
 class Component 
 {

@@ -24,81 +24,41 @@ void MeshComponent::Draw()
 {
 	if (enable)
 	{
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glBindBuffer(GL_ARRAY_BUFFER, id_vertex);
+
+		glVertexPointer(3, GL_FLOAT, 0, NULL);
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_index);
+
 		if (index_material >= 0)
 		{
 			MaterialComponent* mat = (MaterialComponent*)GO_belong->FindComponent(Component::ComponentType::Material);
-			//if(mat)
-			//	mat->Enable(false);
 
 			if (mat != nullptr && mat->enable)
 			{
-				glBindTexture(GL_TEXTURE_2D, mat->texture[0]);
+				glBindTexture(GL_TEXTURE_2D, mat->material_id);
 				glEnable(GL_TEXTURE_2D);
-
-				glEnableClientState(GL_VERTEX_ARRAY);
-				glBindBuffer(GL_ARRAY_BUFFER, id_vertex);
-
-				glVertexPointer(3, GL_FLOAT, 0, NULL);
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_index);
-
-				glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-				glBindBuffer(GL_ARRAY_BUFFER, id_uvs);
-				glTexCoordPointer(2, GL_FLOAT, 0, NULL);
-
-				glPushMatrix();
-
-				glDrawElements(GL_TRIANGLES, num_index, GL_UNSIGNED_BYTE, NULL);
-
-				glPopMatrix();
-
-				glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-				glDisableClientState(GL_VERTEX_ARRAY);
-				glDisable(GL_TEXTURE_2D);
 			}
-
-			else
-			{
-				glPushMatrix();
-
-				glColor4f(255, 255, 255, 1);
-
-				glEnableClientState(GL_VERTEX_ARRAY);
-				glBindBuffer(GL_ARRAY_BUFFER, id_vertex);
-
-				glVertexPointer(3, GL_FLOAT, 0, NULL);
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_index);
-
-				glDrawElements(GL_TRIANGLES, num_index, GL_UNSIGNED_INT, NULL);
-
-				glPopMatrix();
-
-				glDisableClientState(GL_VERTEX_ARRAY);
-
-			}
-
 		}
 
-
-		else
+		if (num_uvs > 0)
 		{
-			glPushMatrix();
-
-			glColor4f(255, 255, 255, 1);
-
-
-			glEnableClientState(GL_VERTEX_ARRAY);
-			glBindBuffer(GL_ARRAY_BUFFER, id_vertex);
-
-			glVertexPointer(3, GL_FLOAT, 0, NULL);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_index);
-
-			glDrawElements(GL_TRIANGLES, num_index, GL_UNSIGNED_INT, NULL);
-
-			glPopMatrix();
-
-			glDisableClientState(GL_VERTEX_ARRAY);
-
+			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+			glBindBuffer(GL_ARRAY_BUFFER, id_uvs);
+			glTexCoordPointer(2, GL_FLOAT, 0, NULL);
 		}
-	}
 
+		glPushMatrix();
+
+		glDrawElements(GL_TRIANGLES, num_index, GL_UNSIGNED_BYTE, NULL);
+
+		glPopMatrix();
+
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glDisableClientState(GL_VERTEX_ARRAY);
+		glDisable(GL_TEXTURE_2D);
+	}
 }
+
+	

@@ -3,6 +3,7 @@
 #include "Component.h"
 #include "MeshComponent.h"
 #include "MaterialComponent.h"
+#include "TransformComponent.h"
 
 using namespace std;
 
@@ -40,7 +41,16 @@ MaterialComponent* GameObject::CreateMaterialComponent()
 	return ret;
 }
 
-//Doesn't enter FindComponent
+TransformComponent* GameObject::CreateTransformComponent()
+{
+	TransformComponent* ret = new TransformComponent((GameObject*)this);
+
+	Component* comp = ret;
+	components.push_back(comp);
+
+	return ret;
+}
+
 Component* GameObject::FindComponent(const Component::ComponentType _type) const
 {
 	Component* ret = nullptr;

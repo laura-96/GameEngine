@@ -7,6 +7,7 @@
 #include "GameObject.h"
 #include "MeshComponent.h"
 #include "MaterialComponent.h"
+#include "TransformComponent.h"
 
 #include <Windows.h>
 #include "Glew/include/glew.h"
@@ -202,15 +203,14 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 						if (meshes->mFaces[j].mNumIndices != 3)
 						{
 							LOG("WARNING! Geometry face with %d indices", meshes->mFaces[j].mNumIndices);
-						}
-
-						else
-						{
-							//Store the three indices of each face to mesh's array of indices
-							memcpy(&mesh->indices[j * 3], meshes->mFaces[j].mIndices, sizeof(uint) * 3);
-						}
+						}				
+						
+						//Store the three indices of each face to mesh's array of indices
+						memcpy(&mesh->indices[j * 3], meshes->mFaces[j].mIndices, sizeof(uint) * 3);
+						
 					}
 				}
+
 				if (meshes->HasTextureCoords(0))
 				{
 					mesh->uvs = new float[mesh->num_vertex * 2];
@@ -266,11 +266,13 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 			{
 				aiString path;
 				mat->GetTexture(aiTextureType::aiTextureType_DIFFUSE, 0, &path);
-
+				//TODO: Load texture path in FileSystem
 				MaterialComponent* mat_component = go->CreateMaterialComponent();
 				mat_component->path.clear();
 				mat_component->path.append("Game/Assets/Textures/");
 				
+				//So as to get the name of the texture, not relative to Fbx
+				//Will append to mat_component->path, the last part of the texture path, its name
 				char* buffer = new char[path.length];
 				strcpy(buffer, path.C_Str());
 
@@ -281,7 +283,6 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 						for (uint j = 0; j <= i; j++)
 						{
 							buffer[j] = '*';
-							
 						}
 					}
 				}
@@ -319,6 +320,20 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 			}
 
 		}
+		aiMatrix4x4 local_trans = node->mTransformation;
+
+		aiVector3D scale;
+		aiQuaterniont<float> rotation;
+		aiVector3D position;
+
+		local_trans.Decompose(scale, rotation, position);
+
+		TransformComponent* transform = go->CreateTransformComponent();
+
+		transform->SetScale(scale.x, scale.y, scale.z);
+		transform->SetRotation(rotation.x, rotation.y, rotation.z, rotation.w);
+		transform->SetTranslation(position.x, position.y, position.z);
+
 	}
 
 	return ret;

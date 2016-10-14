@@ -16,6 +16,7 @@ public:
 
 	MeshComponent* CreateMeshComponent();
 	MaterialComponent* CreateMaterialComponent();
+	TransformComponent* CreateTransformComponent();
 
 	Component* FindComponent(const Component::ComponentType _type) const;
 	const char* GetName() const;

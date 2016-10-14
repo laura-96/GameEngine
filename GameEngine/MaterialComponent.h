@@ -3,6 +3,7 @@
 
 #include "Component.h"
 #include "Globals.h"
+#include "Color.h"
 
 #include <string>
 
@@ -22,6 +23,7 @@ public:
 	uint id_image = -1;
 	uint texture[1];
 	std::string path;
+
 };
 
 #endif //__MaterialComponent_H__
