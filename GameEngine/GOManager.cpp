@@ -57,12 +57,17 @@ bool GOManager::Init(cJSON* node)
 
 update_status GOManager::Update(float dt)
 {
+	
+
+	return UPDATE_CONTINUE;
+}
+
+void GOManager::DrawGo() const
+{
 	if (load_fbx)
 	{
 		root_GO->Update();
 	}
-
-	return UPDATE_CONTINUE;
 }
 
 bool GOManager::LoadFBXObjects(const char* FBX)
@@ -154,6 +159,8 @@ bool GOManager::LoadFBXObjects(const char* FBX)
 
 bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObject* go) const
 {
+	//Loading game object's components from scene and node
+
 	bool ret = false;
 
 	if (go != nullptr && node != nullptr)
@@ -164,10 +171,13 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 
 		if (node->mNumMeshes > 0)
 		{
-			MeshComponent* mesh = go->CreateMeshComponent();
-			LOG("Mesh component from: %s", mesh->GetGO()->name.c_str());
+			//While node has got meshes, create a mesh component with its values stored
+
 			for (uint i = 0; i < node->mNumMeshes; i++)
 			{
+				MeshComponent* mesh = go->CreateMeshComponent();
+				LOG("Mesh component from: %s", mesh->GetGO()->name.c_str());
+
 				uint index_scene = node->mMeshes[i];
 
 				aiMesh* meshes = scene->mMeshes[index_scene];
@@ -238,17 +248,37 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 
 				MaterialComponent* mat_component = go->CreateMaterialComponent();
 				mat_component->path.clear();
+				mat_component->path.append("Game/Assets/Textures/");
+				
+				char* buffer = new char[path.length];
+				strcpy(buffer, path.C_Str());
 
-				if (mat_component->path.length() < path.length)
+				for (uint i = 0; i < path.length; i++)
 				{
-					mat_component->path.reserve(path.length);
+
+					if (buffer[i] == '\\')
+					{
+						for (uint j = 0; j <= i; j++)
+						{
+							buffer[j] = '*';
+							
+						}
+					}
 				}
-				else if (mat_component->path.length() > path.length)
+				buffer[path.length] = '\0';
+
+				while (buffer[0] == '*')
 				{
-					mat_component->path.resize(path.length);
+					for (uint i = 0; i < path.length; i++)
+					{
+						buffer[i] = buffer[i + 1];
+					}
 				}
 				
-				mat_component->path = path.C_Str();
+				mat_component->path.append(buffer);
+
+				delete[] buffer;
+		
 				mat_component->material_id = material;
 
 				LOG("MATERIAL 1 - %s ___ 2 - %s", mat_component->path.c_str(), path.C_Str());
@@ -259,7 +289,7 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 				ilEnable(IL_ORIGIN_SET);
 				ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
 
-				if (!ilLoadImage(path.C_Str()))
+				if (!ilLoadImage(mat_component->path.c_str()))
 				{
 					ilDeleteImages(1, &mat_component->id_image);
 					return false;

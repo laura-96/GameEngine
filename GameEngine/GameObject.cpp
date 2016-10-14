@@ -79,7 +79,12 @@ void GameObject::Update()
 		if (components.size() > 0)
 		{
 			vector<Component*>::iterator m = components.begin();//= FindComponent(Component::ComponentType::Mesh);
-			(*m)->Draw();
+			while(m != components.end())
+			{
+				(*m)->Draw();
+				m++;
+			}
+			
 		}
 
 		if (!children.empty())

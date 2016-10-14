@@ -5,6 +5,7 @@
 #include "ModuleCamera3D.h"
 #include "ModuleSceneIntro.h"
 #include "UIEditor.h"
+#include "GOManager.h"
 
 #include <Windows.h>
 #include "Glew/include/glew.h"
@@ -153,6 +154,8 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 	App->scene_intro->Draw();
 	
+	App->go_manager->DrawGo();
+
 	App->imgui->Draw();
 
 	SDL_GL_SwapWindow(App->window->window);

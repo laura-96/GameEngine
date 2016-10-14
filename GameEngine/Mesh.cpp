@@ -89,21 +89,7 @@ void Mesh::Render() const
 {
 	
 		glPushMatrix();
-		/*
-		GLfloat* M = nullptr;
-		for (int i = 0; i < model->transform.Rows * model->transform.Cols; i++)
-		{
-			for (int r = 0; r < model->transform.Rows; r++)
-			{
-				for (int c = 0; c < model->transform.Rows; c++)
-				{
-					M[i] = model->transform.v[r][c];
-				}
-			}
-		}
-		*/
-		//glMultMatrixf(model->transform.M);
-
+		
 		glColor4f(model->color.r, model->color.g, model->color.b, 1);
 		
 		glEnableClientState(GL_VERTEX_ARRAY);

@@ -26,6 +26,8 @@ public:
 
 	update_status Update(float dt);
 
+	void DrawGo() const;
+
 	bool load_fbx = true;
 	GameObject* root_GO = nullptr;
 };
