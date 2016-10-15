@@ -273,10 +273,10 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 				
 				//So as to get the name of the texture, not relative to Fbx
 				//Will append to mat_component->path, the last part of the texture path, its name
-				char* buffer = new char[path.length];
+				char* buffer = new char[path.length + 1];
 				strcpy(buffer, path.C_Str());
 
-				for (uint i = 0; i < path.length; i++)
+				for (uint i = 0; i < path.length + 1; i++)
 				{
 					if (buffer[i] == '\\')
 					{
