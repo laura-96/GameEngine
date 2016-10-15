@@ -24,13 +24,10 @@ void MeshComponent::Draw()
 {
 	if (enable)
 	{
-
+		
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glBindBuffer(GL_ARRAY_BUFFER, id_vertex);
-
 		glVertexPointer(3, GL_FLOAT, 0, NULL);
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_index);
 
 		if (index_material >= 0)
 		{
@@ -50,10 +47,17 @@ void MeshComponent::Draw()
 			glTexCoordPointer(2, GL_FLOAT, 0, NULL);
 		}
 		
+		if (num_normals > 0)
+		{
+			glEnableClientState(GL_NORMAL_ARRAY);
+			glBindBuffer(GL_ARRAY_BUFFER, id_normals);
+			glNormalPointer(GL_FLOAT, 0, NULL);
+		}
+
 		glPushMatrix();
 
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_index);
 		//glDrawElements(GL_TRIANGLES, num_index, GL_UNSIGNED_BYTE, NULL);
-
 		glDrawArrays(GL_TRIANGLES, indices[0], num_index);
 		
 		glPopMatrix();
@@ -70,6 +74,7 @@ void MeshComponent::Clear()
 	delete[] indices;
 	delete[] vertices;
 	delete[] uvs;
+	delete[] normals;
 
 	delete this;
 }

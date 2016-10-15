@@ -180,6 +180,7 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 				mesh = go->CreateMeshComponent();
 				LOG("Mesh component from: %s", mesh->GetGO()->name.c_str());
 
+
 				uint index_scene = node->mMeshes[i];
 
 				aiMesh* meshes = scene->mMeshes[index_scene];
@@ -189,6 +190,11 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 				mesh->vertices = new float[mesh->num_vertex * 3];
 
 				memcpy(mesh->vertices, meshes->mVertices, sizeof(float) * mesh->num_vertex * 3);
+				
+				glGenBuffers(1, (GLuint*) &(mesh->id_vertex));
+
+				glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_vertex * 3, mesh->vertices, GL_STATIC_DRAW);
 
 				LOG("New mesh with %d vertices", mesh->num_vertex);
 
@@ -209,8 +215,14 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 						memcpy(&mesh->indices[j * 3], meshes->mFaces[j].mIndices, sizeof(uint) * 3);
 						
 					}
+					glGenBuffers(1, (GLuint*) &(mesh->id_index));
+
+					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_index);
+					glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_index, mesh->indices, GL_STATIC_DRAW);
+
 				}
 
+				//Setting mesh uvs (textureCoords)
 				if (meshes->HasTextureCoords(0))
 				{
 					mesh->uvs = new float[mesh->num_vertex * 2];
@@ -234,6 +246,24 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 						//I was getting error trying to do it through memcpy
 						//memcpy(&mesh->uvs[j * 2], buff, sizeof(float) * 2);
 					}
+
+					glGenBuffers(1, (GLuint*) &(mesh->id_uvs));
+
+					glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uvs);
+					glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_vertex * 2, mesh->uvs, GL_STATIC_DRAW);
+
+				}
+
+				if (meshes->HasNormals())
+				{
+					mesh->num_normals = mesh->num_vertex;
+					mesh->normals = new float[mesh->num_vertex * 3];
+					memcpy(mesh->normals, meshes->mNormals, sizeof(float) * mesh->num_vertex * 3);
+					
+					glGenBuffers(1, (GLuint*) &(mesh->id_normals));
+
+					glBindBuffer(GL_ARRAY_BUFFER, mesh->id_normals);
+					glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_vertex * 3, mesh->normals, GL_STATIC_DRAW);
 				}
 				
 				mesh->index_material = meshes->mMaterialIndex;
@@ -241,19 +271,7 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 				material = mesh->index_material;
 			}
 
-			glGenBuffers(1, (GLuint*) &(mesh->id_index));
-			glGenBuffers(1, (GLuint*) &(mesh->id_vertex));
-			glGenBuffers(1, (GLuint*) &(mesh->id_uvs));
-
-			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_vertex * 3, mesh->vertices, GL_STATIC_DRAW);
-
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_index);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_index, mesh->indices, GL_STATIC_DRAW);
-
-			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uvs);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_vertex * 2, mesh->uvs, GL_STATIC_DRAW);
-
+			
 		}
 		
 		if (scene->mNumMaterials > 0 && node->mNumMeshes > 0)
