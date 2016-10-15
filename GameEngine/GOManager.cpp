@@ -63,7 +63,7 @@ update_status GOManager::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
-void GOManager::DrawGo() const
+void GOManager::Draw() const
 {
 	if (load_fbx)
 	{

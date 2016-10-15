@@ -24,6 +24,7 @@ void MeshComponent::Draw()
 {
 	if (enable)
 	{
+
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glBindBuffer(GL_ARRAY_BUFFER, id_vertex);
 
@@ -34,7 +35,7 @@ void MeshComponent::Draw()
 		if (index_material >= 0)
 		{
 			MaterialComponent* mat = (MaterialComponent*)GO_belong->FindComponent(Component::ComponentType::Material);
-
+			
 			if (mat != nullptr && mat->enable)
 			{
 				glBindTexture(GL_TEXTURE_2D, mat->material_id);
@@ -48,12 +49,15 @@ void MeshComponent::Draw()
 			glBindBuffer(GL_ARRAY_BUFFER, id_uvs);
 			glTexCoordPointer(2, GL_FLOAT, 0, NULL);
 		}
-
+		
 		glPushMatrix();
 
-		glDrawElements(GL_TRIANGLES, num_index, GL_UNSIGNED_BYTE, NULL);
+		//glDrawElements(GL_TRIANGLES, num_index, GL_UNSIGNED_BYTE, NULL);
 
+		glDrawArrays(GL_TRIANGLES, indices[0], num_index);
+		
 		glPopMatrix();
+
 
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		glDisableClientState(GL_VERTEX_ARRAY);

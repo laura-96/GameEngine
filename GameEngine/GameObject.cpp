@@ -76,9 +76,10 @@ const char* GameObject::GetName() const
 
 void GameObject::Update()
 {
+
 	if (GO_parent != nullptr)
 	{
-		if (GO_parent->active != active)
+		if (GO_parent->active == false)
 		{
 			active = GO_parent->active;
 		}
