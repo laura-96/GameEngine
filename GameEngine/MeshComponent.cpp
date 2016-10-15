@@ -24,6 +24,7 @@ void MeshComponent::Draw()
 {
 	if (enable)
 	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glBindBuffer(GL_ARRAY_BUFFER, id_vertex);
@@ -52,6 +53,7 @@ void MeshComponent::Draw()
 			glEnableClientState(GL_NORMAL_ARRAY);
 			glBindBuffer(GL_ARRAY_BUFFER, id_normals);
 			glNormalPointer(GL_FLOAT, 0, NULL);
+			glEnable(GL_LIGHTING);
 		}
 
 		glPushMatrix();

@@ -353,7 +353,10 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 		transform->SetScale(scale.x, scale.y, scale.z);
 		transform->SetRotation(rotation.x, rotation.y, rotation.z, rotation.w);
 		transform->SetTranslation(position.x, position.y, position.z);
+		
+		math::float4x4 matrix = math::float4x4::identity;
 
+		transform->GetTransform(matrix);
 	}
 
 	return ret;
