@@ -16,14 +16,11 @@ public:
 	void SetRotation(float x, float y, float z, float w);
 
 	//Not const because I'll modify the value of matrix transform from translation, scale and rotation
-	void GetTransform(math::float4x4 &_transform);
+	void GetTransform(math::float4x4 &_transform) const;
 
 	math::float3 translation;
 	math::float3 scale;
 	math::Quat rotation = math::Quat::identity;
-
-	//Matrix to store translation, scale and rotation
-	math::float4x4 transform;
 
 };
 
