@@ -65,7 +65,7 @@ update_status GOManager::Update(float dt)
 
 void GOManager::Draw() const
 {
-	if (load_fbx)
+	if (load_fbx && root_GO != nullptr)
 	{
 		root_GO->Update();
 	}
@@ -81,13 +81,14 @@ bool GOManager::LoadFBXObjects(const char* FBX)
 		aiNode* node = scene->mRootNode;
 		std::vector<aiNode*> closed_nodes;
 	
-		GameObject* new_go = CreateGo(node->mName.C_Str(), nullptr);
-
-		if (!LoadComponents(scene, node, new_go))
+		root_GO = new GameObject(nullptr, node->mName.C_Str());
+		
+		if (!LoadComponents(scene, node, root_GO))
 		{
 			ret = false;
 		}
-		root_GO = &(*new_go);
+
+		GameObject* new_go = root_GO;
 
 		while (node != nullptr)
 		{
