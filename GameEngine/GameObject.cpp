@@ -5,6 +5,15 @@
 #include "MaterialComponent.h"
 #include "TransformComponent.h"
 
+#include "Globals.h"
+#include "Color.h"
+
+#include <Windows.h>
+#include "Glew/include/glew.h"
+#include "SDL/include/SDL_opengl.h"
+#include <gl/GL.h>
+#include <gl/GLU.h>
+
 using namespace std;
 
 
@@ -87,16 +96,7 @@ void GameObject::Update()
 
 	if (active)
 	{
-		if (components.size() > 0)
-		{
-			vector<Component*>::iterator m = components.begin();//= FindComponent(Component::ComponentType::Mesh);
-			while(m != components.end())
-			{
-				(*m)->Draw();
-				m++;
-			}
-			
-		}
+		Draw();
 
 		if (!children.empty())
 		{
@@ -105,6 +105,71 @@ void GameObject::Update()
 				(*it)->Update();
 			}
 		}
+	}
+}
+
+void GameObject::Draw() const
+{
+	//TODO Everything is rendering here, and it shouldn't
+	MeshComponent* mesh = (MeshComponent*)FindComponent(Component::ComponentType::Mesh);
+
+	if (mesh != nullptr && mesh->enable)
+	{
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex);
+		glVertexPointer(3, GL_FLOAT, 0, NULL);
+
+		TransformComponent* transf = (TransformComponent*)FindComponent(Component::ComponentType::Transform);
+
+		if (transf != nullptr)
+		{
+			glPushMatrix();
+
+			math::float4x4 matrix = math::float4x4::identity;
+
+			transf->GetTransform(matrix);
+
+			glMultMatrixf(matrix.ptr());
+		}
+
+		if (mesh->index_material >= 0)
+		{
+			MaterialComponent* mat = (MaterialComponent*)FindComponent(Component::ComponentType::Material);
+
+			if (mat != nullptr && mat->enable)
+			{
+				glEnableClientState(GL_TEXTURE_2D);
+				glBindTexture(GL_TEXTURE_2D, mat->material_id);
+				glEnable(GL_TEXTURE_2D);
+			}
+		}
+
+		if (mesh->num_uvs > 0)
+		{
+			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uvs);
+			glTexCoordPointer(2, GL_FLOAT, 0, NULL);
+		}
+
+		if (mesh->num_normals > 0)
+		{
+			glEnable(GL_LIGHTING);
+			glEnableClientState(GL_NORMAL_ARRAY);
+			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_normals);
+			glNormalPointer(GL_FLOAT, 0, NULL);
+		}
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_index);
+
+		glDrawElements(GL_TRIANGLES, mesh->num_index, GL_UNSIGNED_BYTE, NULL);
+		//glDrawArrays(GL_TRIANGLES, indices[0], num_index);
+
+		if (transf != nullptr)
+			glPopMatrix();
+
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glDisableClientState(GL_VERTEX_ARRAY);
+		glDisable(GL_TEXTURE_2D);
 	}
 }
 

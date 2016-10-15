@@ -22,6 +22,7 @@ public:
 	const char* GetName() const;
 
 	void Update();
+	void Draw() const;
 	void Clear(); //Cleans up GameObject
 
 public:

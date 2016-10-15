@@ -50,9 +50,9 @@ bool ModuleSceneIntro::Draw()
 {
 	//b->Render();
 	//b->RenderText();
-	PPlane p(0, 1, 0, 0);
-	p.axis = true;
-	p.Render();
+	//PPlane p(0, 0, 0, 0);
+	//p.axis = true;
+	//p.Render();
 
 	//m->Render();
 	

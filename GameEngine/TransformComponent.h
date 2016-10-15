@@ -6,6 +6,8 @@
 #include "MathGeoLib/include/MathBuildConfig.h"
 #include "MathGeoLib/include/MathGeoLib.h"
 
+//Found nice documentation of mathgeolib: http://clb.demon.fi/MathGeoLib/nightly/reference.html
+
 class TransformComponent : public Component
 {
 public:
@@ -17,6 +19,8 @@ public:
 
 	//Not const because I'll modify the value of matrix transform from translation, scale and rotation
 	void GetTransform(math::float4x4 &_transform) const;
+
+private:
 
 	math::float3 translation;
 	math::float3 scale;

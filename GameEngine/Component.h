@@ -26,7 +26,6 @@ public:
 	bool Enable(bool en_dis_able);
 	const GameObject* GetGO() const;
 
-	virtual void Draw() {};
 	virtual void Clear();
 
 public:

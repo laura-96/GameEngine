@@ -195,6 +195,7 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 
 				glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex);
 				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_vertex * 3, mesh->vertices, GL_STATIC_DRAW);
+				glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 				LOG("New mesh with %d vertices", mesh->num_vertex);
 
@@ -212,14 +213,17 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 						}				
 						
 						//Store the three indices of each face to mesh's array of indices
-						memcpy(&mesh->indices[j * 3], meshes->mFaces[j].mIndices, sizeof(uint) * 3);
+						else {
+							memcpy(&mesh->indices[j * 3], meshes->mFaces[j].mIndices, 3 * sizeof(uint));
+						}
+						
 						
 					}
 					glGenBuffers(1, (GLuint*) &(mesh->id_index));
 
 					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_index);
 					glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_index, mesh->indices, GL_STATIC_DRAW);
-
+					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 				}
 
 				//Setting mesh uvs (textureCoords)
@@ -251,7 +255,7 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 
 					glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uvs);
 					glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_vertex * 2, mesh->uvs, GL_STATIC_DRAW);
-
+					glBindBuffer(GL_ARRAY_BUFFER, 0);
 				}
 
 				if (meshes->HasNormals())
@@ -264,6 +268,7 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 
 					glBindBuffer(GL_ARRAY_BUFFER, mesh->id_normals);
 					glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_vertex * 3, mesh->normals, GL_STATIC_DRAW);
+					glBindBuffer(GL_ARRAY_BUFFER, 0);
 				}
 				
 				mesh->index_material = meshes->mMaterialIndex;
@@ -340,6 +345,8 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 			}
 
 		}
+
+		//Loading transformation for each game object
 		aiMatrix4x4 local_trans = node->mTransformation;
 
 		aiVector3D scale;
