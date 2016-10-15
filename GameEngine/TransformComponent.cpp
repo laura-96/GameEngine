@@ -24,6 +24,6 @@ void TransformComponent::SetRotation(float x, float y, float z, float w)
 void TransformComponent::GetTransform(math::float4x4 &_transform) const
 {
 	//FromTRS returns the matrix that corresponds to specific translation (position), rotation and scale
-	_transform = math::float4x4::FromTRS(translation, rotation.ToFloat3x3(), scale);
+	_transform = math::float4x4::FromTRS(translation, rotation.ToFloat4x4(), scale);
 	_transform.Transpose();
 }

@@ -194,6 +194,9 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshComponent.h" />
     <ClInclude Include="ModuleFileSystem.h" />
+    <ClInclude Include="Panel.h" />
+    <ClInclude Include="PanelConfiguration.h" />
+    <ClInclude Include="PanelConsole.h" />
     <ClInclude Include="TransformComponent.h" />
     <ClInclude Include="UIEditor.h" />
     <ClInclude Include="Imgui\imconfig.h" />
@@ -263,6 +266,9 @@
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshComponent.cpp" />
     <ClCompile Include="ModuleFileSystem.cpp" />
+    <ClCompile Include="Panel.cpp" />
+    <ClCompile Include="PanelConfiguration.cpp" />
+    <ClCompile Include="PanelConsole.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
     <ClCompile Include="UIEditor.cpp" />
     <ClCompile Include="Imgui\imgui.cpp" />

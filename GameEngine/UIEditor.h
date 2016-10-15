@@ -2,6 +2,9 @@
 #define __UIEditor_H__
 
 #include "Module.h"
+#include <vector>
+
+class Panel;
 
 class UIEditor : public Module
 {
@@ -21,6 +24,8 @@ public:
 
 	bool capture_mouse = false;
 	bool capture_keyboard = false;
+
+	std::vector<Panel*> panels;
 };
 
 #endif // __UIEditor_H__

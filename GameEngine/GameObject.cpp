@@ -85,6 +85,17 @@ const char* GameObject::GetName() const
 
 void GameObject::Update()
 {
+	glPushMatrix();
+
+	TransformComponent* matrix = (TransformComponent*)FindComponent(Component::ComponentType::Transform);
+
+	if (matrix != nullptr)
+	{
+		math::float4x4 mat = math::float4x4::identity;
+		matrix->GetTransform(mat);
+
+		glMultMatrixf(mat.ptr());
+	}
 
 	if (GO_parent != nullptr)
 	{
@@ -106,11 +117,14 @@ void GameObject::Update()
 			}
 		}
 	}
+	glPopMatrix();
 }
 
 void GameObject::Draw() const
 {
-	//TODO Everything is rendering here, and it shouldn't
+	glPushMatrix();
+	
+
 	MeshComponent* mesh = (MeshComponent*)FindComponent(Component::ComponentType::Mesh);
 
 	if (mesh != nullptr && mesh->enable)

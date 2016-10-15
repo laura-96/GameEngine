@@ -327,6 +327,15 @@
     <ClInclude Include="MathGeoLib\include\Algorithm\Random\LCG.h">
       <Filter>Helpers\MathGeoLib</Filter>
     </ClInclude>
+    <ClInclude Include="Panel.h">
+      <Filter>Modules\UIEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelConfiguration.h">
+      <Filter>Modules\UIEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelConsole.h">
+      <Filter>Modules\UIEditor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -523,6 +532,15 @@
     </ClCompile>
     <ClCompile Include="MaterialComponent.cpp">
       <Filter>Containers\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Panel.cpp">
+      <Filter>Modules\UIEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelConfiguration.cpp">
+      <Filter>Modules\UIEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelConsole.cpp">
+      <Filter>Modules\UIEditor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

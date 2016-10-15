@@ -363,8 +363,9 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 		transform->SetTranslation(position.x, position.y, position.z);
 		
 		math::float4x4 matrix = math::float4x4::identity;
-
+		
 		transform->GetTransform(matrix);
+
 	}
 
 	return ret;
