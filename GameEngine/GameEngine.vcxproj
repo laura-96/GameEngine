@@ -227,6 +227,7 @@
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="glmath.cpp" />
     <ClCompile Include="GOManager.cpp" />
+    <ClCompile Include="MaterialComponent.cpp" />
     <ClCompile Include="MathGeoLib\include\Algorithm\Random\LCG.cpp" />
     <ClCompile Include="MathGeoLib\include\Geometry\AABB.cpp" />
     <ClCompile Include="MathGeoLib\include\Geometry\Capsule.cpp" />

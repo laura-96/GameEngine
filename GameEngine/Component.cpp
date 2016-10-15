@@ -31,3 +31,8 @@ bool Component::Enable(bool en_dis_able)
 
 	return enable;
 }
+
+void Component::Clear()
+{
+	GO_belong = nullptr;
+}

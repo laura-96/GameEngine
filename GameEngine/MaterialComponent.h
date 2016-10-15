@@ -14,7 +14,7 @@ public:
 
 	MaterialComponent(GameObject* _GO_belong) : Component(ComponentType::Material, _GO_belong) {};
 
-	//void Draw();
+	void Clear();
 
 public:
 

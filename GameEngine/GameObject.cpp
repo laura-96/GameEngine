@@ -119,7 +119,7 @@ void GameObject::Clear()
 
 	for (uint i = 0; i < components.size(); i++)
 	{
-		RELEASE(components[i]);
+		components[i]->Clear();
 	}
 	components.clear();
 

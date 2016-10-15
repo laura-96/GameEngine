@@ -521,6 +521,9 @@
     <ClCompile Include="MathGeoLib\include\Algorithm\Random\LCG.cpp">
       <Filter>Helpers\MathGeoLib</Filter>
     </ClCompile>
+    <ClCompile Include="MaterialComponent.cpp">
+      <Filter>Containers\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Config.json">

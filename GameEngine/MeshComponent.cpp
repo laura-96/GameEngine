@@ -61,4 +61,13 @@ void MeshComponent::Draw()
 	}
 }
 
+void MeshComponent::Clear()
+{
+	delete[] indices;
+	delete[] vertices;
+	delete[] uvs;
+
+	delete this;
+}
+
 	

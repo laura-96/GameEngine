@@ -12,6 +12,7 @@ public:
 	MeshComponent(GameObject* _GO_belong): Component(ComponentType::Mesh, _GO_belong){};
 
 	void Draw();
+	void Clear();
 
 public:
 
