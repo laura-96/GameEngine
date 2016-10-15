@@ -2,6 +2,7 @@
 
 #include "GameObject.h"
 #include "MaterialComponent.h"
+#include "TransformComponent.h"
 
 #include "glmath.h"
 
@@ -30,6 +31,19 @@ void MeshComponent::Draw()
 		glBindBuffer(GL_ARRAY_BUFFER, id_vertex);
 		glVertexPointer(3, GL_FLOAT, 0, NULL);
 
+		TransformComponent* transf = (TransformComponent*)GO_belong->FindComponent(Component::ComponentType::Transform);
+
+		if (transf != nullptr)
+		{
+			glPushMatrix();
+
+			math::float4x4 matrix = math::float4x4::identity;
+			
+			transf->GetTransform(matrix);
+			
+			glMultMatrixf(matrix.ptr());
+		}
+
 		if (index_material >= 0)
 		{
 			MaterialComponent* mat = (MaterialComponent*)GO_belong->FindComponent(Component::ComponentType::Material);
@@ -56,7 +70,6 @@ void MeshComponent::Draw()
 			glEnable(GL_LIGHTING);
 		}
 
-		glPushMatrix();
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_index);
 		//glDrawElements(GL_TRIANGLES, num_index, GL_UNSIGNED_BYTE, NULL);
