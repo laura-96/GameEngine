@@ -317,6 +317,8 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 				ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 
 				mat_component->texture[0] = ilutGLBindTexImage();
+				ilDeleteImages(1, &mat_component->id_image);
+				
 			}
 
 		}
