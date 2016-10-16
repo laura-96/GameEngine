@@ -134,7 +134,7 @@ void GameObject::Draw() const
 
 		TransformComponent* transf = (TransformComponent*)FindComponent(Component::ComponentType::Transform);
 
-		if (transf != nullptr)
+		/*if (transf != nullptr)
 		{
 			glPushMatrix();
 
@@ -143,7 +143,7 @@ void GameObject::Draw() const
 			transf->GetTransform(matrix);
 
 			glMultMatrixf(matrix.ptr());
-		}
+		}*/
 
 		if (mesh->index_material >= 0)
 		{
@@ -174,12 +174,12 @@ void GameObject::Draw() const
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_index);
 
-		glDrawElements(GL_TRIANGLES, mesh->num_index, GL_UNSIGNED_BYTE, NULL);
-		//glDrawArrays(GL_TRIANGLES, indices[0], num_index);
-
-		if (transf != nullptr)
-			glPopMatrix();
-
+		glDrawElements(GL_TRIANGLES, mesh->num_index, GL_UNSIGNED_INT, NULL);
+		//glDrawArrays(GL_TRIANGLES, mesh->vertices[0], mesh->num_vertex);
+		
+		//if (transf != nullptr)
+			//glPopMatrix();
+		
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		glDisableClientState(GL_VERTEX_ARRAY);
 		glDisable(GL_TEXTURE_2D);

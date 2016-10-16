@@ -11,8 +11,8 @@
 class GameObject
 {
 public:
-	GameObject(GameObject* _parent, const char* _name);
 
+	GameObject(GameObject* _parent, const char* _name);
 
 	MeshComponent* CreateMeshComponent();
 	MaterialComponent* CreateMaterialComponent();

@@ -246,7 +246,7 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 					aiVector3D* buff = meshes->mTextureCoords[0];
 
 					//Copying x and y coordinates to its suitable uvs
-					for (uint i = 0; i < mesh->num_vertex * 2; i = i + 2)
+					for (uint i = 0; i <( mesh->num_vertex * 2) - 2; i = i + 2)
 					{
 						
 						mesh->uvs[i] = buff->x;
