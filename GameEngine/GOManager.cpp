@@ -389,10 +389,11 @@ void GOManager::ShowToEditor(GameObject* go) const
 	{
 		if (!go->children.empty())
 		{
-			std::list<GameObject*>::iterator it = go->children.begin();
+			for (std::list<GameObject*>::iterator it = go->children.begin(); it != go->children.end(); it++)
+			{
+				ShowToEditor(*it);
+			}
 			
-			ShowToEditor(*it);
-			it++;
 		}
 
 		ImGui::TreePop();
