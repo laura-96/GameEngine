@@ -398,10 +398,33 @@ void GOManager::EditorContent()
 
 	if (selected != nullptr)
 	{
+		ImGui::SetNextWindowPos(ImVec2(SCREEN_WIDTH - 200, 20));
+		ImGui::SetNextWindowSize(ImVec2(150, 300));
+
 		if (ImGui::Begin("Attribute editor"))
 		{
-			ImGui::Checkbox("Disable", &enable);
+			ImGui::Checkbox("Enable", &enable);
 			(*selected).active = enable;
+
+			ImGui::Separator();
+			
+			MeshComponent* mesh = (MeshComponent*)(*selected).FindComponent(Component::ComponentType::Mesh);
+			
+			if (mesh != nullptr)
+			{
+				ImGui::Checkbox("- Mesh", &enable_mesh);
+				mesh->Enable(enable_mesh);
+			}
+
+			MaterialComponent* material = (MaterialComponent*)(*selected).FindComponent(Component::ComponentType::Material);
+			if (material != nullptr)
+			{
+				ImGui::Checkbox("- Material", &enable_material);			
+				material->Enable(enable_material);
+				ImGui::Image((ImTextureID)material->id_image, ImVec2(100, 100));
+			}
+
+			ImGui::Separator();
 		}
 
 		ImGui::End();
@@ -411,7 +434,7 @@ void GOManager::EditorContent()
 
 void GOManager::ShowToEditor(GameObject* go)
 {
-	if (ImGui::TreeNode(go->name.c_str()))
+	if (ImGui::TreeNodeEx(go->name.c_str()))
 	{
 		if (!go->children.empty())
 		{

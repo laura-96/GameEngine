@@ -124,7 +124,6 @@ void GameObject::Draw() const
 {
 	glPushMatrix();
 	
-
 	MeshComponent* mesh = (MeshComponent*)FindComponent(Component::ComponentType::Mesh);
 
 	if (mesh != nullptr && mesh->enable)

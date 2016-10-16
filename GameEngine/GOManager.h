@@ -39,6 +39,8 @@ private:
 	GameObject* selected = nullptr;
 
 	bool enable = true;
+	bool enable_mesh = true;
+	bool enable_material = true;
 };
 
 
