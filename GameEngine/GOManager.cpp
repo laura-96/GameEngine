@@ -9,6 +9,8 @@
 #include "MaterialComponent.h"
 #include "TransformComponent.h"
 
+#include "Imgui/imgui.h"
+
 #include <Windows.h>
 #include "Glew/include/glew.h"
 #include "SDL/include/SDL_opengl.h"
@@ -68,6 +70,7 @@ void GOManager::Draw() const
 	if (load_fbx && root_GO != nullptr)
 	{
 		root_GO->Update();
+		ShowToEditor(root_GO);
 	}
 }
 
@@ -378,6 +381,23 @@ GameObject* GOManager::CreateGo(const char* name, GameObject* parent) const
 	GameObject* ret = new GameObject(parent, name);
 
 	return ret;
+}
+
+void GOManager::ShowToEditor(GameObject* go) const
+{
+	if (ImGui::TreeNode(go->name.c_str()))
+	{
+		if (!go->children.empty())
+		{
+			std::list<GameObject*>::iterator it = go->children.begin();
+			
+			ShowToEditor(*it);
+			it++;
+		}
+
+		ImGui::TreePop();
+	}
+
 }
 
 bool GOManager::CleanUp()

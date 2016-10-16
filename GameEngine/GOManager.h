@@ -24,6 +24,8 @@ public:
 	bool LoadFBXObjects(const char* FBX);
 	bool LoadComponents(const aiScene* scene, const aiNode* node, GameObject* go) const;
 
+	void ShowToEditor(GameObject* go) const;
+
 	update_status Update(float dt);
 
 	void Draw() const;

@@ -9,6 +9,9 @@ public:
 	PanelConsole();
 
 	void Draw();
+	void ConsoleLog(const char* _log);
+
+	ImGuiTextBuffer log_text;
 };
 
 #endif // __PanelConfiguration_H__

@@ -9,6 +9,8 @@ public:
 	PanelConfiguration();
 
 	void Draw();
+private:
+	bool fullscreen = false;
 };
 
 #endif // __PanelConfiguration_H__

@@ -5,6 +5,8 @@
 #include <vector>
 
 class Panel;
+class PanelConfiguration;
+class PanelConsole;
 
 class UIEditor : public Module
 {
@@ -26,6 +28,9 @@ public:
 	bool capture_keyboard = false;
 
 	std::vector<Panel*> panels;
+
+	PanelConfiguration* conf = nullptr;
+	PanelConsole* console = nullptr;
 };
 
 #endif // __UIEditor_H__

@@ -3,8 +3,6 @@
 
 #include "UIEditor.h"
 
-
-
 #include "ModuleWindow.h"
 
 #include "Panel.h"
@@ -40,8 +38,8 @@ bool UIEditor::Init(cJSON* node)
 	ImGuiIO& io = ImGui::GetIO();
 	LOG("Initializing GUI. Imgui library version %s", ImGui::GetVersion());
 
-	PanelConfiguration* conf = new PanelConfiguration();
-	PanelConsole* console = new PanelConsole();
+	conf = new PanelConfiguration();
+	console = new PanelConsole();
 
 	panels.push_back(conf);
 	panels.push_back(console);
@@ -110,6 +108,7 @@ update_status UIEditor::Update(float dt)
 			ImGui::SetNextWindowSize(panels[i]->GetSize());
 
 			panels[i]->Draw();
+
 		}
 
 	}
@@ -136,5 +135,9 @@ bool UIEditor::CleanUp()
 {
 	ImGui_ImplSdlGL3_Shutdown();
 
+	for (uint i = 0; i < panels.size(); i++)
+	{
+		delete panels[i];
+	}
 	return true;
 }
