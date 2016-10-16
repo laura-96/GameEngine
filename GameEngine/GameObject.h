@@ -32,6 +32,8 @@ public:
 
 	GameObject* GO_parent = nullptr;
 	std::string name;
+
+	bool selected = false;
 	bool active = true;
 };
 

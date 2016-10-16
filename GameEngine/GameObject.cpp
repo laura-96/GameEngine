@@ -128,23 +128,16 @@ void GameObject::Draw() const
 
 	if (mesh != nullptr && mesh->enable)
 	{
+
+		if (selected)
+		{
+			glColor4f(1.0f, 1.0f, 0.0f, 1.0f);
+		}
+
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex);
 		glVertexPointer(3, GL_FLOAT, 0, NULL);
-
-		TransformComponent* transf = (TransformComponent*)FindComponent(Component::ComponentType::Transform);
-
-		/*if (transf != nullptr)
-		{
-			glPushMatrix();
-
-			math::float4x4 matrix = math::float4x4::identity;
-
-			transf->GetTransform(matrix);
-
-			glMultMatrixf(matrix.ptr());
-		}*/
-
+		
 		if (mesh->index_material >= 0)
 		{
 			MaterialComponent* mat = (MaterialComponent*)FindComponent(Component::ComponentType::Material);
@@ -179,7 +172,7 @@ void GameObject::Draw() const
 		
 		//if (transf != nullptr)
 			//glPopMatrix();
-		
+
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		glDisableClientState(GL_VERTEX_ARRAY);
 		glDisable(GL_TEXTURE_2D);
