@@ -47,3 +47,8 @@ void TransformComponent::GetTransform(math::float4x4 &_transform) const
 	_transform = math::float4x4::FromTRS(translation, rotation.ToFloat3x3(), scale);
 	_transform.Transpose();
 }
+
+void TransformComponent::Clear()
+{
+	delete this;
+}

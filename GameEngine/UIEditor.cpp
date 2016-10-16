@@ -38,11 +38,11 @@ bool UIEditor::Init(cJSON* node)
 	ImGuiIO& io = ImGui::GetIO();
 	LOG("Initializing GUI. Imgui library version %s", ImGui::GetVersion());
 
-	conf = new PanelConfiguration();
-	console = new PanelConsole();
+//	conf = new PanelConfiguration();
+//	console = new PanelConsole();
 
-	panels.push_back(conf);
-	panels.push_back(console);
+//	panels.push_back(conf);
+//	panels.push_back(console);
 
 	return ret;
 }
@@ -100,7 +100,7 @@ update_status UIEditor::Update(float dt)
 		ImGui::EndMainMenuBar();
 	}
 
-	for (uint i = 0; i < panels.size(); i++)
+	/*for (uint i = 0; i < panels.size(); i++)
 	{
 		if (panels[i]->active)
 		{
@@ -111,7 +111,7 @@ update_status UIEditor::Update(float dt)
 
 		}
 
-	}
+	}*/
 
 	return ret;
 }
@@ -135,9 +135,9 @@ bool UIEditor::CleanUp()
 {
 	ImGui_ImplSdlGL3_Shutdown();
 
-	for (uint i = 0; i < panels.size(); i++)
+	/*for (uint i = 0; i < panels.size(); i++)
 	{
 		delete panels[i];
-	}
+	}*/
 	return true;
 }

@@ -19,7 +19,7 @@ void MeshComponent::Clear()
 	if(uvs != nullptr)
 		delete[] uvs;
 	
-	if(uvs != nullptr)
+	if(normals != nullptr)
 		delete[] normals;
 
 	delete this;

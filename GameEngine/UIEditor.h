@@ -27,10 +27,10 @@ public:
 	bool capture_mouse = false;
 	bool capture_keyboard = false;
 
-	std::vector<Panel*> panels;
+	//std::vector<Panel*> panels;
 
-	PanelConfiguration* conf = nullptr;
-	PanelConsole* console = nullptr;
+	//PanelConfiguration* conf = nullptr;
+	//PanelConsole* console = nullptr;
 };
 
 #endif // __UIEditor_H__

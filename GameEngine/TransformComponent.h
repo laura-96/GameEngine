@@ -26,6 +26,8 @@ public:
 
 	void GetTransform(math::float4x4 &_transform) const;
 
+	void Clear();
+
 private:
 
 	math::float3 translation;
