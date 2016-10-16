@@ -17,7 +17,7 @@ public:
 	math::float3 GetScale() const;
 	math::float3 GetTranslation() const;
 
-	void Rotate(math::float3 rotation_axis, float angle_rad);
+	void Rotate(math::float3 euler_rotation);
 
 	void SetTranslation(float x, float y, float z);
 	void SetScale(float x, float y, float z);

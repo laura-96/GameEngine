@@ -21,9 +21,9 @@ void TransformComponent::SetRotation(float x, float y, float z, float w)
 	rotation.w = w;
 }
 
-void TransformComponent::Rotate(math::float3 rotation_axis, float angle_rad)
+void TransformComponent::Rotate(math::float3 euler_rotation)
 {
-	rotation.SetFromAxisAngle(rotation_axis, angle_rad);
+	rotation = rotation.FromEulerXYX(euler_rotation.x, euler_rotation.y, euler_rotation.z);
 }
 
 float TransformComponent::GetAngleInRad() const

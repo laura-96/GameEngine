@@ -52,8 +52,8 @@ private:
 	math::float3 original_translation;
 	math::float3 _scale;
 	math::float3 original_scale;
-	float angle_rad;
-	float original_angle;
+	math::float3 euler;
+	math::float3 original_euler;
 	
 };
 

@@ -497,6 +497,30 @@ void GOManager::EditorContent()
 
 				ImGui::Text("Rotate");
 
+				if (!rotate)
+				{
+					//Should do from initial rotation, but it was to check if Rotation worked
+					euler = {0, 0, 0};
+				}
+
+				if (ImGui::SliderAngle("x_rotate", &euler.x))
+				{
+					rotate = true;
+					transform->Rotate(euler);
+				}
+
+				if (ImGui::SliderAngle("y_rotate", &euler.y))
+				{
+					rotate = true;
+					transform->Rotate(euler);
+				}
+
+				if (ImGui::SliderAngle("z_rotate", &euler.z))
+				{
+					rotate = true;
+					transform->Rotate(euler);
+				}
+
 				if(ImGui::Button("Reset translation"))
 				{
 					transform->SetTranslation(original_translation.x, original_translation.y, original_translation.z);
@@ -509,6 +533,11 @@ void GOManager::EditorContent()
 					_scale = original_scale;
 				}
 
+				if (ImGui::Button("Reset rotation"))
+				{
+					transform->Rotate(math::float3(0, 0, 0));
+					euler = {0, 0, 0};
+				}
 				
 			}
 		}
