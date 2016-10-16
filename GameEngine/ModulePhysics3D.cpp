@@ -53,7 +53,7 @@ bool ModulePhysics3D::Init(cJSON* node)
 bool ModulePhysics3D::Start()
 {
 	LOG("Creating Physics environment");
-
+/*
 	world = new btDiscreteDynamicsWorld(dispatcher, broad_phase, solver, collision_conf);
 	//world->setDebugDrawer(debug_draw);
 	world->setGravity(GRAVITY);
@@ -69,14 +69,14 @@ bool ModulePhysics3D::Start()
 		//btRigidBody* body = new btRigidBody(rbInfo);
 		//world->addRigidBody(body);
 	}
-
+	*/
 	return true;
 }
 
 // ---------------------------------------------------------
 update_status ModulePhysics3D::PreUpdate(float dt)
 {
-	world->stepSimulation(dt, 15);
+	/*world->stepSimulation(dt, 15);
 
 	int numManifolds = world->getDispatcher()->getNumManifolds();
 	for (int i = 0; i<numManifolds; i++)
@@ -109,7 +109,7 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 				}
 			}
 		}
-	}
+	}*/
 
 	return UPDATE_CONTINUE;
 }
@@ -117,7 +117,7 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 // ---------------------------------------------------------
 update_status ModulePhysics3D::Update(float dt)
 {
-	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	/*if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
 
 	if (debug == true)
@@ -139,7 +139,7 @@ update_status ModulePhysics3D::Update(float dt)
 			float force = 30.0f;
 			AddBody(s)->Push(-(App->camera->Z.x * force), -(App->camera->Z.y * force), -(App->camera->Z.z * force));
 		}
-	}
+	}*/
 
 	return UPDATE_CONTINUE;
 }
@@ -156,7 +156,7 @@ bool ModulePhysics3D::CleanUp()
 	LOG("Destroying 3D Physics simulation");
 
 	// Remove from the world all collision bodies
-	for (int i = world->getNumCollisionObjects() - 1; i >= 0; i--)
+	/*for (int i = world->getNumCollisionObjects() - 1; i >= 0; i--)
 	{
 		btCollisionObject* obj = world->getCollisionObjectArray()[i];
 		world->removeCollisionObject(obj);
@@ -189,9 +189,9 @@ bool ModulePhysics3D::CleanUp()
 		delete (*item);
 
 	vehicles.clear();
-
+	
 	delete vehicle_raycaster;
-	delete world;
+	delete world;*/
 
 	return true;
 }
