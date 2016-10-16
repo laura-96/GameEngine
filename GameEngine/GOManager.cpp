@@ -277,19 +277,20 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 					glBindBuffer(GL_ARRAY_BUFFER, 0);
 				}
 				
-				mesh->index_material = meshes->mMaterialIndex;
-				
-				material = mesh->index_material;
-			}
+				if(scene->mNumMaterials > 0)
+				{
+					mesh->index_material = meshes->mMaterialIndex;
 
-			
+					material = mesh->index_material;
+				}
+				
+			}
+	
 		}
 		
 		if (scene->mNumMaterials > 0 && node->mNumMeshes > 0)
 		{
 			aiMaterial* mat = scene->mMaterials[material];
-			
-			assert(mat);
 
 			if (mat->GetTextureCount(aiTextureType::aiTextureType_DIFFUSE) > 0)
 			{

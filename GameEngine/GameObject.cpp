@@ -152,7 +152,7 @@ void GameObject::Draw() const
 			if (mat != nullptr && mat->enable)
 			{
 				glEnableClientState(GL_TEXTURE_2D);
-				glBindTexture(GL_TEXTURE_2D, mat->material_id);
+				glBindTexture(GL_TEXTURE_2D, mat->texture[0]);
 				glEnable(GL_TEXTURE_2D);
 			}
 		}
