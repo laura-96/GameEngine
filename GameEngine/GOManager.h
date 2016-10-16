@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "GameObject.h"
+#include "MathGeoLib/include/MathGeoLib.h"
 
 #include <vector>
 
@@ -38,9 +39,22 @@ private:
 	GameObject* root_GO = nullptr;
 	GameObject* selected = nullptr;
 
+	//Used for editor content
 	bool enable = true;
 	bool enable_mesh = true;
 	bool enable_material = true;
+
+	//Used for transform content in editor
+	bool scale = false;
+	bool rotate = false;
+	bool translate = false;
+	math::float3 _translation;
+	math::float3 original_translation;
+	math::float3 _scale;
+	math::float3 original_scale;
+	float angle_rad;
+	float original_angle;
+	
 };
 
 

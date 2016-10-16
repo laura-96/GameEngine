@@ -21,6 +21,26 @@ void TransformComponent::SetRotation(float x, float y, float z, float w)
 	rotation.w = w;
 }
 
+void TransformComponent::Rotate(math::float3 rotation_axis, float angle_rad)
+{
+	rotation.SetFromAxisAngle(rotation_axis, angle_rad);
+}
+
+float TransformComponent::GetAngleInRad() const
+{
+	return rotation.Angle();
+}
+
+math::float3 TransformComponent::GetScale() const
+{
+	return math::float3(scale.x, scale.y, scale.z);
+}
+
+math::float3 TransformComponent::GetTranslation() const
+{
+	return math::float3(translation.x, translation.y, translation.z);
+}
+
 void TransformComponent::GetTransform(math::float4x4 &_transform) const
 {
 	//FromTRS returns the matrix that corresponds to specific translation (position), rotation and scale

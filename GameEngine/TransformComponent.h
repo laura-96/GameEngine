@@ -13,11 +13,17 @@ class TransformComponent : public Component
 public:
 	TransformComponent(GameObject* _GO_belong) : Component(ComponentType::Transform, _GO_belong) {};
 
+	float GetAngleInRad() const;
+	math::float3 GetScale() const;
+	math::float3 GetTranslation() const;
+
+	void Rotate(math::float3 rotation_axis, float angle_rad);
+
 	void SetTranslation(float x, float y, float z);
 	void SetScale(float x, float y, float z);
+
 	void SetRotation(float x, float y, float z, float w);
 
-	//Not const because I'll modify the value of matrix transform from translation, scale and rotation
 	void GetTransform(math::float4x4 &_transform) const;
 
 private:

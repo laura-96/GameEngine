@@ -134,6 +134,11 @@ void GameObject::Draw() const
 			glColor4f(1.0f, 1.0f, 0.0f, 1.0f);
 		}
 
+		else
+		{
+			glColor4f(White.r, White.g, White.b, White.a);
+		}
+
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex);
 		glVertexPointer(3, GL_FLOAT, 0, NULL);

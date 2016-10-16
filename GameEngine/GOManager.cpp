@@ -388,6 +388,8 @@ GameObject* GOManager::CreateGo(const char* name, GameObject* parent) const
 
 void GOManager::EditorContent()
 {
+	ImGui::SetNextWindowPos(ImVec2(20, 20));
+
 	if (ImGui::Begin("Game Objects' Hierarchy:"))
 	{
 		if (root_GO)
@@ -399,12 +401,19 @@ void GOManager::EditorContent()
 
 	if (selected != nullptr)
 	{
-		ImGui::SetNextWindowPos(ImVec2(SCREEN_WIDTH - 200, 20));
-		ImGui::SetNextWindowSize(ImVec2(150, 300));
+		(*selected).selected = true;
+
+		ImGui::SetNextWindowPos(ImVec2(SCREEN_WIDTH - 300, 20));
+		ImGui::SetNextWindowSize(ImVec2(250, 300));
 
 		if (ImGui::Begin("Attribute editor"))
 		{
+			ImGui::TextColored(ImVec4(255, 255, 0, 1), (*selected).name.c_str());
+
+			ImGui::Separator();
+
 			ImGui::Checkbox("Enable", &enable);
+			
 			(*selected).active = enable;
 
 			ImGui::Separator();
@@ -422,10 +431,86 @@ void GOManager::EditorContent()
 			{
 				ImGui::Checkbox("- Material", &enable_material);			
 				material->Enable(enable_material);
-				ImGui::Image((ImTextureID)material->id_image, ImVec2(100, 100));
+
+				ImGui::Text("	Texture path:");
+				ImGui::TextColored(ImVec4(0, 0, 255, 1), material->path.c_str());
+
+				ImGui::Image((ImTextureID)material->texture[0], ImVec2(100, 100));
 			}
 
 			ImGui::Separator();
+			TransformComponent* transform = (TransformComponent*)(*selected).FindComponent(Component::ComponentType::Transform);
+
+			if (transform != nullptr)
+			{
+				ImGui::Text("Translate");
+				
+				if (!translate)
+				{
+					original_translation = transform->GetTranslation();
+					_translation = transform->GetTranslation();
+				}
+
+				if (ImGui::SliderFloat("x_translation", &_translation.x, -1000, 1000))
+				{
+					translate = true;
+					transform->SetTranslation(_translation.x, _translation.y, _translation.z);
+				}
+				
+				if (ImGui::SliderFloat("y_translation", &_translation.y, -1000, 1000))
+				{
+					translate = true;
+					transform->SetTranslation(_translation.x, _translation.y, _translation.z);
+				}
+
+				if (ImGui::SliderFloat("z_translation", &_translation.z, -1000, 1000))
+				{
+					translate = true;
+					transform->SetTranslation(_translation.x, _translation.y, _translation.z);
+				}
+
+				ImGui::Text("Scale");
+
+				if (!scale)
+				{
+					original_scale = transform->GetScale();
+					_scale = transform->GetScale();
+				}
+
+				if (ImGui::SliderFloat("x_scale", &_scale.x, -100, 100))
+				{
+					scale = true;
+					transform->SetScale(_scale.x, _scale.y, _scale.z);
+				}
+
+				if (ImGui::SliderFloat("y_scale", &_scale.y, -100, 100))
+				{
+					scale = true;
+					transform->SetScale(_scale.x, _scale.y, _scale.z);
+				}
+
+				if (ImGui::SliderFloat("z_scale", &_scale.z, -100, 100))
+				{
+					scale = true;
+					transform->SetScale(_scale.x, _scale.y, _scale.z);
+				}
+
+				ImGui::Text("Rotate");
+
+				if(ImGui::Button("Reset translation"))
+				{
+					transform->SetTranslation(original_translation.x, original_translation.y, original_translation.z);
+					_translation = original_translation;
+				}
+
+				if (ImGui::Button("Reset scale"))
+				{
+					transform->SetScale(original_scale.x, original_scale.y, original_scale.z);
+					_scale = original_scale;
+				}
+
+				
+			}
 		}
 
 		ImGui::End();
@@ -446,6 +531,10 @@ void GOManager::ShowToEditor(GameObject* go)
 		}
 		if (ImGui::IsItemClicked(0))
 		{
+			if (selected != nullptr)
+			{
+				(*selected).selected = false;
+			}
 			selected = go;
 		}
 
