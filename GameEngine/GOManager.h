@@ -24,14 +24,21 @@ public:
 	bool LoadFBXObjects(const char* FBX);
 	bool LoadComponents(const aiScene* scene, const aiNode* node, GameObject* go) const;
 
-	void ShowToEditor(GameObject* go) const;
+	void EditorContent();
+	void ShowToEditor(GameObject* go);
 
 	update_status Update(float dt);
 
 	void Draw() const;
 
+private:
+
 	bool load_fbx = true;
+
 	GameObject* root_GO = nullptr;
+	GameObject* selected = nullptr;
+
+	bool enable = true;
 };
 
 

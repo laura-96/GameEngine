@@ -60,7 +60,10 @@ bool GOManager::Init(cJSON* node)
 
 update_status GOManager::Update(float dt)
 {
-	
+	if (load_fbx && root_GO != nullptr)
+	{
+		EditorContent();
+	}
 
 	return UPDATE_CONTINUE;
 }
@@ -70,7 +73,6 @@ void GOManager::Draw() const
 	if (load_fbx && root_GO != nullptr)
 	{
 		root_GO->Update();
-		ShowToEditor(root_GO);
 	}
 }
 
@@ -383,7 +385,31 @@ GameObject* GOManager::CreateGo(const char* name, GameObject* parent) const
 	return ret;
 }
 
-void GOManager::ShowToEditor(GameObject* go) const
+void GOManager::EditorContent()
+{
+	if (ImGui::Begin("Game Objects' Hierarchy:"))
+	{
+		if (root_GO)
+		{
+			ShowToEditor(root_GO);
+		}
+	}
+	ImGui::End();
+
+	if (selected != nullptr)
+	{
+		if (ImGui::Begin("Attribute editor"))
+		{
+			ImGui::Checkbox("Disable", &enable);
+			(*selected).active = enable;
+		}
+
+		ImGui::End();
+	}
+
+}
+
+void GOManager::ShowToEditor(GameObject* go)
 {
 	if (ImGui::TreeNode(go->name.c_str()))
 	{
@@ -393,11 +419,15 @@ void GOManager::ShowToEditor(GameObject* go) const
 			{
 				ShowToEditor(*it);
 			}
-			
+		}
+		if (ImGui::IsItemClicked(0))
+		{
+			selected = go;
 		}
 
 		ImGui::TreePop();
 	}
+	
 
 }
 
