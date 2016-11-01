@@ -14,18 +14,34 @@ ModuleFileSystem::ModuleFileSystem(Application* app, const char* name, const cha
 	// need to be created before Awake so other modules can use it
 	char* base_path = SDL_GetBasePath();
 	PHYSFS_init(base_path);
-	SDL_free(base_path);
 	
-	AddPath(".");
 
-	if (game_path != nullptr)
+	if (PHYSFS_setWriteDir(base_path) == NULL)
 	{
-		AddPath(game_path);
+		LOG("Error while setting write directory: %s", PHYSFS_getLastError());
 	}
 
-	if(PHYSFS_setWriteDir == NULL)
-		LOG("Error while setting write directory: %s", PHYSFS_getLastError());
+	else
+	{
+		AddPath(".");
 
+		if (game_path != nullptr)
+		{
+			PHYSFS_mkdir(game_path);
+		}
+
+		if (!IsDirectory("Assets"))
+		{
+			PHYSFS_mkdir("Game/Assets");
+		}
+
+		if (!IsDirectory("Library"))
+		{
+			PHYSFS_mkdir("Game/Library");
+		}
+	}
+
+	SDL_free(base_path);
 }
 
 bool ModuleFileSystem::Init(cJSON* node)
@@ -41,7 +57,7 @@ bool ModuleFileSystem::Init(cJSON* node)
 
 	// Ask SDL for a write dir
 	char* write_path = SDL_GetPrefPath(App->GetOrganization(), App->GetTitle());
-
+	
 	if (PHYSFS_setWriteDir(write_path) == 0)
 	{
 		LOG("File System error while creating write dir: %s", PHYSFS_getLastError());
@@ -51,7 +67,7 @@ bool ModuleFileSystem::Init(cJSON* node)
 	{
 		// We add the writing directory as a reading directory too with speacial mount point
 		LOG("Writing directory is %s", write_path);
-		AddPath(write_path, GetSaveDirectory());
+		//AddPath(write_path, GetSaveDirectory());
 	}
 
 	SDL_free(write_path);

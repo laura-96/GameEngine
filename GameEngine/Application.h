@@ -11,6 +11,7 @@ class ModuleWindow;
 class ModuleInput;
 class ModuleAudio;
 class GOManager;
+class ModuleSceneImporter;
 class ModuleSceneIntro;
 class ModuleRenderer3D;
 class ModuleCamera3D;
@@ -28,6 +29,7 @@ public:
 	ModuleInput* input;
 	ModuleAudio* audio;
 	GOManager* go_manager;
+	ModuleSceneImporter* scene_importer;
 	ModuleSceneIntro* scene_intro;
 	ModuleRenderer3D* renderer3D;
 	ModuleCamera3D* camera;

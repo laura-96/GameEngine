@@ -197,6 +197,7 @@
     <ClInclude Include="Panel.h" />
     <ClInclude Include="PanelConfiguration.h" />
     <ClInclude Include="PanelConsole.h" />
+    <ClInclude Include="ModuleSceneImporter.h" />
     <ClInclude Include="TransformComponent.h" />
     <ClInclude Include="UIEditor.h" />
     <ClInclude Include="Imgui\imconfig.h" />
@@ -266,6 +267,7 @@
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshComponent.cpp" />
     <ClCompile Include="ModuleFileSystem.cpp" />
+    <ClCompile Include="ModuleSceneImporter.cpp" />
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="PanelConfiguration.cpp" />
     <ClCompile Include="PanelConsole.cpp" />

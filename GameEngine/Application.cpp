@@ -7,6 +7,7 @@
 #include "ModuleAudio.h"
 #include "ModuleSceneIntro.h"
 #include "GOManager.h"
+#include "ModuleSceneImporter.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
 #include "ModulePhysics3D.h"
@@ -17,11 +18,12 @@ using namespace std;
 
 Application::Application()
 {
-	file_sys = new ModuleFileSystem(this, "File_System");
+	file_sys = new ModuleFileSystem(this, "File_System", "Game");
 	window = new ModuleWindow(this, "Window");
 	input = new ModuleInput(this, "Input");
 	audio = new ModuleAudio(this, "Audio", true);
 	go_manager = new GOManager(this, "Go_Manager");
+	scene_importer = new ModuleSceneImporter(this, "Scene_Importer");
 	scene_intro = new ModuleSceneIntro(this, "Scene_Intro");
 	renderer3D = new ModuleRenderer3D(this, "Renderer");
 	camera = new ModuleCamera3D(this, "Camera");
@@ -43,7 +45,7 @@ Application::Application()
 	AddModule(physics);
 
 	// Scenes
-	
+	AddModule(scene_importer);
 	AddModule(scene_intro);
 
 	// Renderer

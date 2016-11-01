@@ -7,6 +7,7 @@
 
 #include "Component.h"
 #include "Globals.h"
+#include "MathGeoLib/include/MathGeoLib.h"
 
 class GameObject
 {
@@ -35,6 +36,10 @@ public:
 
 	bool selected = false;
 	bool active = true;
+
+private:
+
+	math::AABB bounding_box;
 };
 
 #endif //__GameObject_H__

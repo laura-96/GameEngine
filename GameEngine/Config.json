@@ -10,6 +10,9 @@
   "Go_Manager": {
     "FBXs": "Game/Assets/Town/Street.FBX"
   },
+  "Scene_Importer": {
+
+  },
   "Scene_Intro": {
     "Mesh":  "Game/Assets/Brute.fbx"
   },

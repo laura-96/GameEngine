@@ -32,9 +32,9 @@ public:
 	bool AddPath(const char* path_or_zip, const char* mount_point = nullptr);
 	bool Exists(const char* file) const;
 	bool IsDirectory(const char* file) const;
-	const char* GetSaveDirectory() const
+	const char* GetWriteDirectory() const
 	{
-		return "save/";
+		return PHYSFS_getWriteDir();
 	}
 	unsigned int Load(const char* file, char** buffer) const;
 	SDL_RWops* Load(const char* file) const;

@@ -336,6 +336,9 @@
     <ClInclude Include="PanelConsole.h">
       <Filter>Modules\UIEditor</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleSceneImporter.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -541,6 +544,9 @@
     </ClCompile>
     <ClCompile Include="PanelConsole.cpp">
       <Filter>Modules\UIEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleSceneImporter.cpp">
+      <Filter>Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
