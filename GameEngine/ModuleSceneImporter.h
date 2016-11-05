@@ -11,6 +11,7 @@
 class Application;
 class aiScene;
 class aiNode;
+class cJSON;
 
 struct GO_reference {
 	
@@ -25,17 +26,17 @@ class ModuleSceneImporter : public Module
 public:
 	ModuleSceneImporter(Application* app, const char* name, bool start_enabled = true);
 
-	bool ImportScene(const char* path, std::string &output, const char* extension);
+	bool ImportScene(const char* path);
 	bool Load(const char* exported_file, GameObject* go);
 	bool Init(cJSON* node);
 	bool Start();
-
+	~ModuleSceneImporter();
 	//bool ImportMesh(aiScene ai_scene, aiNode ai_node) const;
 	//bool ImportMaterial(aiScene ai_scene, aiNode ai_node) const;
 
-
-	GO_reference* go_importer;
-	~ModuleSceneImporter();
+private:
+	cJSON* importer;
+	
 };
 
 #endif

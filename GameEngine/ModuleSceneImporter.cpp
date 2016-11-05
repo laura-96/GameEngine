@@ -4,7 +4,9 @@
 #include "ModuleSceneImporter.h"
 
 #include "ModuleFileSystem.h"
+
 #include "cJSON.h"
+#include "MathGeoLib/include/Algorithm/Random/LCG.h"
 
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
@@ -36,25 +38,25 @@ bool ModuleSceneImporter::Init(cJSON* node)
 	struct aiLogStream stream;
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
 	aiAttachLogStream(&stream);
-	cJSON* importer = cJSON_CreateObject();
-	cJSON_AddItemToObject(node, "Importer", importer);
 
-	cJSON_AddStringToObject(importer, "String", "Hello world");
-
-	char* str = cJSON_GetObjectItem(node, "Importer")->child->valuestring;
-
+	importer = node;
 	return true;
 }
 
 bool ModuleSceneImporter::Start()
 {
-	
+
+
 	return  true;
 }
 
-bool ModuleSceneImporter::ImportScene(const char* file, std::string &output, const char* extension)
+bool ModuleSceneImporter::ImportScene(const char* file)
 {
 	bool ret = true;
+	math::LCG random = math::LCG();
+
+	cJSON* scene_json = cJSON_CreateObject();
+	cJSON_AddItemToObject(importer, file, scene_json);
 
 	const aiScene* scene = aiImportFile(file, aiProcessPreset_TargetRealtime_MaxQuality);
 
@@ -62,25 +64,20 @@ bool ModuleSceneImporter::ImportScene(const char* file, std::string &output, con
 	{
 		aiNode* node = scene->mRootNode;
 		std::vector<aiNode*> closed_nodes;
-		uint size = sizeof(GO_reference);
 
+		cJSON* go = cJSON_CreateObject();
+		cJSON_AddItemToObject(scene_json, "Game Object - Root", go);
 
-		go_importer->name = node->mName.C_Str();
-		go_importer->num_children = node->mNumChildren;
-		
-		size += (sizeof(go_importer->name) + sizeof(uint) + sizeof(std::vector<std::string>));
-
-		for (int i = 0; i < node->mNumChildren; i++)
-		{
-			go_importer->children_names.push_back(node->mChildren[i]->mName.C_Str());
-			size += (sizeof(go_importer->children_names[i]));
-		}
+		cJSON_AddNumberToObject(go, "UID", random.IntFast());
+		cJSON_AddNumberToObject(go, "Parent UID", NULL);
 		
 		/*IMPORT COMPONENTS
 		if (!LoadComponents(scene, node, root_GO))
 		{
 			ret = false;
 		}*/
+		uint parent_uid = cJSON_GetObjectItem(go, "UID")->valueint;
+
 		while (node != nullptr)
 		{
 			if (node->mNumChildren > 0)
@@ -104,16 +101,14 @@ bool ModuleSceneImporter::ImportScene(const char* file, std::string &output, con
 				{
 					node = node->mChildren[i];
 					
-					go_importer->name = node->mName.C_Str();
-					go_importer->num_children = node->mNumChildren;
+					go = cJSON_CreateObject();
+					cJSON_AddItemToObject(scene_json, "Game Object - Root", go);
 
-					size += (sizeof(go_importer->name) + sizeof(uint) + sizeof(std::vector<std::string>));
+					cJSON_AddNumberToObject(go, "UID", random.IntFast());
+					cJSON_AddNumberToObject(go, "Parent UID", parent_uid);
 
-					for (int i = 0; i < node->mNumChildren; i++)
-					{
-						go_importer->children_names.push_back(node->mChildren[i]->mName.C_Str());
-						size += (sizeof(go_importer->children_names[i]));
-					}
+					parent_uid = cJSON_GetObjectItem(go, "UID")->valueint;
+
 					/*/IMPORT COMPONENTS
 					if (!LoadComponents(scene, node, new_go))
 					{
@@ -140,14 +135,14 @@ bool ModuleSceneImporter::ImportScene(const char* file, std::string &output, con
 			{
 				if (closed_nodes[j] == node)
 				{
+					parent_uid = cJSON_GetObjectItem(go, "Parent UID")->valueint;
+					
 					node = node->mParent;
 				}
 			}
 		}
 		closed_nodes.clear();
-		char* data = new char[size];
-		
-		App->file_sys->Save(output.c_str(), data, size);
+	
 	}
 
 	else
