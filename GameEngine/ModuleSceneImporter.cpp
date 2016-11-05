@@ -78,6 +78,9 @@ bool ModuleSceneImporter::ImportScene(const char* file)
 		}*/
 		uint parent_uid = cJSON_GetObjectItem(go, "UID")->valueint;
 
+		std::string output_file;
+		ImportMesh(scene, node, parent_uid, output_file, "lau");
+
 		while (node != nullptr)
 		{
 			if (node->mNumChildren > 0)
@@ -109,11 +112,8 @@ bool ModuleSceneImporter::ImportScene(const char* file)
 
 					parent_uid = cJSON_GetObjectItem(go, "UID")->valueint;
 
-					/*/IMPORT COMPONENTS
-					if (!LoadComponents(scene, node, new_go))
-					{
-						ret = false;
-					}*/
+					std::string output;
+					ImportMesh(scene, node, parent_uid, output, "lau");
 
 					if (node->mParent != nullptr)
 					{
@@ -155,15 +155,15 @@ bool ModuleSceneImporter::ImportScene(const char* file)
 	return ret;
 }
 
-bool ModuleSceneImporter::ImportMesh(cJSON* write_info, aiScene* scene, aiNode* node, uint UID, std::string &output, const char* extension)
+bool ModuleSceneImporter::ImportMesh(const aiScene* scene, aiNode* node, uint UID, std::string &output, const char* extension)
 {
 	bool ret = false;
 
 	if (node != nullptr)
 	{
-		cJSON* component = cJSON_CreateObject();
+		//cJSON* component = cJSON_CreateObject();
 
-		cJSON_AddItemToObject(write_info, "Components", component);
+		//cJSON_AddItemToObject(write_info, "Components", component);
 		ret = true;
 
 		if (node->mNumMeshes > 0)
@@ -251,93 +251,6 @@ bool ModuleSceneImporter::ImportMesh(cJSON* write_info, aiScene* scene, aiNode* 
 			}
 		}
 
-		/*
-		if (scene->mNumMaterials > 0 && node->mNumMeshes > 0)
-		{
-			aiMaterial* mat = scene->mMaterials[material];
-
-			if (mat->GetTextureCount(aiTextureType::aiTextureType_DIFFUSE) > 0)
-			{
-				aiString path;
-				mat->GetTexture(aiTextureType::aiTextureType_DIFFUSE, 0, &path);
-				//TODO: Load texture path in FileSystem
-				MaterialComponent* mat_component = go->CreateMaterialComponent();
-				mat_component->path.clear();
-				mat_component->path.append("Game/Assets/Textures/");
-
-				//So as to get the name of the texture, not relative to Fbx
-				//Will append to mat_component->path, the last part of the texture path, its name
-				char* buffer = new char[path.length + 1];
-				strcpy(buffer, path.C_Str());
-
-				for (uint i = 0; i < path.length + 1; i++)
-				{
-					if (buffer[i] == '\\')
-					{
-						for (uint j = 0; j <= i; j++)
-						{
-							buffer[j] = '*';
-						}
-					}
-				}
-				buffer[path.length] = '\0';
-
-				while (buffer[0] == '*')
-				{
-					for (uint i = 0; i < path.length; i++)
-					{
-						buffer[i] = buffer[i + 1];
-					}
-				}
-
-				mat_component->path.append(buffer);
-
-				delete[] buffer;
-
-				mat_component->material_id = material;
-
-				ilGenImages(1, &mat_component->id_image);
-				ilBindImage(mat_component->id_image);
-
-				ilEnable(IL_ORIGIN_SET);
-				ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
-
-				if (!ilLoadImage(mat_component->path.c_str()))
-				{
-					ilDeleteImages(1, &mat_component->id_image);
-					return false;
-				}
-
-				ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
-
-				mat_component->texture[0] = ilutGLBindTexImage();
-				ilDeleteImages(1, &mat_component->id_image);
-
-			}
-
-		}
-
-		//Loading transformation for each game object
-		aiMatrix4x4 local_trans = node->mTransformation;
-
-		aiVector3D scale;
-		aiQuaterniont<float> rotation;
-		aiVector3D position;
-
-		local_trans.Decompose(scale, rotation, position);
-
-		TransformComponent* transform = go->CreateTransformComponent();
-
-		transform->SetScale(scale.x, scale.y, scale.z);
-		transform->SetRotation(rotation.x, rotation.y, rotation.z, rotation.w);
-		transform->SetTranslation(position.x, position.y, position.z);
-
-		math::float4x4 matrix = math::float4x4::identity;
-
-		transform->GetTransform(matrix);
-
-	}
-	*/
 	return ret;
 	}
 }
