@@ -27,6 +27,7 @@ public:
 	ModuleSceneImporter(Application* app, const char* name, bool start_enabled = true);
 
 	bool ImportScene(const char* path);
+	bool ImportMesh(cJSON* write_info, aiScene* scene, aiNode* node, uint UID, std::string &output, const char* extension);
 	bool Load(const char* exported_file, GameObject* go);
 	bool Init(cJSON* node);
 	bool Start();
