@@ -155,7 +155,7 @@ bool ModuleSceneImporter::ImportScene(const char* file)
 	return ret;
 }
 
-bool ModuleSceneImporter::ImportMesh(const aiScene* scene, aiNode* node, uint UID, std::string &output, const char* extension)
+bool ModuleSceneImporter::ImportMesh(const aiScene* scene, aiNode* node, uint UID, std::string &output, const char* extension) const
 {
 	bool ret = false;
 
@@ -250,7 +250,29 @@ bool ModuleSceneImporter::ImportMesh(const aiScene* scene, aiNode* node, uint UI
 				App->file_sys->Save(result_path, data, size);
 			}
 		}
-
-	return ret;
 	}
+	return ret;
+}
+
+bool ModuleSceneImporter::LoadTransform(aiNode* node, math::float3 &translation, math::Quat &rotation, math::float3 &scale) const
+{
+	aiMatrix4x4 transform = node->mTransformation;
+
+	aiVector3D ai_scale;
+	aiQuaterniont<float> ai_rotation;
+	aiVector3D ai_position;
+
+	transform.Decompose(ai_scale, ai_rotation, ai_position);
+
+	scale.x = ai_scale.x;
+	scale.y = ai_scale.y;
+	scale.z = ai_scale.z;
+
+	rotation.x = ai_rotation.x;
+	rotation.y = ai_rotation.y;
+	rotation.z = ai_rotation.z;
+	rotation.w = ai_rotation.w;
+
+
+	return true;
 }

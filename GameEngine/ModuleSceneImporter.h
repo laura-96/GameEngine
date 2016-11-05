@@ -13,13 +13,6 @@ class aiScene;
 class aiNode;
 class cJSON;
 
-struct GO_reference {
-	
-	std::string name;
-	uint num_children;
-	std::vector<std::string> children_names;
-
-};
 
 class ModuleSceneImporter : public Module
 {
@@ -30,8 +23,8 @@ public:
 	bool Start();
 
 	bool ImportScene(const char* path);
-	bool ImportMesh(const aiScene* scene, aiNode* node, uint UID, std::string &output, const char* extension);
-
+	bool ImportMesh(const aiScene* scene, aiNode* node, uint UID, std::string &output, const char* extension) const;
+	bool LoadTransform(aiNode* node, math::float3 &translation, math::Quat &rotation, math::float3 &scale) const;
 	~ModuleSceneImporter();
 	//bool ImportMesh(aiScene ai_scene, aiNode ai_node) const;
 	//bool ImportMaterial(aiScene ai_scene, aiNode ai_node) const;
