@@ -45,7 +45,7 @@ bool ModuleSceneImporter::Init(cJSON* node)
 
 bool ModuleSceneImporter::Start()
 {
-
+	App->scene_importer->ImportScene("Game/Assets/Town/Street.FBX");
 
 	return  true;
 }
@@ -186,7 +186,7 @@ bool ModuleSceneImporter::ImportMesh(const aiScene* scene, aiNode* node, uint UI
 					num_attributes[3] = meshes->mNumVertices;
 				}
 
-				uint size = (sizeof(num_attributes) + (sizeof(uint) * num_attributes[0]) + (sizeof(float) * num_attributes[1]) + (sizeof(float) * num_attributes[2]) + (sizeof(float) * num_attributes[3]));
+				uint size = (sizeof(num_attributes) + (sizeof(uint) * num_attributes[0]) + (sizeof(float) * num_attributes[1] * 3) + (sizeof(float) * num_attributes[2] * 3) + (sizeof(float) * num_attributes[3] * 2));
 				
 				char* data = new char[size];
 				//Cursor is used to store each attribute in the correct place of the buffer "data"
@@ -238,12 +238,12 @@ bool ModuleSceneImporter::ImportMesh(const aiScene* scene, aiNode* node, uint UI
 
 						buff++;
 					}
-					memcpy(cursor, uvs, num_attributes[3] * 2);
+					memcpy(cursor, uvs, sizeof(float) * num_attributes[3] * 2);
 				}
 
 				char result_path[250];
 
-				sprintf(result_path, "%s_%u.%s", meshes->mName.C_Str(), UID, extension);
+				sprintf(result_path, "%s_%u.%s", node->mName.C_Str(), UID, extension);
 
 				output = result_path;
 

@@ -24,6 +24,7 @@ public:
 
 	bool ImportScene(const char* path);
 	bool ImportMesh(const aiScene* scene, aiNode* node, uint UID, std::string &output, const char* extension) const;
+	bool ImportMaterial(const aiScene* scene, aiNode* node, uint UID);
 	bool LoadTransform(aiNode* node, math::float3 &translation, math::Quat &rotation, math::float3 &scale) const;
 	~ModuleSceneImporter();
 	//bool ImportMesh(aiScene ai_scene, aiNode ai_node) const;

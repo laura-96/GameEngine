@@ -8,6 +8,7 @@
 #include "MeshComponent.h"
 #include "MaterialComponent.h"
 #include "TransformComponent.h"
+#include "ModuleSceneImporter.h"
 
 #include "Imgui/imgui.h"
 
@@ -51,6 +52,7 @@ bool GOManager::Init(cJSON* node)
 		stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
 		aiAttachLogStream(&stream);
 
+		//App->scene_importer->ImportScene("Game/Assets/Town/Street.FBX");
 		LoadFBXObjects("Game/Assets/Town/Street.FBX");
 		//LoadFBXObjects("Game/Assets/Brute.fbx");
 	}

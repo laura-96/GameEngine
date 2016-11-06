@@ -45,13 +45,13 @@ Application::Application()
 	AddModule(physics);
 
 	// Scenes
-	AddModule(scene_importer);
 	AddModule(scene_intro);
 
 	// Renderer
 	AddModule(renderer3D);
 
 	AddModule(go_manager);
+	AddModule(scene_importer);
 
 	// GUI
 	AddModule(imgui);
