@@ -198,6 +198,7 @@
     <ClInclude Include="PanelConfiguration.h" />
     <ClInclude Include="PanelConsole.h" />
     <ClInclude Include="ModuleSceneImporter.h" />
+    <ClInclude Include="QuadTree.h" />
     <ClInclude Include="TransformComponent.h" />
     <ClInclude Include="UIEditor.h" />
     <ClInclude Include="Imgui\imconfig.h" />
@@ -271,6 +272,7 @@
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="PanelConfiguration.cpp" />
     <ClCompile Include="PanelConsole.cpp" />
+    <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
     <ClCompile Include="UIEditor.cpp" />
     <ClCompile Include="Imgui\imgui.cpp" />

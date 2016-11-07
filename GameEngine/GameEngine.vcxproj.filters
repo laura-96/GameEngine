@@ -37,6 +37,9 @@
     <Filter Include="Helpers\MathGeoLib">
       <UniqueIdentifier>{1447aa6e-4db3-472a-981e-94c1b55298ec}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Containers\QuadTree">
+      <UniqueIdentifier>{5a0ce782-e195-40a6-b520-bf82cc85ba55}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -339,6 +342,9 @@
     <ClInclude Include="ModuleSceneImporter.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="QuadTree.h">
+      <Filter>Containers\QuadTree</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -547,6 +553,9 @@
     </ClCompile>
     <ClCompile Include="ModuleSceneImporter.cpp">
       <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="QuadTree.cpp">
+      <Filter>Containers\QuadTree</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
