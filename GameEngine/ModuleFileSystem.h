@@ -36,6 +36,7 @@ public:
 	{
 		return PHYSFS_getWriteDir();
 	}
+	
 	unsigned int Load(const char* file, char** buffer) const;
 	SDL_RWops* Load(const char* file) const;
 

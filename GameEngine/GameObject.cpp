@@ -84,6 +84,13 @@ const char* GameObject::GetName() const
 	return (name.c_str());
 }
 
+const math::float3 GameObject::GetPosition() const
+{
+
+	TransformComponent* transform = (TransformComponent*)FindComponent(Component::ComponentType::Transform);
+	return transform->GetTranslation();
+}
+
 void GameObject::Update()
 {
 	glPushMatrix();

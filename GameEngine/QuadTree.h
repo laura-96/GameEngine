@@ -5,8 +5,10 @@
 #include "MathGeoLib/include/MathGeoLib.h"
 
 #include "Globals.h"
+#include "GameObject.h"
 
 #define QUADTREE_MAX_ITEMS 2
+
 
 class QuadTreeNode {
 
@@ -18,10 +20,12 @@ public:
 	QuadTreeNode* children[4];
 
 public:
-	QuadTreeNode(AABB limits)
+	QuadTreeNode(math::AABB limits)
 	{
-		box(limits);
-
+		box.Enclose(limits);
+	
+		box.Distance((*objects.begin())->GetPosition());
+		
 	}
 
 

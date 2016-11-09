@@ -21,7 +21,8 @@ public:
 
 	Component* FindComponent(const Component::ComponentType _type) const;
 	const char* GetName() const;
-
+	const math::float3 GetPosition() const;
+	
 	void Update();
 	void Draw() const;
 	void Clear(); //Cleans up GameObject

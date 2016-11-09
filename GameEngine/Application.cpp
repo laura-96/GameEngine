@@ -76,7 +76,7 @@ bool Application::Init()
 	bool ret = true;
 
 	char* buff = nullptr;
-	file_sys->Load("Config.json", &buff);
+	uint size = file_sys->Load("Config.json", &buff);
 
 	if (buff != nullptr)
 	{
@@ -86,6 +86,7 @@ bool Application::Init()
 		title = cJSON_GetObjectItem(App, "Title")->valuestring;
 		organization = App->child->next->valuestring;
 		
+
 	}
 
 
@@ -111,6 +112,8 @@ bool Application::Init()
 	}
 
 	ms_timer.Start();
+
+	file_sys->Save("Config.json", buff, size);
 
 	return ret;
 }
