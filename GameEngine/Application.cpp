@@ -86,7 +86,6 @@ bool Application::Init()
 		title = cJSON_GetObjectItem(App, "Title")->valuestring;
 		organization = App->child->next->valuestring;
 		
-
 	}
 
 
@@ -113,7 +112,7 @@ bool Application::Init()
 
 	ms_timer.Start();
 
-	file_sys->Save("Config.json", buff, size);
+	//file_sys->Save("Config.json", buff, size);
 
 	return ret;
 }
@@ -163,9 +162,33 @@ update_status Application::Update()
 	return ret;
 }
 
+bool Application::Save()
+{
+	bool ret = true;
+
+	list<Module*>::reverse_iterator it = list_modules.rbegin();
+
+	while (it != list_modules.rend())
+	{
+		//ret = (*it)->Save();
+		it++;
+	}
+
+	char* save = cJSON_Print(root);
+	uint size = strlen(save);
+
+	cJSON_Parse(save);
+
+	file_sys->Save("Config.json", save, size);
+
+	return ret;
+}
+
 bool Application::CleanUp()
 {
 	bool ret = true;
+
+	Save();
 
 	list<Module*>::reverse_iterator it = list_modules.rbegin();
 

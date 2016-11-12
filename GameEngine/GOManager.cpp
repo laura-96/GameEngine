@@ -51,10 +51,10 @@ bool GOManager::Init(cJSON* node)
 		struct aiLogStream stream;
 		stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
 		aiAttachLogStream(&stream);
-
+		char* scene_import = cJSON_GetObjectItem(node, "FBXs")->valuestring;
 		//App->scene_importer->ImportScene("Game/Assets/Town/Street.FBX");
-		LoadFBXObjects("Game/Assets/Town/Street.FBX");
-		//LoadFBXObjects("Game/Assets/Brute.fbx");
+		//LoadFBXObjects(cJSON_GetObjectItem(node, "Go_Manager")->child->valuestring);
+		LoadFBXObjects(scene_import);
 	}
 
 	return true;
