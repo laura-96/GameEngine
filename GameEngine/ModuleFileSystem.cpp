@@ -149,7 +149,7 @@ SDL_RWops* ModuleFileSystem::Load(const char* file) const
 		return NULL;
 }
 
-unsigned int ModuleFileSystem::Save(const char* file, const char* buffer, unsigned int size) const
+unsigned int ModuleFileSystem::Save(const char* file, const void* buffer, unsigned int size) const
 {
 	unsigned int ret = 0;
 

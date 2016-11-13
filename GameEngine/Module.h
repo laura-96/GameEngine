@@ -47,6 +47,11 @@ public:
 		return UPDATE_CONTINUE;
 	}
 
+	virtual bool Save(cJSON* node)
+	{
+		return true;
+	}
+
 	virtual bool CleanUp()
 	{
 		return true;

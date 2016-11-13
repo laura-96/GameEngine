@@ -39,7 +39,6 @@ bool ModuleSceneImporter::Init(cJSON* node)
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
 	aiAttachLogStream(&stream);
 
-	importer = node;
 	return true;
 }
 
@@ -50,112 +49,151 @@ bool ModuleSceneImporter::Start()
 	return  true;
 }
 
+bool ModuleSceneImporter::Save(cJSON* node)
+{
+	cJSON* strings = cJSON_GetObjectItem(node, "Imported scene");
+
+	for (uint sc = 0; sc < scenes_imported.size(); sc++)
+	{
+
+		if (!strings)
+		{
+			cJSON_AddStringToObject(node, "Imported scene", scenes_imported[sc].c_str());
+		}
+
+		else
+		{
+			while (strcmp(strings->string, "Imported scene") == 0)
+			{
+				if (strcmp(strings->valuestring, scenes_imported[sc].c_str()) == 1)
+				{
+					cJSON_AddStringToObject(node, "Imported scene", scenes_imported[sc].c_str());
+				}
+			}
+		}
+		
+	}
+
+	//char* imp = cJSON_Print(importer);
+	//cJSON_Parse(imp);
+
+	return true;
+}
+
 bool ModuleSceneImporter::ImportScene(const char* file)
 {
+
 	bool ret = true;
-	math::LCG random = math::LCG();
 
-	cJSON* scene_json = cJSON_CreateObject();
-	cJSON_AddItemToObject(importer, file, scene_json);
-
-	const aiScene* scene = aiImportFile(file, aiProcessPreset_TargetRealtime_MaxQuality);
-
-	if (scene != nullptr && scene->mRootNode != nullptr && scene->HasMeshes())
+	for (uint sc = 0; sc < scenes_imported.size(); sc++)
 	{
-		aiNode* node = scene->mRootNode;
-		std::vector<aiNode*> closed_nodes;
-
-		cJSON* go = cJSON_CreateObject();
-		cJSON_AddItemToObject(scene_json, "Game Object - Root", go);
-
-		cJSON_AddNumberToObject(go, "UID", random.IntFast());
-		cJSON_AddNumberToObject(go, "Parent UID", NULL);
-		
-		/*IMPORT COMPONENTS
-		if (!LoadComponents(scene, node, root_GO))
+		if (strcmp(scenes_imported[sc].c_str(), file) == 0)
 		{
 			ret = false;
-		}*/
-		uint parent_uid = cJSON_GetObjectItem(go, "UID")->valueint;
+		}
+	}
 
-		std::string output_file;
-		ImportMesh(scene, node, parent_uid, output_file, "lau");
+	if (ret)
+	{
+		std::string scene_name = file;
 
-		while (node != nullptr)
+		scenes_imported.push_back(scene_name);
+		math::LCG random = math::LCG();
+
+		const aiScene* scene = aiImportFile(file, aiProcessPreset_TargetRealtime_MaxQuality);
+
+		if (scene != nullptr && scene->mRootNode != nullptr && scene->HasMeshes())
 		{
-			if (node->mNumChildren > 0)
+			aiNode* node = scene->mRootNode;
+			std::vector<aiNode*> closed_nodes;
+
+			std::string output;
+			std::string output_image;
+
+			ImportMesh(scene, node, output, "lau");
+			ImportMaterial(scene, node, output_image);
+
+			uint uid = random.IntFast();
+			ObjectImport* root_obj = new ObjectImport(uid, NULL, output, output_image);
+
+			LoadTransform(node, root_obj->translation, root_obj->rotation, root_obj->scale);
+			obj_import.push_back(root_obj);
+
+			while (node != nullptr)
 			{
-				uint i = 0;
-
-				for (uint j = 0; j < closed_nodes.size(); j++)
+				if (node->mNumChildren > 0)
 				{
-					if (closed_nodes[j] == node->mChildren[i])
+					uint i = 0;
+
+					for (uint j = 0; j < closed_nodes.size(); j++)
 					{
-						i++;
+						if (closed_nodes[j] == node->mChildren[i])
+						{
+							i++;
+						}
 					}
-				}
 
-				if (i >= node->mNumChildren)
-				{
-					closed_nodes.push_back(node);
+					if (i >= node->mNumChildren)
+					{
+						closed_nodes.push_back(node);
+					}
+
+					else
+					{
+						node = node->mChildren[i];
+
+						std::string output;
+						std::string output_image;
+
+						ImportMesh(scene, node, output, "lau");
+						ImportMaterial(scene, node, output_image);
+
+						uint uid = random.IntFast();
+						ObjectImport* root_obj = new ObjectImport(uid, NULL, output, output_image);
+
+						LoadTransform(node, root_obj->translation, root_obj->rotation, root_obj->scale);
+						obj_import.push_back(root_obj);
+
+						if (node->mParent != nullptr)
+						{
+							LOG("Parent: %s ---- Node name: %s", node->mParent->mName.C_Str(), node->mName.C_Str());
+						}
+						else
+						{
+							LOG("Node name: %s", node->mName.C_Str());
+						}
+					}
 				}
 
 				else
 				{
-					node = node->mChildren[i];
-					
-					go = cJSON_CreateObject();
-					cJSON_AddItemToObject(scene_json, "Game Object - Root", go);
-
-					cJSON_AddNumberToObject(go, "UID", random.IntFast());
-					cJSON_AddNumberToObject(go, "Parent UID", parent_uid);
-
-					parent_uid = cJSON_GetObjectItem(go, "UID")->valueint;
-
-					std::string output;
-					ImportMesh(scene, node, parent_uid, output, "lau");
-
-					if (node->mParent != nullptr)
-					{
-						LOG("Parent: %s ---- Node name: %s", node->mParent->mName.C_Str(), node->mName.C_Str());
-					}
-					else
-					{
-						LOG("Node name: %s", node->mName.C_Str());
-					}
+					closed_nodes.push_back(node);
 				}
-			}
 
-			else
-			{
-				closed_nodes.push_back(node);
-			}
-
-			for (uint j = 0; j < closed_nodes.size(); j++)
-			{
-				if (closed_nodes[j] == node)
+				for (uint j = 0; j < closed_nodes.size(); j++)
 				{
-					parent_uid = cJSON_GetObjectItem(go, "Parent UID")->valueint;
-					
-					node = node->mParent;
+					if (closed_nodes[j] == node)
+					{
+						node = node->mParent;
+					}
 				}
 			}
+			closed_nodes.clear();
 		}
-		closed_nodes.clear();
-	}
 
-	else
-	{
-		ret = false;
-		LOG("Error loading scene: %s", file);
-	}
+		else
+		{
+			ret = false;
+			LOG("Error loading scene: %s", file);
+		}
 
-	aiReleaseImport(scene);
+		aiReleaseImport(scene);
+	}
 
 	return ret;
 }
 
-bool ModuleSceneImporter::ImportMesh(const aiScene* scene, aiNode* node, uint UID, std::string &output, const char* extension) const
+bool ModuleSceneImporter::ImportMesh(const aiScene* scene, aiNode* node, std::string &output, const char* extension) const
 {
 	bool ret = false;
 
@@ -243,7 +281,7 @@ bool ModuleSceneImporter::ImportMesh(const aiScene* scene, aiNode* node, uint UI
 
 				char result_path[250];
 
-				sprintf(result_path, "%s_%u.%s", node->mName.C_Str(), UID, extension);
+				sprintf(result_path, "%s.%s", node->mName.C_Str(), extension);
 
 				output = result_path;
 
@@ -251,6 +289,107 @@ bool ModuleSceneImporter::ImportMesh(const aiScene* scene, aiNode* node, uint UI
 			}
 		}
 	}
+	return ret;
+}
+
+bool ModuleSceneImporter::ImportMaterial(const aiScene* scene, aiNode* node, std::string &output) const
+{
+
+	bool ret = false;
+	char* buff = nullptr;
+
+	if (scene->mNumMaterials > 0 && node->mNumMeshes > 0)
+	{		
+		std::string image_path;
+
+		image_path.clear();
+		image_path.append("Game/Assets/Textures/");
+
+		uint material = scene->mMeshes[node->mMeshes[0]]->mMaterialIndex;
+
+		aiMaterial* mat = scene->mMaterials[material];
+
+		if (mat->GetTextureCount(aiTextureType::aiTextureType_DIFFUSE) > 0)
+		{
+			aiString path;
+			mat->GetTexture(aiTextureType::aiTextureType_DIFFUSE, 0, &path);
+			
+			//So as to get the name of the texture, not relative to Fbx
+			//Will append to mat_component->path, the last part of the texture path, its name
+			char* buffer = new char[path.length + 1];
+			strcpy(buffer, path.C_Str());
+
+			for (uint i = 0; i < path.length + 1; i++)
+			{
+				if (buffer[i] == '\\')
+				{
+					for (uint j = 0; j <= i; j++)
+					{
+						buffer[j] = '*';
+					}
+				}
+			}
+			buffer[path.length] = '\0';
+
+			while (buffer[0] == '*')
+			{
+				for (uint i = 0; i < path.length; i++)
+				{
+					buffer[i] = buffer[i + 1];
+				}
+			}
+
+			image_path.append(buffer);
+
+			uint size = App->file_sys->Load(image_path.c_str(), &buff);
+
+			ILuint id_image;
+
+			ilGenImages(1, &id_image);
+			ilBindImage(id_image);
+
+			if (ilLoadL(IL_TYPE_UNKNOWN, buff, size))
+			{
+				ilEnable(IL_FILE_OVERWRITE);
+
+				ILuint size;
+				ILubyte* data;
+
+				ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);
+				size = ilSaveL(IL_DDS, NULL, 0);
+
+				if (size > 0)
+				{
+					data = new ILubyte[size];
+					if (ilSaveL(IL_DDS, data, size) > 0)
+					{
+						char result_path[250];
+
+						sprintf(result_path, "%s.dds", data);
+
+						output = result_path;
+
+						char* image_name = new char[strlen(buffer) - 3];
+						memcpy(image_name, buffer, strlen(buffer) - 4);
+						
+						image_name[strlen(buffer) - 4] = '\0';
+
+						sprintf_s(result_path, 250, "%s.dds", image_name);
+
+						ret = App->file_sys->Save(result_path, data, size);
+					}
+					RELEASE(data);
+				}
+				ilDeleteImages(1, &id_image);
+			}
+
+
+			delete[] buffer;
+			
+		}
+
+	}
+		
 	return ret;
 }
 

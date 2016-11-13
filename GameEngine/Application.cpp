@@ -112,6 +112,9 @@ bool Application::Init()
 
 	ms_timer.Start();
 
+	char* buffer = cJSON_Print(root);
+	root = cJSON_Parse(buffer);
+
 	//file_sys->Save("Config.json", buff, size);
 
 	return ret;
@@ -166,18 +169,20 @@ bool Application::Save()
 {
 	bool ret = true;
 
+	char* save = cJSON_Print(root);
+	uint size = strlen(save);
+
 	list<Module*>::reverse_iterator it = list_modules.rbegin();
 
 	while (it != list_modules.rend())
 	{
-		//ret = (*it)->Save();
+		ret = (*it)->Save(cJSON_GetObjectItem(root, (*it)->GetName()));
+		save = cJSON_Print(root);
+		size = strlen(save);
+
+		cJSON_Parse(save);
 		it++;
 	}
-
-	char* save = cJSON_Print(root);
-	uint size = strlen(save);
-
-	cJSON_Parse(save);
 
 	file_sys->Save("Config.json", save, size);
 
