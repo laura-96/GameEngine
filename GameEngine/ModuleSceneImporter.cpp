@@ -285,7 +285,7 @@ bool ModuleSceneImporter::ImportMesh(const aiScene* scene, aiNode* node, std::st
 
 				output = result_path;
 
-				App->file_sys->Save(result_path, data, size);
+				App->file_sys->SaveInDir("Game/Library/Mesh",result_path, data, size);
 			}
 		}
 	}
@@ -376,7 +376,7 @@ bool ModuleSceneImporter::ImportMaterial(const aiScene* scene, aiNode* node, std
 
 						sprintf_s(result_path, 250, "%s.dds", image_name);
 
-						ret = App->file_sys->Save(result_path, data, size);
+						ret = App->file_sys->SaveInDir("Game/Library/Material", result_path, data, size);
 					}
 					RELEASE(data);
 				}

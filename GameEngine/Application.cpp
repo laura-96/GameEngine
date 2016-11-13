@@ -184,7 +184,7 @@ bool Application::Save()
 		it++;
 	}
 
-	file_sys->Save("Config.json", save, size);
+	file_sys->SaveInDir("Game/Settings","Config.json", save, size);
 
 	return ret;
 }

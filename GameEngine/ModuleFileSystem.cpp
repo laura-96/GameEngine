@@ -149,6 +149,67 @@ SDL_RWops* ModuleFileSystem::Load(const char* file) const
 		return NULL;
 }
 
+unsigned int ModuleFileSystem::SaveInDir(const char* directory, const char* file, const void* buffer, unsigned int size)
+{
+	uint ret = NULL;
+
+	char* base_path = SDL_GetBasePath();
+	PHYSFS_init(base_path);
+
+	if (PHYSFS_setWriteDir(base_path) == NULL)
+	{
+		LOG("Error while setting write directory: %s", PHYSFS_getLastError());
+	}
+
+	else
+	{
+		AddPath(".");
+	}
+
+
+	if (!IsDirectory(directory))
+	{
+		PHYSFS_mkdir(directory);
+	}
+
+	std::string write_dir;
+	write_dir.append(base_path);
+	write_dir.append("/");
+	write_dir.append(directory);
+
+	if (PHYSFS_setWriteDir(write_dir.c_str()) == NULL)
+	{
+		LOG("Error while setting write directory: %s", PHYSFS_getLastError());
+	}
+
+	else
+	{
+		AddPath(".");
+	}
+
+	SDL_free(base_path);
+	SDL_free((void*)write_dir.c_str());
+
+	ret = Save(file, buffer, size);
+
+	const char* save_path = SDL_GetPrefPath(App->GetOrganization(), App->GetTitle());
+
+	if (PHYSFS_setWriteDir(save_path) == 0)
+	{
+		LOG("File System error while creating write dir: %s", PHYSFS_getLastError());
+	}
+
+	else
+	{
+		// We add the writing directory as a reading directory too with speacial mount point
+		LOG("Writing directory is %s", save_path);
+	}
+
+	SDL_free((void*)save_path);
+
+	return ret;
+}
+
 unsigned int ModuleFileSystem::Save(const char* file, const void* buffer, unsigned int size) const
 {
 	unsigned int ret = 0;

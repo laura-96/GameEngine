@@ -40,6 +40,7 @@ public:
 	unsigned int Load(const char* file, char** buffer) const;
 	SDL_RWops* Load(const char* file) const;
 
+	unsigned int SaveInDir(const char* directory, const char* file, const void* buffer, unsigned int size);
 	unsigned int Save(const char* file, const void* buffer, unsigned int size) const;
 	//aiFileIO* GetAiFileIO() const;
 
