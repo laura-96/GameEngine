@@ -13,6 +13,7 @@ class ModuleAudio;
 class GOManager;
 class ModuleSceneImporter;
 class ModuleSceneIntro;
+class ModuleResourceManager;
 class ModuleRenderer3D;
 class ModuleCamera3D;
 class ModulePhysics3D;
@@ -30,6 +31,7 @@ public:
 	ModuleAudio* audio;
 	GOManager* go_manager;
 	ModuleSceneImporter* scene_importer;
+	ModuleResourceManager* resource_manager;
 	ModuleSceneIntro* scene_intro;
 	ModuleRenderer3D* renderer3D;
 	ModuleCamera3D* camera;

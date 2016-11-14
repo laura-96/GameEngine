@@ -100,6 +100,11 @@ bool ModuleFileSystem::IsDirectory(const char* file) const
 	return PHYSFS_isDirectory(file) != 0;
 }
 
+uint ModuleFileSystem::GetLastModification(const char* file) const
+{
+	return PHYSFS_getLastModTime(file);
+}
+
 unsigned int ModuleFileSystem::Load(const char* file, char** buffer) const
 {
 	unsigned int ret = 0;

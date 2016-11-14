@@ -40,6 +40,9 @@
     <Filter Include="Containers\QuadTree">
       <UniqueIdentifier>{5a0ce782-e195-40a6-b520-bf82cc85ba55}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Modules\Game Objects and Resources Management">
+      <UniqueIdentifier>{61b35510-ef5e-4df7-bba7-91c71f98912e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -128,9 +131,6 @@
     </ClInclude>
     <ClInclude Include="Component.h">
       <Filter>Containers\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="GOManager.h">
-      <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="MeshComponent.h">
       <Filter>Containers\Component</Filter>
@@ -339,11 +339,17 @@
     <ClInclude Include="PanelConsole.h">
       <Filter>Modules\UIEditor</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleSceneImporter.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
     <ClInclude Include="QuadTree.h">
       <Filter>Containers\QuadTree</Filter>
+    </ClInclude>
+    <ClInclude Include="GOManager.h">
+      <Filter>Modules\Game Objects and Resources Management</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleSceneImporter.h">
+      <Filter>Modules\Game Objects and Resources Management</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleResourceManager.h">
+      <Filter>Modules\Game Objects and Resources Management</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -424,9 +430,6 @@
     </ClCompile>
     <ClCompile Include="Component.cpp">
       <Filter>Containers\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="GOManager.cpp">
-      <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="MeshComponent.cpp">
       <Filter>Containers\Component</Filter>
@@ -551,11 +554,17 @@
     <ClCompile Include="PanelConsole.cpp">
       <Filter>Modules\UIEditor</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleSceneImporter.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="QuadTree.cpp">
       <Filter>Containers\QuadTree</Filter>
+    </ClCompile>
+    <ClCompile Include="GOManager.cpp">
+      <Filter>Modules\Game Objects and Resources Management</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleSceneImporter.cpp">
+      <Filter>Modules\Game Objects and Resources Management</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleResourceManager.cpp">
+      <Filter>Modules\Game Objects and Resources Management</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
