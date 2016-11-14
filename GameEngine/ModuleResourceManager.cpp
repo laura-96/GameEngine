@@ -12,7 +12,7 @@ ModuleResourceManager::ModuleResourceManager(Application* app, const char* name,
 bool ModuleResourceManager::Start()
 {
 	monitor_assets = new Timer();
-	last_file_mod = App->file_sys->GetLastModification("Lenna.png");
+	last_file_mod = App->file_sys->GetLastModification("Game/Assets");
 	return true;
 }
 
@@ -31,11 +31,11 @@ update_status ModuleResourceManager::Update(float dt)
 
 bool ModuleResourceManager::MonitorAssets()
 {
-	uint last_mod = App->file_sys->GetLastModification("Lenna.png");
+	uint last_mod = App->file_sys->GetLastModification("Game/Assets");
 
 	if (last_mod != last_file_mod)
 	{
-		last_file_mod == last_mod;
+		LOG("Something changed in Assets directory");
 	}
 	return true;
 }
