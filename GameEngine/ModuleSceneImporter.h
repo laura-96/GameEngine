@@ -13,10 +13,10 @@ class aiScene;
 class aiNode;
 class cJSON;
 
-struct ObjectImport {
+struct Prefab {
 
 public:
-	ObjectImport(uint _uid, uint p_uid, std::string mesh, std::string tex) : uid(_uid), parent_uid(p_uid), mesh_related(mesh), texture_related(tex) {};
+	Prefab(uint _uid, uint p_uid, std::string mesh, std::string tex) : uid(_uid), parent_uid(p_uid), mesh_related(mesh), texture_related(tex) {};
 	
 private:
 	uint uid;
@@ -42,17 +42,19 @@ public:
 	bool Save(cJSON* node);
 
 	bool ImportScene(const char* path);
-	bool ImportMesh(const aiScene* scene, aiNode* node, std::string &output, const char* extension) const;
-	bool ImportMaterial(const aiScene* scene, aiNode* node, std::string &output) const;
+
+	bool ImportPrefab(aiNode* node, uint mesh, uint material, std::string &output, const char* extension) const;
+	uint ImportMesh(const aiScene* scene, aiNode* node, std::string &output, const char* extension) const;
+	uint ImportMaterial(const aiScene* scene, aiNode* node, std::string &output) const;
+	uint ImportMaterial(const char* path, std::string &output) const;
 	bool LoadTransform(aiNode* node, math::float3 &translation, math::Quat &rotation, math::float3 &scale) const;
+
+	bool LoadMesh(GameObject &go) const;
+	bool LoadMaterial(GameObject &go) const;
+	//The diffecence between both LoadTransform functions is that one, stores the information in an ObjectImport struct
+	//and this following one, puts it into an object component
+	bool LoadTransform(GameObject &go) const;
 	~ModuleSceneImporter();
-	//bool ImportMesh(aiScene ai_scene, aiNode ai_node) const;
-	//bool ImportMaterial(aiScene ai_scene, aiNode ai_node) const;
-
-private:
-
-	std::vector<std::string> scenes_imported;
-	std::vector<ObjectImport*> obj_import;
 	
 };
 
