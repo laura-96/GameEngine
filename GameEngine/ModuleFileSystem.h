@@ -33,6 +33,7 @@ public:
 	bool Exists(const char* file) const;
 	bool IsDirectory(const char* file) const;
 	uint GetLastModification(const char* file) const;
+	void EnumerateFiles(const char* directory, std::list<const char*> &list) const;
 	const char* GetWriteDirectory() const
 	{
 		

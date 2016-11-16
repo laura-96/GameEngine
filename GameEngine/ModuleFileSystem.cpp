@@ -105,6 +105,28 @@ uint ModuleFileSystem::GetLastModification(const char* file) const
 	return PHYSFS_getLastModTime(file);
 }
 
+void ModuleFileSystem::EnumerateFiles(const char* dir, std::list<const char*> &list) const
+{
+	char** files = PHYSFS_enumerateFiles(dir);
+
+	for(uint i = 0; i < sizeof(*files); i++)
+	{
+		for (uint i = 0; i < sizeof(files); i++)
+		{
+			list.push_back(files[i]);
+
+			char** directory = PHYSFS_enumerateFiles(files[i]);
+
+
+			if (directory[0] != nullptr)
+			{
+				LOG("%s is a directory", files[i]);
+				EnumerateFiles(files[i], list);
+			}
+		}
+	}
+}
+
 unsigned int ModuleFileSystem::Load(const char* file, char** buffer) const
 {
 	unsigned int ret = 0;

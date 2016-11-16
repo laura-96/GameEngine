@@ -33,6 +33,10 @@ bool ModuleResourceManager::MonitorAssets()
 {
 	uint last_mod = App->file_sys->GetLastModification("Game/Assets");
 
+	std::list<const char*> files;
+	App->file_sys->EnumerateFiles("Game/Assets", files);
+	
+
 	if (last_mod != last_file_mod)
 	{
 		LOG("Something changed in Assets directory");

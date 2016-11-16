@@ -14,7 +14,7 @@ ModuleSceneIntro::~ModuleSceneIntro()
 // Load assets
 bool ModuleSceneIntro::Start()
 {
-	LOG("Loading Intro assets");
+	//LOG("Loading Intro assets");
 	//m = new Mesh();
 	
 	//m->LoadMesh("Game/Assets/Brute.fbx");
@@ -33,7 +33,7 @@ bool ModuleSceneIntro::Init(cJSON* node)
 // Load assets
 bool ModuleSceneIntro::CleanUp()
 {
-	LOG("Unloading Intro scene");
+	//LOG("Unloading Intro scene");
 	//m->CleanUp();
 	//delete b;
 	return true;
