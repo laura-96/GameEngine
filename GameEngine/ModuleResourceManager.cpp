@@ -50,15 +50,7 @@ bool ModuleResourceManager::MonitorAssets()
 	std::map<std::string, uint> modifications;
 	App->file_sys->GetFilesModified("Assets", modifications);
 
-<<<<<<< HEAD
 	for (uint i = 0; i < files.size(); i++)
-=======
-	std::list<const char*> files;
-	App->file_sys->EnumerateFiles("Game/Assets", files);
-	
-
-	if (last_mod != last_file_mod)
->>>>>>> f41d38a4533964df7bc5dd87288a5d93d5b7200b
 	{
 		std::map<std::string, uint>::iterator it_last_mod = files_modifications.find(files[i]);
 		std::map<std::string, uint>::iterator it_curr_mod = modifications.find(files[i]);
@@ -82,7 +74,7 @@ bool ModuleResourceManager::ImportFile(const char* directory)
 	App->file_sys->GetExtension(file.c_str(), file_type);
 
 
-	if(strcmp(file_type.c_str(), "ogg") == 0)
+	if (strcmp(file_type.c_str(), "ogg") == 0)
 	{
 		LOG("File: %s is an audio", file.c_str());
 	}
@@ -91,7 +83,7 @@ bool ModuleResourceManager::ImportFile(const char* directory)
 	{
 		std::string output;
 		App->scene_importer->ImportMaterial(directory, output);
-		
+
 		res_equivalence.insert(std::pair<std::string, std::string>(file, output));
 
 		LOG("File: %s is an image", file.c_str());

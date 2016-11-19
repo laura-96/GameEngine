@@ -26,17 +26,16 @@ public:
 
 	// Destructor
 	~ModuleFileSystem();
-	
+
 	bool Init(cJSON* node);
 	bool CleanUp();
-	
+
 	bool AddPath(const char* path_or_zip, const char* mount_point = nullptr);
 	bool Exists(const char* file) const;
 	bool IsDirectory(const char* file) const;
-	
+
 	void GetFilesModified(const char* file, std::map<std::string, uint> &mod_files) const;
 	uint GetLastModification(const char* file) const;
-	void EnumerateFiles(const char* directory, std::list<const char*> &list) const;
 	const char* GetWriteDirectory() const
 	{
 		return PHYSFS_getWriteDir();

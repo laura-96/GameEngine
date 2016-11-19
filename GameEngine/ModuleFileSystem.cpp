@@ -14,7 +14,7 @@ ModuleFileSystem::ModuleFileSystem(Application* app, const char* name, const cha
 	// need to be created before Awake so other modules can use it
 	char* base_path = SDL_GetBasePath();
 	PHYSFS_init(base_path);
-	
+
 
 	if (PHYSFS_setWriteDir(base_path) == NULL)
 	{
@@ -55,17 +55,17 @@ bool ModuleFileSystem::Init(cJSON* node)
 	// Add all paths in configuration in order
 	/*for (pugi::xml_node path = config.child("path"); path; path = path.next_sibling("path"))
 	{
-		AddPath(path.child_value());
+	AddPath(path.child_value());
 	}*/
 
 	// Ask SDL for a write dir
 	char* write_path = SDL_GetPrefPath(App->GetOrganization(), App->GetTitle());
-	
+
 	if (PHYSFS_setWriteDir(write_path) == 0)
 	{
 		LOG("File System error while creating write dir: %s", PHYSFS_getLastError());
 	}
-		
+
 	else
 	{
 		// We add the writing directory as a reading directory too with speacial mount point
@@ -74,7 +74,7 @@ bool ModuleFileSystem::Init(cJSON* node)
 	}
 
 	SDL_free(write_path);
-	
+
 	return ret;
 }
 
@@ -123,12 +123,11 @@ uint ModuleFileSystem::GetLastModification(const char* file) const
 	return PHYSFS_getLastModTime(file);
 }
 
-<<<<<<< HEAD
 void ModuleFileSystem::CollectFiles(const char* directory, std::vector<std::string> &files) const
 {
-	
+
 	char** dir_files = PHYSFS_enumerateFiles(directory);
-	
+
 	if (dir_files[0] != NULL)
 	{
 		for (uint i = 0; dir_files[i] != NULL; i++)
@@ -150,41 +149,20 @@ void ModuleFileSystem::CollectFiles(const char* directory, std::vector<std::stri
 			else
 			{
 				//files.push_back(dir_files[i]);
-				
+
 				files.push_back(dir);
 			}
-				
-=======
-void ModuleFileSystem::EnumerateFiles(const char* dir, std::list<const char*> &list) const
-{
-	char** files = PHYSFS_enumerateFiles(dir);
 
-	for(uint i = 0; i < sizeof(*files); i++)
-	{
-		for (uint i = 0; i < sizeof(files); i++)
-		{
-			list.push_back(files[i]);
-
-			char** directory = PHYSFS_enumerateFiles(files[i]);
-
-
-			if (directory[0] != nullptr)
-			{
-				LOG("%s is a directory", files[i]);
-				EnumerateFiles(files[i], list);
-			}
->>>>>>> f41d38a4533964df7bc5dd87288a5d93d5b7200b
 		}
 	}
 }
 
-<<<<<<< HEAD
 void ModuleFileSystem::GetExtension(const char* file, std::string &ext) const
 {
 
 	std::string archive(file);
 	size_t index = archive.find_last_of(".");
-	
+
 	if (index < archive.length())
 	{
 		ext = archive.substr(index + 1);
@@ -199,18 +177,16 @@ uint ModuleFileSystem::GetFileFromDir(const char* directory, std::string &file) 
 	size_t index = dir_file.find_last_of("/");
 
 	file = dir_file.substr(index + 1);
-	
+
 	return file.size();
 }
 
-=======
->>>>>>> f41d38a4533964df7bc5dd87288a5d93d5b7200b
 unsigned int ModuleFileSystem::Load(const char* file, char** buffer) const
 {
 	unsigned int ret = 0;
 
 	PHYSFS_file* fs_file = PHYSFS_openRead(file);
-	
+
 	if (fs_file != NULL)
 	{
 		PHYSFS_sint64 size = PHYSFS_fileLength(fs_file);
@@ -327,7 +303,7 @@ unsigned int ModuleFileSystem::Save(const char* file, const void* buffer, unsign
 		if (written != size)
 		{
 			LOG("File System error while writing to file %s: %s\n", file, PHYSFS_getLastError());
-		}		
+		}
 		else
 		{
 			ret = (uint)written;
@@ -352,7 +328,7 @@ ModuleFileSystem::~ModuleFileSystem()
 bool ModuleFileSystem::CleanUp()
 {
 	//RELEASE(AssimpIO);
-	
+
 	return true;
 }
 
