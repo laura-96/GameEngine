@@ -9,6 +9,7 @@
 
 #include "cJSON.h"
 #include <vector>
+#include <map>
 
 
 struct SDL_RWops;
@@ -32,6 +33,8 @@ public:
 	bool AddPath(const char* path_or_zip, const char* mount_point = nullptr);
 	bool Exists(const char* file) const;
 	bool IsDirectory(const char* file) const;
+	
+	void GetFilesModified(const char* file, std::map<std::string, uint> &mod_files) const;
 	uint GetLastModification(const char* file) const;
 	const char* GetWriteDirectory() const
 	{

@@ -103,6 +103,21 @@ bool ModuleFileSystem::IsDirectory(const char* file) const
 	return PHYSFS_isDirectory(file) != 0;
 }
 
+void ModuleFileSystem::GetFilesModified(const char* file, std::map<std::string, uint> &mod_files) const
+{
+	std::vector<string> files;
+	CollectFiles(file, files);
+
+	std::vector<string>::iterator it = files.begin();
+
+	while (it != files.end())
+	{
+		mod_files.insert(pair<string, uint>((*it), GetLastModification((*it).c_str())));
+		it++;
+	}
+
+}
+
 uint ModuleFileSystem::GetLastModification(const char* file) const
 {
 	return PHYSFS_getLastModTime(file);

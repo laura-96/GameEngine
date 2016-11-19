@@ -19,7 +19,7 @@ private:
 	Timer* monitor_assets = NULL;
 	uint last_file_mod = NULL;
 	std::map<std::string, std::string> res_equivalence;
-	
+	std::map<std::string, uint> files_modifications;
 };
 
 #endif

@@ -17,6 +17,7 @@ bool ModuleResourceManager::Start()
 	std::vector<std::string> files;
 
 	App->file_sys->CollectFiles("Assets", files);
+	App->file_sys->GetFilesModified("Assets", files_modifications);
 
 	for (uint i = 0; i < files.size(); i++)
 	{
@@ -41,15 +42,27 @@ update_status ModuleResourceManager::Update(float dt)
 
 bool ModuleResourceManager::MonitorAssets()
 {
+	bool modified = false;
 
-	uint last_mod = App->file_sys->GetLastModification("Game/Assets");
+	std::vector<std::string> files;
+	App->file_sys->CollectFiles("Assets", files);
 
-	if (last_mod != last_file_mod)
+	std::map<std::string, uint> modifications;
+	App->file_sys->GetFilesModified("Assets", modifications);
+
+	for (uint i = 0; i < files.size(); i++)
 	{
-		LOG("Something changed in Assets directory");
+		std::map<std::string, uint>::iterator it_last_mod = files_modifications.find(files[i]);
+		std::map<std::string, uint>::iterator it_curr_mod = modifications.find(files[i]);
+
+		if ((*it_last_mod).second != (*it_curr_mod).second)
+		{
+			modified = true;
+			LOG("%s has been modified", files[i].c_str());
+		}
 	}
 
-	return true;
+	return modified;
 }
 
 bool ModuleResourceManager::ImportFile(const char* directory)
