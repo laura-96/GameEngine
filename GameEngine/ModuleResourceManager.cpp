@@ -50,7 +50,15 @@ bool ModuleResourceManager::MonitorAssets()
 	std::map<std::string, uint> modifications;
 	App->file_sys->GetFilesModified("Assets", modifications);
 
+<<<<<<< HEAD
 	for (uint i = 0; i < files.size(); i++)
+=======
+	std::list<const char*> files;
+	App->file_sys->EnumerateFiles("Game/Assets", files);
+	
+
+	if (last_mod != last_file_mod)
+>>>>>>> f41d38a4533964df7bc5dd87288a5d93d5b7200b
 	{
 		std::map<std::string, uint>::iterator it_last_mod = files_modifications.find(files[i]);
 		std::map<std::string, uint>::iterator it_curr_mod = modifications.find(files[i]);

@@ -36,6 +36,7 @@ public:
 	
 	void GetFilesModified(const char* file, std::map<std::string, uint> &mod_files) const;
 	uint GetLastModification(const char* file) const;
+	void EnumerateFiles(const char* directory, std::list<const char*> &list) const;
 	const char* GetWriteDirectory() const
 	{
 		return PHYSFS_getWriteDir();

@@ -28,19 +28,16 @@ ModuleFileSystem::ModuleFileSystem(Application* app, const char* name, const cha
 		if (game_path != nullptr)
 		{
 			PHYSFS_mkdir(game_path);
-			PHYSFS_addToSearchPath(game_path, NULL);
 		}
 
 		if (!IsDirectory("Assets"))
 		{
 			PHYSFS_mkdir("Game/Assets");
-			PHYSFS_addToSearchPath("Game/Assets", NULL);
 		}
 
 		if (!IsDirectory("Library"))
 		{
 			PHYSFS_mkdir("Game/Library");
-			PHYSFS_addToSearchPath("Game/Library", NULL);
 		}
 	}
 
@@ -103,114 +100,17 @@ bool ModuleFileSystem::IsDirectory(const char* file) const
 	return PHYSFS_isDirectory(file) != 0;
 }
 
-void ModuleFileSystem::GetFilesModified(const char* file, std::map<std::string, uint> &mod_files) const
-{
-	std::vector<string> files;
-	CollectFiles(file, files);
-
-	std::vector<string>::iterator it = files.begin();
-
-	while (it != files.end())
-	{
-		mod_files.insert(pair<string, uint>((*it), GetLastModification((*it).c_str())));
-		it++;
-	}
-
-}
-
 uint ModuleFileSystem::GetLastModification(const char* file) const
 {
 	return PHYSFS_getLastModTime(file);
 }
 
-<<<<<<< HEAD
-void ModuleFileSystem::CollectFiles(const char* directory, std::vector<std::string> &files) const
-{
-	
-	char** dir_files = PHYSFS_enumerateFiles(directory);
-	
-	if (dir_files[0] != NULL)
-	{
-		for (uint i = 0; dir_files[i] != NULL; i++)
-		{
-			//If files or directories are not added in the search path, PHYSFS_enumerateFiles won't find any files that these ones could contain if they are directories
-			std::string dir;
-			dir.clear();
-			dir.append(directory);
-			dir.append("/");
-			dir.append(dir_files[i]);
-
-			PHYSFS_addToSearchPath(dir.c_str(), NULL);
-
-			if (IsDirectory(dir.c_str()))
-			{
-				CollectFiles(dir.c_str(), files);
-			}
-
-			else
-			{
-				//files.push_back(dir_files[i]);
-				
-				files.push_back(dir);
-			}
-				
-=======
-void ModuleFileSystem::EnumerateFiles(const char* dir, std::list<const char*> &list) const
-{
-	char** files = PHYSFS_enumerateFiles(dir);
-
-	for(uint i = 0; i < sizeof(*files); i++)
-	{
-		for (uint i = 0; i < sizeof(files); i++)
-		{
-			list.push_back(files[i]);
-
-			char** directory = PHYSFS_enumerateFiles(files[i]);
-
-
-			if (directory[0] != nullptr)
-			{
-				LOG("%s is a directory", files[i]);
-				EnumerateFiles(files[i], list);
-			}
->>>>>>> f41d38a4533964df7bc5dd87288a5d93d5b7200b
-		}
-	}
-}
-
-<<<<<<< HEAD
-void ModuleFileSystem::GetExtension(const char* file, std::string &ext) const
-{
-
-	std::string archive(file);
-	size_t index = archive.find_last_of(".");
-	
-	if (index < archive.length())
-	{
-		ext = archive.substr(index + 1);
-	}
-
-}
-
-uint ModuleFileSystem::GetFileFromDir(const char* directory, std::string &file) const
-{
-	std::string dir_file;
-	dir_file.append(directory);
-	size_t index = dir_file.find_last_of("/");
-
-	file = dir_file.substr(index + 1);
-	
-	return file.size();
-}
-
-=======
->>>>>>> f41d38a4533964df7bc5dd87288a5d93d5b7200b
 unsigned int ModuleFileSystem::Load(const char* file, char** buffer) const
 {
 	unsigned int ret = 0;
 
 	PHYSFS_file* fs_file = PHYSFS_openRead(file);
-	
+
 	if (fs_file != NULL)
 	{
 		PHYSFS_sint64 size = PHYSFS_fileLength(fs_file);

@@ -123,7 +123,6 @@ uint ModuleFileSystem::GetLastModification(const char* file) const
 	return PHYSFS_getLastModTime(file);
 }
 
-<<<<<<< HEAD
 void ModuleFileSystem::CollectFiles(const char* directory, std::vector<std::string> &files) const
 {
 	
@@ -154,31 +153,10 @@ void ModuleFileSystem::CollectFiles(const char* directory, std::vector<std::stri
 				files.push_back(dir);
 			}
 				
-=======
-void ModuleFileSystem::EnumerateFiles(const char* dir, std::list<const char*> &list) const
-{
-	char** files = PHYSFS_enumerateFiles(dir);
-
-	for(uint i = 0; i < sizeof(*files); i++)
-	{
-		for (uint i = 0; i < sizeof(files); i++)
-		{
-			list.push_back(files[i]);
-
-			char** directory = PHYSFS_enumerateFiles(files[i]);
-
-
-			if (directory[0] != nullptr)
-			{
-				LOG("%s is a directory", files[i]);
-				EnumerateFiles(files[i], list);
-			}
->>>>>>> f41d38a4533964df7bc5dd87288a5d93d5b7200b
 		}
 	}
 }
 
-<<<<<<< HEAD
 void ModuleFileSystem::GetExtension(const char* file, std::string &ext) const
 {
 
@@ -203,8 +181,6 @@ uint ModuleFileSystem::GetFileFromDir(const char* directory, std::string &file) 
 	return file.size();
 }
 
-=======
->>>>>>> f41d38a4533964df7bc5dd87288a5d93d5b7200b
 unsigned int ModuleFileSystem::Load(const char* file, char** buffer) const
 {
 	unsigned int ret = 0;
