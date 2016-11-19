@@ -38,6 +38,9 @@ public:
 		
 		return PHYSFS_getWriteDir();
 	}
+
+	//Utility function to collect in a vector all files contained in a directory and its subdirectories
+	void CollectFiles(const char* directory, std::vector<const char*> &files) const;
 	
 	unsigned int Load(const char* file, char** buffer) const;
 	SDL_RWops* Load(const char* file) const;

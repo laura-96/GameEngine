@@ -28,16 +28,19 @@ ModuleFileSystem::ModuleFileSystem(Application* app, const char* name, const cha
 		if (game_path != nullptr)
 		{
 			PHYSFS_mkdir(game_path);
+			PHYSFS_addToSearchPath(game_path, NULL);
 		}
 
 		if (!IsDirectory("Assets"))
 		{
 			PHYSFS_mkdir("Game/Assets");
+			PHYSFS_addToSearchPath("Game/Assets", NULL);
 		}
 
 		if (!IsDirectory("Library"))
 		{
 			PHYSFS_mkdir("Game/Library");
+			PHYSFS_addToSearchPath("Game/Library", NULL);
 		}
 	}
 
@@ -105,12 +108,45 @@ uint ModuleFileSystem::GetLastModification(const char* file) const
 	return PHYSFS_getLastModTime(file);
 }
 
+void ModuleFileSystem::CollectFiles(const char* directory, std::vector<const char*> &files) const
+{
+	
+	char** dir_files = PHYSFS_enumerateFiles(directory);
+	
+	if (dir_files[0] != NULL)
+	{
+		for (uint i = 0; dir_files[i] != NULL; i++)
+		{
+			//If files or directories are not added in the search path, PHYSFS_enumerateFiles won't find any files that these ones could contain if they are directories
+			std::string dir;
+			dir.clear();
+			dir.append(directory);
+			dir.append("/");
+			dir.append(dir_files[i]);
+
+			PHYSFS_addToSearchPath(dir.c_str(), NULL);
+
+			if (IsDirectory(dir.c_str()))
+			{
+				CollectFiles(dir.c_str(), files);
+			}
+
+			else
+			{
+				files.push_back(dir_files[i]);
+			}
+				
+		}
+	}
+	
+}
+
 unsigned int ModuleFileSystem::Load(const char* file, char** buffer) const
 {
 	unsigned int ret = 0;
 
 	PHYSFS_file* fs_file = PHYSFS_openRead(file);
-
+	
 	if (fs_file != NULL)
 	{
 		PHYSFS_sint64 size = PHYSFS_fileLength(fs_file);

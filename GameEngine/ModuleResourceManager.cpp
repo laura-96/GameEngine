@@ -31,6 +31,10 @@ update_status ModuleResourceManager::Update(float dt)
 
 bool ModuleResourceManager::MonitorAssets()
 {
+
+	std::vector<const char*> files;
+	App->file_sys->CollectFiles("Assets", files);
+
 	uint last_mod = App->file_sys->GetLastModification("Game/Assets");
 
 	if (last_mod != last_file_mod)
