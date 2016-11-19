@@ -39,9 +39,10 @@ public:
 	}
 
 	//Utility function to collect in a vector all files contained in a directory and its subdirectories
-	void CollectFiles(const char* directory, std::vector<const char*> &files) const;
+	void CollectFiles(const char* directory, std::vector<std::string> &files) const;
 	//Utility to get extension of a file
 	void GetExtension(const char* file, std::string &ext) const;
+	uint GetFileFromDir(const char* directory, std::string &file) const;
 
 	unsigned int Load(const char* file, char** buffer) const;
 	SDL_RWops* Load(const char* file) const;

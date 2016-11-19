@@ -44,7 +44,7 @@ bool ModuleSceneImporter::Init(cJSON* node)
 
 bool ModuleSceneImporter::Start()
 {
-	App->scene_importer->ImportScene("Game/Assets/Town/Street.FBX");
+	//App->scene_importer->ImportScene("Game/Assets/Town/Street.FBX");
 
 	return  true;
 }
@@ -326,7 +326,11 @@ uint ModuleSceneImporter::ImportMaterial(const aiScene* scene, aiNode* node, std
 				}
 			}
 
-			ret = ImportMaterial(buffer, output);
+			std::string image_path;
+			image_path.append("Game/Assets/Textures/");
+			image_path.append(buffer);
+
+			ret = ImportMaterial(image_path.c_str(), output);
 
 			delete[] buffer;
 			
@@ -337,15 +341,19 @@ uint ModuleSceneImporter::ImportMaterial(const aiScene* scene, aiNode* node, std
 	return ret;
 }
 
-uint ModuleSceneImporter::ImportMaterial(const char* file, std::string &output) const
+uint ModuleSceneImporter::ImportMaterial(const char* directory, std::string &output) const
 {
 	char* buff = nullptr;
 	uint ret = NULL;
 
-	std::string image_path;
-	image_path.append("Game/Assets/Textures/");
-	image_path.append(file);
+	std::string image_path(directory);
+
 	uint size = App->file_sys->Load(image_path.c_str(), &buff);
+
+	std::string file_from_dir;
+	App->file_sys->GetFileFromDir(directory, file_from_dir);
+
+	const char* file = file_from_dir.c_str();
 
 	ILuint id_image;
 
@@ -369,9 +377,7 @@ uint ModuleSceneImporter::ImportMaterial(const char* file, std::string &output) 
 			{
 				char result_path[250];
 
-				sprintf(result_path, "%s.dds", data);
-
-				output = result_path;
+				//sprintf(result_path, "%s.dds", data);
 
 				char* image_name = new char[strlen(file) - 3];
 				memcpy(image_name, file, strlen(file) - 4);
@@ -379,6 +385,8 @@ uint ModuleSceneImporter::ImportMaterial(const char* file, std::string &output) 
 				image_name[strlen(file) - 4] = '\0';
 
 				sprintf_s(result_path, 250, "%s.dds", image_name);
+
+				output = result_path;
 
 				App->file_sys->SaveInDir("Game/Library/Material", result_path, data, size);
 

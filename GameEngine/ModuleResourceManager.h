@@ -2,6 +2,7 @@
 #define __ModuleResourceManager_H__
 
 #include "Module.h"
+#include <map>
 
 class ModuleResourceManager : public Module
 {
@@ -11,12 +12,14 @@ public:
 	//bool Init(cJSON* node);
 	bool Start();
 	update_status Update(float dt);
-	bool MonitorAssets() const;
-	bool ImportFile(const char* file) const;
+	bool MonitorAssets();
+	bool ImportFile(const char* file);
 
 private:
 	Timer* monitor_assets = NULL;
 	uint last_file_mod = NULL;
+	std::map<std::string, std::string> res_equivalence;
+	
 };
 
 #endif

@@ -46,7 +46,7 @@ public:
 	bool ImportPrefab(aiNode* node, uint mesh, uint material, std::string &output, const char* extension) const;
 	uint ImportMesh(const aiScene* scene, aiNode* node, std::string &output, const char* extension) const;
 	uint ImportMaterial(const aiScene* scene, aiNode* node, std::string &output) const;
-	uint ImportMaterial(const char* path, std::string &output) const;
+	uint ImportMaterial(const char* directory, std::string &output) const;
 	bool LoadTransform(aiNode* node, math::float3 &translation, math::Quat &rotation, math::float3 &scale) const;
 
 	bool LoadMesh(GameObject &go) const;

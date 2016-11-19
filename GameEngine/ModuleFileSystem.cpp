@@ -108,7 +108,7 @@ uint ModuleFileSystem::GetLastModification(const char* file) const
 	return PHYSFS_getLastModTime(file);
 }
 
-void ModuleFileSystem::CollectFiles(const char* directory, std::vector<const char*> &files) const
+void ModuleFileSystem::CollectFiles(const char* directory, std::vector<std::string> &files) const
 {
 	
 	char** dir_files = PHYSFS_enumerateFiles(directory);
@@ -133,7 +133,9 @@ void ModuleFileSystem::CollectFiles(const char* directory, std::vector<const cha
 
 			else
 			{
-				files.push_back(dir_files[i]);
+				//files.push_back(dir_files[i]);
+				
+				files.push_back(dir);
 			}
 				
 		}
@@ -151,6 +153,17 @@ void ModuleFileSystem::GetExtension(const char* file, std::string &ext) const
 		ext = archive.substr(index + 1);
 	}
 
+}
+
+uint ModuleFileSystem::GetFileFromDir(const char* directory, std::string &file) const
+{
+	std::string dir_file;
+	dir_file.append(directory);
+	size_t index = dir_file.find_last_of("/");
+
+	file = dir_file.substr(index + 1);
+	
+	return file.size();
 }
 
 unsigned int ModuleFileSystem::Load(const char* file, char** buffer) const

@@ -13,6 +13,16 @@ bool ModuleResourceManager::Start()
 {
 	monitor_assets = new Timer();
 	last_file_mod = App->file_sys->GetLastModification("Game/Assets");
+
+	std::vector<std::string> files;
+
+	App->file_sys->CollectFiles("Assets", files);
+
+	for (uint i = 0; i < files.size(); i++)
+	{
+		ImportFile(files[i].c_str());
+	}
+
 	return true;
 }
 
@@ -29,11 +39,8 @@ update_status ModuleResourceManager::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
-bool ModuleResourceManager::MonitorAssets() const
+bool ModuleResourceManager::MonitorAssets()
 {
-
-	std::vector<const char*> files;
-	App->file_sys->CollectFiles("Assets", files);
 
 	uint last_mod = App->file_sys->GetLastModification("Game/Assets");
 
@@ -42,37 +49,36 @@ bool ModuleResourceManager::MonitorAssets() const
 		LOG("Something changed in Assets directory");
 	}
 
-	for (uint i = 0; i < files.size(); i++)
-	{
-		ImportFile(files[i]);
-	}
-
 	return true;
 }
 
-bool ModuleResourceManager::ImportFile(const char* file) const
+bool ModuleResourceManager::ImportFile(const char* directory)
 {
 	std::string file_type;
-	App->file_sys->GetExtension(file, file_type);
+	std::string file;
+
+	App->file_sys->GetFileFromDir(directory, file);
+	App->file_sys->GetExtension(file.c_str(), file_type);
+
 
 	if(strcmp(file_type.c_str(), "ogg") == 0)
 	{
-		LOG("File: %s is an audio", file);
+		LOG("File: %s is an audio", file.c_str());
 	}
 
-	if (strcmp(file_type.c_str(), "png") == 0)
+	if (strcmp(file_type.c_str(), "tga") == 0 || strcmp(file_type.c_str(), "png") == 0)
 	{
-		LOG("File: %s is an image", file);
-	}
+		std::string output;
+		App->scene_importer->ImportMaterial(directory, output);
+		
+		res_equivalence.insert(std::pair<std::string, std::string>(file, output));
 
-	if (strcmp(file_type.c_str(), "tga") == 0)
-	{
-		LOG("File: %s is an image", file);
+		LOG("File: %s is an image", file.c_str());
 	}
 
 	if (strcmp(file_type.c_str(), "fbx") == 0 || strcmp(file_type.c_str(), "FBX") == 0)
 	{
-		LOG("File: %s is a scene", file);
+		LOG("File: %s is a scene", file.c_str());
 	}
 
 	else
