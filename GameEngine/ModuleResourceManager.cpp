@@ -29,7 +29,7 @@ update_status ModuleResourceManager::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
-bool ModuleResourceManager::MonitorAssets()
+bool ModuleResourceManager::MonitorAssets() const
 {
 
 	std::vector<const char*> files;
@@ -41,6 +41,45 @@ bool ModuleResourceManager::MonitorAssets()
 	{
 		LOG("Something changed in Assets directory");
 	}
+
+	for (uint i = 0; i < files.size(); i++)
+	{
+		ImportFile(files[i]);
+	}
+
+	return true;
+}
+
+bool ModuleResourceManager::ImportFile(const char* file) const
+{
+	std::string file_type;
+	App->file_sys->GetExtension(file, file_type);
+
+	if(strcmp(file_type.c_str(), "ogg") == 0)
+	{
+		LOG("File: %s is an audio", file);
+	}
+
+	if (strcmp(file_type.c_str(), "png") == 0)
+	{
+		LOG("File: %s is an image", file);
+	}
+
+	if (strcmp(file_type.c_str(), "tga") == 0)
+	{
+		LOG("File: %s is an image", file);
+	}
+
+	if (strcmp(file_type.c_str(), "fbx") == 0 || strcmp(file_type.c_str(), "FBX") == 0)
+	{
+		LOG("File: %s is a scene", file);
+	}
+
+	else
+	{
+		LOG("Warning, file type not allowed");
+	}
+
 	return true;
 }
 

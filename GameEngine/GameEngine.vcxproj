@@ -200,6 +200,7 @@
     <ClInclude Include="PanelConsole.h" />
     <ClInclude Include="ModuleSceneImporter.h" />
     <ClInclude Include="QuadTree.h" />
+    <ClInclude Include="Resource.h" />
     <ClInclude Include="TransformComponent.h" />
     <ClInclude Include="UIEditor.h" />
     <ClInclude Include="Imgui\imconfig.h" />

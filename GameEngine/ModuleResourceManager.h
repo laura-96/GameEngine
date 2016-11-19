@@ -11,7 +11,8 @@ public:
 	//bool Init(cJSON* node);
 	bool Start();
 	update_status Update(float dt);
-	bool MonitorAssets();
+	bool MonitorAssets() const;
+	bool ImportFile(const char* file) const;
 
 private:
 	Timer* monitor_assets = NULL;

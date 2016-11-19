@@ -28,9 +28,6 @@
     <Filter Include="Containers\Component">
       <UniqueIdentifier>{2e3036a0-f5ce-4d92-90ee-5053eb4a4b6c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Containers\Resources">
-      <UniqueIdentifier>{1074fd74-0ed2-403b-bb15-768fff955142}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Config">
       <UniqueIdentifier>{a6288d1a-798a-4e4d-9f4c-a3f3df7ed04b}</UniqueIdentifier>
     </Filter>
@@ -42,6 +39,12 @@
     </Filter>
     <Filter Include="Modules\Game Objects and Resources Management">
       <UniqueIdentifier>{61b35510-ef5e-4df7-bba7-91c71f98912e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Containers\Extra Containers %28unused%29">
+      <UniqueIdentifier>{1074fd74-0ed2-403b-bb15-768fff955142}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Containers\Resources">
+      <UniqueIdentifier>{010dcbbd-d9d7-494e-b96a-cbdb767e095d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -121,10 +124,10 @@
       <Filter>Helpers\cJSON</Filter>
     </ClInclude>
     <ClInclude Include="Geometry.h">
-      <Filter>Containers\Resources</Filter>
+      <Filter>Containers\Extra Containers %28unused%29</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
-      <Filter>Containers\Resources</Filter>
+      <Filter>Containers\Extra Containers %28unused%29</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>Containers</Filter>
@@ -139,13 +142,13 @@
       <Filter>Containers\Component</Filter>
     </ClInclude>
     <ClInclude Include="PhysBody3D.h">
-      <Filter>Containers\Resources</Filter>
+      <Filter>Containers\Extra Containers %28unused%29</Filter>
     </ClInclude>
     <ClInclude Include="PhysVehicle3D.h">
-      <Filter>Containers\Resources</Filter>
+      <Filter>Containers\Extra Containers %28unused%29</Filter>
     </ClInclude>
     <ClInclude Include="Primitive.h">
-      <Filter>Containers\Resources</Filter>
+      <Filter>Containers\Extra Containers %28unused%29</Filter>
     </ClInclude>
     <ClInclude Include="TransformComponent.h">
       <Filter>Containers\Component</Filter>
@@ -351,6 +354,9 @@
     <ClInclude Include="ModuleResourceManager.h">
       <Filter>Modules\Game Objects and Resources Management</Filter>
     </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Containers\Resources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -420,10 +426,10 @@
       <Filter>Helpers\cJSON</Filter>
     </ClCompile>
     <ClCompile Include="Geometry.cpp">
-      <Filter>Containers\Resources</Filter>
+      <Filter>Containers\Extra Containers %28unused%29</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
-      <Filter>Containers\Resources</Filter>
+      <Filter>Containers\Extra Containers %28unused%29</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>Containers</Filter>
@@ -435,13 +441,13 @@
       <Filter>Containers\Component</Filter>
     </ClCompile>
     <ClCompile Include="PhysBody3D.cpp">
-      <Filter>Containers\Resources</Filter>
+      <Filter>Containers\Extra Containers %28unused%29</Filter>
     </ClCompile>
     <ClCompile Include="PhysVehicle3D.cpp">
-      <Filter>Containers\Resources</Filter>
+      <Filter>Containers\Extra Containers %28unused%29</Filter>
     </ClCompile>
     <ClCompile Include="Primitive.cpp">
-      <Filter>Containers\Resources</Filter>
+      <Filter>Containers\Extra Containers %28unused%29</Filter>
     </ClCompile>
     <ClCompile Include="TransformComponent.cpp">
       <Filter>Containers\Component</Filter>

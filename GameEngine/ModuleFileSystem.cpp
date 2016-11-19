@@ -138,7 +138,19 @@ void ModuleFileSystem::CollectFiles(const char* directory, std::vector<const cha
 				
 		}
 	}
+}
+
+void ModuleFileSystem::GetExtension(const char* file, std::string &ext) const
+{
+
+	std::string archive(file);
+	size_t index = archive.find_last_of(".");
 	
+	if (index < archive.length())
+	{
+		ext = archive.substr(index + 1);
+	}
+
 }
 
 unsigned int ModuleFileSystem::Load(const char* file, char** buffer) const
