@@ -44,36 +44,77 @@ bool ModuleResourceManager::MonitorAssets()
 {
 	bool modified = false;
 
+	//Collecting all files found in assets
 	std::vector<std::string> files;
 	App->file_sys->CollectFiles("Assets", files);
 
+	//Get modifications of each file
 	std::map<std::string, uint> modifications;
 	App->file_sys->GetFilesModified("Assets", modifications);
 
+	//Comparing current modifications to last ones
 	for (uint i = 0; i < files.size(); i++)
 	{
 		std::map<std::string, uint>::iterator it_last_mod = files_modifications.find(files[i]);
 		std::map<std::string, uint>::iterator it_curr_mod = modifications.find(files[i]);
 
-		if ((*it_last_mod).second != (*it_curr_mod).second)
+		//Comparing the iterator to end() means checking if it is null
+		//find() function returns end() if the specified key is not found in the map
+		if (it_last_mod == files_modifications.end())
 		{
-			modified = true;
-			LOG("%s has been modified", files[i].c_str());
+			if (!modified)
+				modified = true;
+	
+			ImportFile(files[i].c_str());
+			LOG("New file was added");
 		}
+
+		else
+		{
+			if ((*it_last_mod).second != (*it_curr_mod).second)
+			{
+				if (!modified)
+					modified = true;
+	
+				LOG("%s has been modified", files[i].c_str());
+			}
+		}	
 	}
+
+	//Checking if something has been deleted
+	std::map<std::string, uint>::iterator it_last_mod = files_modifications.begin();
+
+	while (it_last_mod != files_modifications.end())
+	{
+		
+		std::map<std::string, uint>::iterator it_curr_mod = modifications.find(it_last_mod->first.c_str());
+
+		if (it_curr_mod == modifications.end())
+		{
+			if (!modified)
+				modified = true;
+
+			LOG("%s has been deleted", it_last_mod->first.c_str());
+		}
+
+		it_last_mod++;
+	}
+
 
 	return modified;
 }
 
 bool ModuleResourceManager::ImportFile(const char* directory)
 {
+	bool ret = true;
+
 	std::string file_type;
 	std::string file;
 
 	App->file_sys->GetFileFromDir(directory, file);
 	App->file_sys->GetExtension(file.c_str(), file_type);
 
-
+	//Depending on the extension of the file, one import function is called or another
 	if (strcmp(file_type.c_str(), "ogg") == 0)
 	{
 		LOG("File: %s is an audio", file.c_str());
@@ -84,6 +125,7 @@ bool ModuleResourceManager::ImportFile(const char* directory)
 		std::string output;
 		App->scene_importer->ImportMaterial(directory, output);
 
+		//Creating equivalence to be used to look for original file from the imported one
 		res_equivalence.insert(std::pair<std::string, std::string>(file, output));
 
 		LOG("File: %s is an image", file.c_str());
@@ -96,9 +138,10 @@ bool ModuleResourceManager::ImportFile(const char* directory)
 
 	else
 	{
+		ret = false;
 		LOG("Warning, file type not allowed");
 	}
 
-	return true;
+	return ret;
 }
 
