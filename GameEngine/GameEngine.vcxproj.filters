@@ -357,6 +357,9 @@
     <ClInclude Include="Resource.h">
       <Filter>Containers\Resources</Filter>
     </ClInclude>
+    <ClInclude Include="ResourceMesh.h">
+      <Filter>Containers\Resources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -571,6 +574,12 @@
     </ClCompile>
     <ClCompile Include="ModuleResourceManager.cpp">
       <Filter>Modules\Game Objects and Resources Management</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource.cpp">
+      <Filter>Containers\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceMesh.cpp">
+      <Filter>Containers\Resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

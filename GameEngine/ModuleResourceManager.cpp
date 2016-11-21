@@ -120,7 +120,7 @@ bool ModuleResourceManager::ImportFile(const char* directory)
 		LOG("File: %s is an audio", file.c_str());
 	}
 
-	if (strcmp(file_type.c_str(), "tga") == 0 || strcmp(file_type.c_str(), "png") == 0)
+	else if (strcmp(file_type.c_str(), "tga") == 0 || strcmp(file_type.c_str(), "png") == 0)
 	{
 		std::string output;
 		App->scene_importer->ImportMaterial(directory, output);
@@ -131,7 +131,7 @@ bool ModuleResourceManager::ImportFile(const char* directory)
 		LOG("File: %s is an image", file.c_str());
 	}
 
-	if (strcmp(file_type.c_str(), "fbx") == 0 || strcmp(file_type.c_str(), "FBX") == 0)
+	else if (strcmp(file_type.c_str(), "fbx") == 0 || strcmp(file_type.c_str(), "FBX") == 0)
 	{
 		LOG("File: %s is a scene", file.c_str());
 	}

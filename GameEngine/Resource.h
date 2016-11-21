@@ -19,17 +19,19 @@ public:
 		None
 	};
 
-	Resource(ResourceType type);
+	Resource(ResourceType type, uint resource_uid);
 	ResourceType GetType() const;
 
 	uint Count(std::vector<GameObject*> &go_using_res) const;
 
-	virtual void Clear();
+	virtual void Clear() { go_related.clear(); }
 
 private:
+
+	uint res_uid;
 	std::vector<GameObject*> go_related;
 	ResourceType res_type = ResourceType::None;
-	char* archive;
+	char* archive = nullptr;
 };
 
 #endif
