@@ -2,12 +2,11 @@
 #define __ResourceMesh_H__
 
 #include "Resource.h"
-
+/*
 class RecourceMesh : public Resource
 {
 public:
 
-	ResourceMesh(uint mesh_uid) : Resource(Resource::ResourceType::Mesh, mesh_uid) {};
 
 	void Clear();
 
@@ -30,6 +29,6 @@ public:
 
 	int index_material = -1;
 
-};
+};*/
 
 #endif // __ResourceMesh_H__

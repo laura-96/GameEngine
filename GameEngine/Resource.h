@@ -4,6 +4,7 @@
 #include "Globals.h"
 #include <vector>
 
+#include "ResourceMesh.h"
 class GameObject;
 
 class Resource
@@ -19,6 +20,8 @@ public:
 		None
 	};
 
+	Resource();
+
 	Resource(ResourceType type, uint resource_uid);
 	ResourceType GetType() const;
 
@@ -26,7 +29,7 @@ public:
 
 	virtual void Clear() { go_related.clear(); }
 
-private:
+public:
 
 	uint res_uid;
 	std::vector<GameObject*> go_related;

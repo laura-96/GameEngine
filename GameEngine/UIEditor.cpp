@@ -74,6 +74,12 @@ update_status UIEditor::Update(float dt)
 	{
 		if (ImGui::BeginMenu("File"))
 		{
+
+			if (ImGui::MenuItem("Save"))
+			{
+				App->Save();
+			}
+
 			if (ImGui::MenuItem("Quit"))
 			{
 				ret = UPDATE_STOP;

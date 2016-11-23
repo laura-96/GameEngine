@@ -5,6 +5,10 @@
 
 #include "Globals.h"
 
+
+Resource::Resource()
+{}
+
 Resource::Resource(Resource::ResourceType type, uint resource_uid)
 {
 	res_type = type;
