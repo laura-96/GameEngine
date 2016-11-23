@@ -25,6 +25,7 @@ public:
 	bool LoadFBXObjects(const char* FBX);
 	bool LoadComponents(const aiScene* scene, const aiNode* node, GameObject* go) const;
 
+	void CreateGOEditor(math::float2 editor_pos);
 	void EditorContent();
 	void ShowToEditor(GameObject* go);
 
@@ -38,6 +39,9 @@ private:
 
 	GameObject* root_GO = nullptr;
 	GameObject* selected = nullptr;
+
+	bool create_go_editor = false;
+	math::float2 create_go_pos;
 
 	//Used for editor content
 	bool enable = true;

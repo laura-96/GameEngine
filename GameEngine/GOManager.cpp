@@ -9,6 +9,7 @@
 #include "MaterialComponent.h"
 #include "TransformComponent.h"
 #include "ModuleSceneImporter.h"
+#include "ModuleInput.h"
 
 #include "Imgui/imgui.h"
 
@@ -62,10 +63,26 @@ bool GOManager::Init(cJSON* node)
 
 update_status GOManager::Update(float dt)
 {
+	
+
 	if (load_fbx && root_GO != nullptr)
 	{
 		EditorContent();
 	}
+
+	//If right button of the mouse is pressed
+	if (App->input->GetMouseButton(3) == KEY_STATE::KEY_DOWN)
+	{
+		create_go_pos = { (float) App->input->GetMouseX(), (float) App->input->GetMouseY() };
+		create_go_editor = true;
+		LOG("MOUSE PRESSED");
+	}
+
+	if (create_go_editor)
+	{
+		CreateGOEditor(create_go_pos);
+	}
+
 
 	return UPDATE_CONTINUE;
 }
@@ -386,6 +403,38 @@ GameObject* GOManager::CreateGo(const char* name, GameObject* parent) const
 	GameObject* ret = new GameObject(parent, name);
 
 	return ret;
+}
+
+void GOManager::CreateGOEditor(math::float2 editor_pos)
+{
+	ImGuiWindowFlags flags =
+		ImGuiWindowFlags_NoTitleBar |
+		ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_NoResize;
+
+	ImGui::SetNextWindowPos(ImVec2(editor_pos.x, editor_pos.y));
+	
+	if (ImGui::Begin("Create GO", NULL, flags))
+	{
+	
+		if (ImGui::TreeNodeEx("Create GO"))
+		{
+			if (ImGui::IsItemClicked(0))
+			{
+				CreateGo("void object", root_GO);
+			}
+
+			ImGui::TreePop();
+		}
+	}
+	
+	ImGui::End();
+
+	if (App->input->GetMouseButton(1) == KEY_STATE::KEY_DOWN && !ImGui::IsMouseHoveringAnyWindow())
+	{
+		create_go_editor = false;
+	}
+
 }
 
 void GOManager::EditorContent()
