@@ -93,7 +93,10 @@ bool ModuleSceneImporter::ImportScene(const char* file, std::string &output_scen
 		std::string output_prefab;
 
 		uint im_uid = ImportMesh(scene, node, output, "lau");
-		App->resource_manager->CreateMeshResource(im_uid, output.c_str());
+		if (im_uid != 0)
+		{
+			App->resource_manager->CreateMeshResource(im_uid, output.c_str());
+		}
 
 		uint mat_uid = ImportMaterial(scene, node, output_image);
 		uint prefab_uid = ImportPrefab(node, im_uid, mat_uid, output_prefab, "gl");
@@ -132,8 +135,12 @@ bool ModuleSceneImporter::ImportScene(const char* file, std::string &output_scen
 					std::string output_prefab;
 
 					uint im_uid = ImportMesh(scene, node, output, "lau");
-					App->resource_manager->CreateMeshResource(im_uid, output.c_str());
-
+					
+					if (im_uid != 0)
+					{
+						App->resource_manager->CreateMeshResource(im_uid, output.c_str());
+					}
+					
 					uint mat_uid = ImportMaterial(scene, node, output_image);
 					
 					prefab_uid = ImportPrefab(node, im_uid, mat_uid, output_prefab, "gl");
@@ -365,7 +372,7 @@ uint ModuleSceneImporter::ImportMesh(const aiScene* scene, aiNode* node, std::st
 				if(meshes->HasNormals())
 				{
 					memcpy(cursor, meshes->mNormals, sizeof(float) * num_attributes[2] * 3);
-					cursor += num_attributes[2] * 3;
+					cursor += sizeof(float) * num_attributes[2] * 3;
 				}
 				
 				if (meshes->HasTextureCoords(0))

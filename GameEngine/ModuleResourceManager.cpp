@@ -189,5 +189,55 @@ MeshResource* ModuleResourceManager::CreateMeshResource(uint uid, const char* pa
 	MeshResource* mesh = new MeshResource(uid, path);
 	uid_mesh.insert(std::pair<uint, MeshResource*>(uid, mesh));
 
+	char* buffer = nullptr;
+	std::string dir;
+	dir.append("Game/Library/Mesh/");
+	dir.append(path);
+
+	App->file_sys->Load(dir.c_str(), &buffer);
+
+	if (buffer != nullptr)
+	{
+		char* cursor = buffer;
+		cursor += sizeof(uint);
+
+		uint attributes[4];
+
+		memcpy(attributes, cursor, sizeof(attributes));
+		mesh->num_index = attributes[0];
+		mesh->num_vertex = attributes[1];
+		mesh->num_normals = attributes[2];
+		mesh->num_uvs = attributes[3];
+
+		cursor += sizeof(attributes);
+
+		mesh->indices = new uint[attributes[0]];
+		memcpy(mesh->indices, cursor, sizeof(uint) * attributes[0]);
+
+		cursor += (sizeof(uint) * attributes[0]);
+
+		mesh->vertices = new float[attributes[1] * 3];
+		memcpy(mesh->vertices, cursor, sizeof(float) * attributes[1] * 3);
+
+		cursor += (sizeof(float) * attributes[1] * 3);
+
+		if (attributes[2] > 0)
+		{
+			mesh->normals = new float[attributes[2] * 3];
+			memcpy(mesh->normals, cursor, sizeof(float) * attributes[2] * 3);
+
+			cursor += sizeof(float) * attributes[2] * 3;
+		}
+
+		if (attributes[3] > 0)
+		{
+			mesh->uvs = new float[attributes[3] * 2];
+			memcpy(mesh->uvs, cursor, sizeof(float) * attributes[2] * 2);
+
+			cursor += sizeof(float) * attributes[3] * 2;
+		}
+	}
+	
+
 	return mesh;
 }

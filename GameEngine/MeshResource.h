@@ -12,7 +12,6 @@ public:
 	void LoadBuffers();
 	void Clear();
 
-private:
 
 	uint* indices = nullptr;
 	float* vertices = nullptr;
@@ -24,6 +23,7 @@ private:
 	uint num_normals = 0;
 	uint num_uvs = 0;
 
+private:
 	uint id_index = -1;
 	uint id_vertex = -1;
 	uint id_normals = -1;
