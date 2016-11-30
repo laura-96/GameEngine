@@ -7,22 +7,23 @@
 
 #include <string>
 
+class MaterialResource;
+
 class MaterialComponent : public Component
 {
 
 public:
 
 	MaterialComponent(GameObject* _GO_belong) : Component(ComponentType::Material, _GO_belong) {};
+	MaterialComponent(GameObject* _GO_belong, MaterialResource* mat_resource);
 
+
+	void SetResource(MaterialResource* new_mat_res);
 	void Clear();
 
-public:
+private:
 
-	uint material_id = -1;
-
-	uint id_image = -1;
-	uint texture[1];
-	std::string path;
+	MaterialResource* material_res;
 
 };
 

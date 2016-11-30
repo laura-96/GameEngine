@@ -7,22 +7,25 @@
 #include "glmath.h"
 
 #include "Geometry.h"
+#include "MeshResource.h"
 
 void MeshComponent::Clear()
 {
-	if(indices != nullptr)
-		delete[] indices;
-	
-	if(vertices != nullptr)
-		delete[] vertices;
-
-	if(uvs != nullptr)
-		delete[] uvs;
-	
-	if(normals != nullptr)
-		delete[] normals;
 
 	delete this;
+}
+
+
+MeshComponent::MeshComponent(GameObject* _GO_belong, MeshResource* mesh_resource)
+{
+	Component(ComponentType::Mesh, _GO_belong);
+	mesh_res = mesh_resource;
+}
+
+
+void MeshComponent::SetResource(MeshResource* new_mesh_res)
+{
+	mesh_res = new_mesh_res;
 }
 
 	

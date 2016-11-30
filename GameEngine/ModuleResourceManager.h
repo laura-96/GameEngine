@@ -4,6 +4,9 @@
 #include "Module.h"
 #include <map>
 
+class MaterialResource;
+class MeshResource;
+
 class ModuleResourceManager : public Module
 {
 public:
@@ -14,6 +17,9 @@ public:
 	update_status Update(float dt);
 	bool MonitorAssets();
 	bool ImportFile(const char* file);
+
+	MaterialResource* CreateMaterialResource(uint uid, const char* path) const;
+	MeshResource* CreateMeshResource(uint uid, const char* path) const;
 
 private:
 	Timer* monitor_assets = NULL;

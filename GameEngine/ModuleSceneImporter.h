@@ -41,19 +41,19 @@ public:
 
 	bool Save(cJSON* node);
 
-	bool ImportScene(const char* path);
+	bool ImportScene(const char* path, std::string &output_scene);
+	bool SaveScene(const char* name, std::string &output, std::string prefab, cJSON* root) const;
 
-	bool ImportPrefab(aiNode* node, uint mesh, uint material, std::string &output, const char* extension) const;
+	uint ImportPrefab(aiNode* node, uint mesh, uint material, std::string &output, const char* extension) const;
 	uint ImportMesh(const aiScene* scene, aiNode* node, std::string &output, const char* extension) const;
 	uint ImportMaterial(const aiScene* scene, aiNode* node, std::string &output) const;
 	uint ImportMaterial(const char* directory, std::string &output) const;
 	bool LoadTransform(aiNode* node, math::float3 &translation, math::Quat &rotation, math::float3 &scale) const;
 
-	bool LoadMesh(GameObject &go) const;
-	bool LoadMaterial(GameObject &go) const;
 	//The diffecence between both LoadTransform functions is that one, stores the information in an ObjectImport struct
 	//and this following one, puts it into an object component
 	bool LoadTransform(GameObject &go) const;
+
 	~ModuleSceneImporter();
 	
 };

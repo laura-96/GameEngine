@@ -1,16 +1,16 @@
-#ifndef __ResourceMesh_H__
-#define __ResourceMesh_H__
+#ifndef __MeshResource_H__
+#define __MeshResource_H__
+
 
 #include "Resource.h"
-/*
-class RecourceMesh : public Resource
+
+class MeshResource : public Resource
 {
+
 public:
-
-
+	MeshResource(uint mesh_uid, const char* archive) : Resource(ResourceType::Mesh, mesh_uid, archive) {};
 	void Clear();
-
-public:
+private:
 
 	uint* indices = nullptr;
 	float* vertices = nullptr;
@@ -28,7 +28,6 @@ public:
 	uint id_uvs = -1;
 
 	int index_material = -1;
+};
 
-};*/
-
-#endif // __ResourceMesh_H__
+#endif

@@ -357,10 +357,10 @@
     <ClInclude Include="Resource.h">
       <Filter>Containers\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceMesh.h">
+    <ClInclude Include="MaterialResource.h">
       <Filter>Containers\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceMaterial.h">
+    <ClInclude Include="MeshResource.h">
       <Filter>Containers\Resources</Filter>
     </ClInclude>
   </ItemGroup>
@@ -581,7 +581,10 @@
     <ClCompile Include="Resource.cpp">
       <Filter>Containers\Resources</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceMesh.cpp">
+    <ClCompile Include="MaterialResource.cpp">
+      <Filter>Containers\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshResource.cpp">
       <Filter>Containers\Resources</Filter>
     </ClCompile>
   </ItemGroup>

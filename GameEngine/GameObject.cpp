@@ -129,8 +129,8 @@ void GameObject::Update()
 
 	MeshComponent* mesh = (MeshComponent*)FindComponent(Component::ComponentType::Mesh);
 
-	if (mesh != nullptr)
-		bounding_box.Enclose((float3*)mesh->vertices, mesh->num_vertex);
+	//if (mesh != nullptr)
+		//bounding_box.Enclose((float3*)mesh->vertices, mesh->num_vertex);
 
 	glPopMatrix();
 }
@@ -153,7 +153,7 @@ void GameObject::Draw() const
 		{
 			glColor4f(White.r, White.g, White.b, White.a);
 		}
-
+/*
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex);
 		glVertexPointer(3, GL_FLOAT, 0, NULL);
@@ -188,11 +188,7 @@ void GameObject::Draw() const
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_index);
 
 		glDrawElements(GL_TRIANGLES, mesh->num_index, GL_UNSIGNED_INT, NULL);
-		//glDrawArrays(GL_TRIANGLES, mesh->vertices[0], mesh->num_vertex);
-		
-		//if (transf != nullptr)
-			//glPopMatrix();
-
+		*/
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		glDisableClientState(GL_VERTEX_ARRAY);
 		glDisable(GL_TEXTURE_2D);

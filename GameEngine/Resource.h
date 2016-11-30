@@ -3,8 +3,8 @@
 
 #include "Globals.h"
 #include <vector>
+#include <map>
 
-#include "ResourceMesh.h"
 class GameObject;
 
 class Resource
@@ -22,19 +22,21 @@ public:
 
 	Resource();
 
-	Resource(ResourceType type, uint resource_uid);
+	Resource(ResourceType type, uint resource_uid, const char* resource_archive);
 	ResourceType GetType() const;
 
 	uint Count(std::vector<GameObject*> &go_using_res) const;
 
-	virtual void Clear() { go_related.clear(); }
+	virtual void Clear() { gos_related.clear(); }
 
 public:
 
 	uint res_uid;
-	std::vector<GameObject*> go_related;
+	std::vector<GameObject*> gos_related;
 	ResourceType res_type = ResourceType::None;
-	char* archive = nullptr;
+
+	std::map<uint, std::string> uid_path;
+	const char* archive = nullptr;
 };
 
 #endif

@@ -4,6 +4,10 @@
 #include "ModuleResourceManager.h"
 #include "ModuleSceneImporter.h"
 
+#include "Resource.h"
+#include "MaterialResource.h"
+#include "MeshResource.h"
+
 #include "ModuleFileSystem.h"
 
 ModuleResourceManager::ModuleResourceManager(Application* app, const char* name, bool start_enabled) : Module(app, name, start_enabled)
@@ -66,7 +70,7 @@ bool ModuleResourceManager::MonitorAssets()
 				modified = true;
 	
 			ImportFile(files[i].c_str());
-			LOG("New file was added");
+			LOG("New file was added or an existing file was renamed");
 		}
 
 		else
@@ -123,16 +127,26 @@ bool ModuleResourceManager::ImportFile(const char* directory)
 	else if (strcmp(file_type.c_str(), "tga") == 0 || strcmp(file_type.c_str(), "png") == 0)
 	{
 		std::string output;
-		App->scene_importer->ImportMaterial(directory, output);
+		uint uid = App->scene_importer->ImportMaterial(directory, output);
 
 		//Creating equivalence to be used to look for original file from the imported one
 		res_equivalence.insert(std::pair<std::string, std::string>(file, output));
+
+		std::string dir;
+		dir.clear();
+		dir.append("Game/Library/Material/");
+		dir.append(output);
+
+		CreateMaterialResource(uid, dir.c_str());
 
 		LOG("File: %s is an image", file.c_str());
 	}
 
 	else if (strcmp(file_type.c_str(), "fbx") == 0 || strcmp(file_type.c_str(), "FBX") == 0)
 	{
+		std::string output;
+		App->scene_importer->ImportScene(directory, output);
+		
 		LOG("File: %s is a scene", file.c_str());
 	}
 
@@ -145,3 +159,18 @@ bool ModuleResourceManager::ImportFile(const char* directory)
 	return ret;
 }
 
+MaterialResource* ModuleResourceManager::CreateMaterialResource(uint uid, const char* path) const
+{
+	MaterialResource* material = new MaterialResource(uid, path);
+
+	material->SetPath(path);
+
+	return material;
+}
+
+MeshResource* ModuleResourceManager::CreateMeshResource(uint uid, const char* path) const
+{
+	MeshResource* mesh = new MeshResource(uid, path);
+
+	return mesh;
+}

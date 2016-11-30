@@ -4,9 +4,16 @@
 #include "ModuleSceneImporter.h"
 
 #include "ModuleFileSystem.h"
+#include "ModuleResourceManager.h"
 
 #include "cJSON.h"
 #include "MathGeoLib/include/Algorithm/Random/LCG.h"
+
+#include <Windows.h>
+#include "Glew/include/glew.h"
+#include "SDL/include/SDL_opengl.h"
+#include <gl/GL.h>
+#include <gl/GLU.h>
 
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
@@ -21,6 +28,7 @@
 #pragma comment( lib, "Devil/libx86/DevIL.lib" )
 #pragma comment( lib, "Devil/libx86/ILU.lib" )
 #pragma comment( lib, "Devil/libx86/ILUT.lib" )
+
 
 ModuleSceneImporter::ModuleSceneImporter(Application* app, const char* name, bool start_enabled) : Module(app, name, start_enabled)
 {}
@@ -56,24 +64,43 @@ bool ModuleSceneImporter::Save(cJSON* node)
 	return true;
 }
 
-bool ModuleSceneImporter::ImportScene(const char* file)
+bool ModuleSceneImporter::ImportScene(const char* file, std::string &output_scene)
 {
 	bool ret = true;
 
-	const aiScene* scene = aiImportFile(file, aiProcessPreset_TargetRealtime_MaxQuality);
+	std::string _file;
+	_file.clear();
+	_file.append("Game/");
+	_file.append(file);
+
+	const aiScene* scene = aiImportFile(_file.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
 	
 	if (scene != nullptr && scene->mRootNode != nullptr && scene->HasMeshes())
 	{
 		aiNode* node = scene->mRootNode;
 		std::vector<aiNode*> closed_nodes;
+
+
+		char* buffer = "{}";
+		cJSON* root = cJSON_Parse(buffer);
+
+		std::string file_name;
+		std::string output_json;
+
 		std::string output;
 		std::string output_image;
 		std::string output_prefab;
 
 		uint im_uid = ImportMesh(scene, node, output, "lau");
+		App->resource_manager->CreateMeshResource(im_uid, output.c_str());
+
 		uint mat_uid = ImportMaterial(scene, node, output_image);
-		ImportPrefab(node, im_uid, mat_uid, output_prefab, "gl");
-		
+		uint prefab_uid = ImportPrefab(node, im_uid, mat_uid, output_prefab, "gl");
+
+
+		App->file_sys->GetFileFromDir(file, file_name);
+		SaveScene(file_name.c_str(), output_json, output_prefab, root);
+
 		while (node != nullptr)
 		{
 			if (node->mNumChildren > 0)
@@ -102,9 +129,12 @@ bool ModuleSceneImporter::ImportScene(const char* file)
 					std::string output_prefab;
 
 					uint im_uid = ImportMesh(scene, node, output, "lau");
-					uint mat_uid = ImportMaterial(scene, node, output_image);
-					ImportPrefab(node, im_uid, mat_uid, output_prefab, "gl");
+					App->resource_manager->CreateMeshResource(im_uid, output.c_str());
 
+					uint mat_uid = ImportMaterial(scene, node, output_image);
+					
+					prefab_uid = ImportPrefab(node, im_uid, mat_uid, output_prefab, "gl");
+					SaveScene(file_name.c_str(), output_json, output_prefab, root);
 
 					if (node->mParent != nullptr)
 					{
@@ -131,6 +161,9 @@ bool ModuleSceneImporter::ImportScene(const char* file)
 			}
 		}
 		closed_nodes.clear();
+
+		output_scene.clear();
+		output_scene.append(output_json);
 	}
 
 	else
@@ -144,13 +177,39 @@ bool ModuleSceneImporter::ImportScene(const char* file)
 	return ret;
 }
 
-bool ModuleSceneImporter::ImportPrefab(aiNode* node, uint mesh, uint material, std::string &output, const char* extension) const
+bool ModuleSceneImporter::SaveScene(const char* name, std::string &output, std::string prefab, cJSON* root) const
 {
-	bool ret = true;
+	char* save = cJSON_Print(root);
+	uint size = 0;
+
+	if (save)
+	{
+		size = strlen(save);
+	}
+
+	cJSON_AddStringToObject(root, "Prefab", prefab.c_str());
+
+	save = cJSON_Print(root);
+	size = strlen(save);
+
+	cJSON_Parse(save);
+
+	output.clear();
+	output.append(name);
+	output.append(".json");
+
+	App->file_sys->SaveInDir("Game/Library/Scenes", output.c_str(), save, size);
+
+	return true;
+}
+
+uint ModuleSceneImporter::ImportPrefab(aiNode* node, uint mesh, uint material, std::string &output, const char* extension) const
+{
+	uint ret = NULL;
 
 	if (mesh == NULL && material == NULL)
 	{
-		ret = false;
+		ret = NULL;
 	}
 
 	else
@@ -161,7 +220,7 @@ bool ModuleSceneImporter::ImportPrefab(aiNode* node, uint mesh, uint material, s
 		char* cursor = data;
 		math::LCG random = math::LCG();
 
-		uint ran = random.IntFast();
+		uint ran = ret = random.IntFast();
 
 		memcpy(cursor, &ran, sizeof(uint));
 		cursor += sizeof(uint);

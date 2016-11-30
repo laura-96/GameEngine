@@ -10,28 +10,11 @@
 #include "TransformComponent.h"
 #include "ModuleSceneImporter.h"
 #include "ModuleInput.h"
+#include "ModuleFileSystem.h"
 
 #include "Imgui/imgui.h"
 
-#include <Windows.h>
-#include "Glew/include/glew.h"
-#include "SDL/include/SDL_opengl.h"
-#include <gl/GL.h>
-#include <gl/GLU.h>
 
-#include "Assimp/include/cimport.h"
-#include "Assimp/include/scene.h"
-#include "Assimp/include/postprocess.h"
-#include "Assimp/include/cfileio.h"
-
-#pragma comment (lib, "Assimp/libx86/assimp.lib")
-
-#include "Devil/include/il.h"
-#include "Devil/include/ilut.h"
-
-#pragma comment( lib, "Devil/libx86/DevIL.lib" )
-#pragma comment( lib, "Devil/libx86/ILU.lib" )
-#pragma comment( lib, "Devil/libx86/ILUT.lib" )
 
 GOManager::GOManager(Application* app, const char* name, bool start_enabled) : Module(app, name, start_enabled)
 {}
@@ -41,22 +24,6 @@ GOManager::~GOManager()
 
 bool GOManager::Init(cJSON* node)
 {
-	
-	if (load_fbx == true)
-	{
-		ilInit();
-		ilutInit();
-
-		ilutRenderer(ILUT_OPENGL);
-
-		struct aiLogStream stream;
-		stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
-		aiAttachLogStream(&stream);
-		char* scene_import = cJSON_GetObjectItem(node, "FBXs")->valuestring;
-		//App->scene_importer->ImportScene("Game/Assets/Town/Street.FBX");
-		//LoadFBXObjects(cJSON_GetObjectItem(node, "Go_Manager")->child->valuestring);
-		LoadFBXObjects(scene_import);
-	}
 
 	return true;
 }
@@ -97,89 +64,29 @@ void GOManager::Draw() const
 
 bool GOManager::LoadFBXObjects(const char* FBX)
 {
-	bool ret = true;
-	const aiScene* scene = aiImportFile(FBX, aiProcessPreset_TargetRealtime_MaxQuality);
-	
-	if (scene != nullptr && scene->mRootNode != nullptr && scene->HasMeshes())
+	bool ret = false;
+	char* buff = nullptr;
+
+	std::string file;
+	file.append(FBX);
+	file.append(".json\n");
+
+	uint size = App->file_sys->Load(file.c_str(), &buff);
+
+	if (buff != nullptr)
 	{
-		aiNode* node = scene->mRootNode;
-		std::vector<aiNode*> closed_nodes;
-	
-		root_GO = new GameObject(nullptr, node->mName.C_Str());
-		
-		if (!LoadComponents(scene, node, root_GO))
+		cJSON* root = cJSON_Parse(buff);
+		cJSON* prefabs = cJSON_GetObjectItem(root, "Prefab");
+		while (prefabs)
 		{
-			ret = false;
+			//Get name and parent from prefab resource
+			//CreateGo(cJSON_GetObjectItem(prefabs, "Name")->valuestring, cJSON_);
+			prefabs = prefabs->next;
 		}
 
-		GameObject* new_go = root_GO;
-
-		while (node != nullptr)
-		{
-			if (node->mNumChildren > 0)
-			{
-				uint i = 0;
-
-				for (uint j = 0; j < closed_nodes.size(); j++)
-				{
-					if (closed_nodes[j] == node->mChildren[i])
-					{
-						i++;
-					}
-				}
-				
-				if (i >= node->mNumChildren)
-				{
-					closed_nodes.push_back(node);
-				}
-
-				else
-				{
-					node = node->mChildren[i];
-					new_go = CreateGo(node->mName.C_Str(), new_go);
-
-					if (!LoadComponents(scene, node, new_go))
-					{
-						ret = false;
-					}
-
-					if (node->mParent != nullptr)
-					{
-						LOG("Parent: %s ---- Node name: %s", node->mParent->mName.C_Str(), node->mName.C_Str());
-						LOG("GO Parent: %s ---- Node name: %s", new_go->GO_parent->GetName(), new_go->GetName());
-					}
-					else
-					{
-						LOG("Node name: %s", node->mName.C_Str());
-					}
-				}
-			}
-
-			else
-			{
-				closed_nodes.push_back(node);
-			}
-
-			for (uint j = 0; j < closed_nodes.size(); j++)
-			{
-				if (closed_nodes[j] == node)
-				{
-					node = node->mParent;
-					new_go = new_go->GO_parent;
-				}
-			}
-		}
-		closed_nodes.clear();
+		ret = true;
 	}
-
-	else
-	{
-		ret = false;
-		LOG("Error loading scene: %s", FBX);
-	}
-
-	aiReleaseImport(scene);
-
+	
 	return ret;
 }
 
@@ -188,13 +95,13 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 	//Loading game object's components from scene and node
 
 	bool ret = false;
-
+	/*
 	if (go != nullptr && node != nullptr)
 	{
 		ret = true;
 
 		int material = -1;
-
+		
 		if (node->mNumMeshes > 0)
 		{
 			//While node has got meshes, create a mesh component with its values stored
@@ -391,7 +298,7 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 		
 		transform->GetTransform(matrix);
 
-	}
+	}*/
 
 	return ret;
 }
@@ -484,9 +391,9 @@ void GOManager::EditorContent()
 				material->Enable(enable_material);
 
 				ImGui::Text("	Texture path:");
-				ImGui::TextColored(ImVec4(0, 0, 255, 1), material->path.c_str());
+				//ImGui::TextColored(ImVec4(0, 0, 255, 1), material->path.c_str());
 
-				ImGui::Image((ImTextureID)material->texture[0], ImVec2(100, 100));
+				//ImGui::Image((ImTextureID)material->texture[0], ImVec2(100, 100));
 			}
 
 			ImGui::Separator();

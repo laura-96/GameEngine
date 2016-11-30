@@ -193,6 +193,7 @@
     <ClInclude Include="MathGeoLib\include\Time\Clock.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshComponent.h" />
+    <ClInclude Include="MeshResource.h" />
     <ClInclude Include="ModuleFileSystem.h" />
     <ClInclude Include="ModuleResourceManager.h" />
     <ClInclude Include="Panel.h" />
@@ -201,8 +202,7 @@
     <ClInclude Include="ModuleSceneImporter.h" />
     <ClInclude Include="QuadTree.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="ResourceMaterial.h" />
-    <ClInclude Include="ResourceMesh.h" />
+    <ClInclude Include="MaterialResource.h" />
     <ClInclude Include="TransformComponent.h" />
     <ClInclude Include="UIEditor.h" />
     <ClInclude Include="Imgui\imconfig.h" />
@@ -237,6 +237,7 @@
     <ClCompile Include="glmath.cpp" />
     <ClCompile Include="GOManager.cpp" />
     <ClCompile Include="MaterialComponent.cpp" />
+    <ClCompile Include="MaterialResource.cpp" />
     <ClCompile Include="MathGeoLib\include\Algorithm\Random\LCG.cpp" />
     <ClCompile Include="MathGeoLib\include\Geometry\AABB.cpp" />
     <ClCompile Include="MathGeoLib\include\Geometry\Capsule.cpp" />
@@ -271,6 +272,7 @@
     <ClCompile Include="MathGeoLib\include\Time\Clock.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshComponent.cpp" />
+    <ClCompile Include="MeshResource.cpp" />
     <ClCompile Include="ModuleFileSystem.cpp" />
     <ClCompile Include="ModuleResourceManager.cpp" />
     <ClCompile Include="ModuleSceneImporter.cpp" />
@@ -279,7 +281,6 @@
     <ClCompile Include="PanelConsole.cpp" />
     <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="Resource.cpp" />
-    <ClCompile Include="ResourceMesh.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
     <ClCompile Include="UIEditor.cpp" />
     <ClCompile Include="Imgui\imgui.cpp" />
