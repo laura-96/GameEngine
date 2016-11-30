@@ -9,15 +9,21 @@
 #include "Globals.h"
 #include "MathGeoLib/include/MathGeoLib.h"
 
+class MeshResource;
+class MaterialResource;
+
 class GameObject
 {
 public:
 
 	GameObject(GameObject* _parent, const char* _name, uint uid);
 
-	MeshComponent* CreateMeshComponent();
-	MaterialComponent* CreateMaterialComponent();
+
+	MeshComponent* CreateMeshComponent(MeshResource* mesh_resource);
+	MaterialComponent* CreateMaterialComponent(MaterialResource* material_resource);
+
 	TransformComponent* CreateTransformComponent();
+
 
 	Component* FindComponent(const Component::ComponentType _type) const;
 	const char* GetName() const;

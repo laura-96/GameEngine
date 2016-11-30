@@ -18,14 +18,20 @@ public:
 	bool MonitorAssets();
 	bool ImportFile(const char* file);
 
-	MaterialResource* CreateMaterialResource(uint uid, const char* path) const;
-	MeshResource* CreateMeshResource(uint uid, const char* path) const;
+	MeshResource* GetMeshResource(uint uid) const;
+	MaterialResource* GetMaterialResource(uint uid) const;
+
+	MaterialResource* CreateMaterialResource(uint uid, const char* path);
+	MeshResource* CreateMeshResource(uint uid, const char* path);
 
 private:
 	Timer* monitor_assets = NULL;
 	uint last_file_mod = NULL;
 	std::map<std::string, std::string> res_equivalence;
 	std::map<std::string, uint> files_modifications;
+
+	std::map<uint, MeshResource*> uid_mesh;
+	std::map<uint, MaterialResource*> uid_material;
 };
 
 #endif

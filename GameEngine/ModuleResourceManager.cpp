@@ -159,18 +159,35 @@ bool ModuleResourceManager::ImportFile(const char* directory)
 	return ret;
 }
 
-MaterialResource* ModuleResourceManager::CreateMaterialResource(uint uid, const char* path) const
+MaterialResource* ModuleResourceManager::GetMaterialResource(uint uid) const
+{
+	std::map<uint, MaterialResource*>::const_iterator it = uid_material.find(uid);
+
+	return (*it).second;
+}
+
+
+MeshResource* ModuleResourceManager::GetMeshResource(uint uid) const
+{
+	std::map<uint, MeshResource*>::const_iterator it = uid_mesh.find(uid);
+
+	return (*it).second;
+}
+
+MaterialResource* ModuleResourceManager::CreateMaterialResource(uint uid, const char* path)
 {
 	MaterialResource* material = new MaterialResource(uid, path);
+	uid_material.insert(std::pair<uint, MaterialResource*>(uid, material));
 
 	material->SetPath(path);
 
 	return material;
 }
 
-MeshResource* ModuleResourceManager::CreateMeshResource(uint uid, const char* path) const
+MeshResource* ModuleResourceManager::CreateMeshResource(uint uid, const char* path)
 {
 	MeshResource* mesh = new MeshResource(uid, path);
+	uid_mesh.insert(std::pair<uint, MeshResource*>(uid, mesh));
 
 	return mesh;
 }

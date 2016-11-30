@@ -16,7 +16,6 @@ public:
 		Mesh,
 		Transform,
 		Material,
-		Prefab,
 		None
 	};
 
@@ -27,6 +26,7 @@ public:
 
 	uint Count(std::vector<GameObject*> &go_using_res) const;
 
+	void LoadBuffers();
 	virtual void Clear() { gos_related.clear(); }
 
 public:

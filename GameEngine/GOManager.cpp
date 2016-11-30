@@ -115,215 +115,35 @@ bool GOManager::LoadFBXObjects(const char* FBX)
 	return ret;
 }
 
-bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObject* go) const
+bool GOManager::LoadComponents(cJSON* components, GameObject* go) const
 {
-	//Loading game object's components from scene and node
-
+	
 	bool ret = false;
-	/*
-	if (go != nullptr && node != nullptr)
+	
+	if (go != nullptr)
 	{
 		ret = true;
-
-		int material = -1;
 		
-		if (node->mNumMeshes > 0)
-		{
-			//While node has got meshes, create a mesh component with its values stored
-			MeshComponent* mesh = nullptr;
+		cJSON* prefab = cJSON_GetObjectItem(components, "Prefab");
 
-			for (uint i = 0; i < node->mNumMeshes; i++)
-			{
-				mesh = go->CreateMeshComponent();
-				LOG("Mesh component from: %s", mesh->GetGO()->name.c_str());
+		//MeshComponent* mesh = go->CreateMeshComponent();
+		//MaterialComponent* material = go->CreateMaterialComponent();
 
-
-				uint index_scene = node->mMeshes[i];
-
-				aiMesh* meshes = scene->mMeshes[index_scene];
-				
-				//Setting mesh vertices
-				mesh->num_vertex = meshes->mNumVertices;
-				mesh->vertices = new float[mesh->num_vertex * 3];
-
-				memcpy(mesh->vertices, meshes->mVertices, sizeof(float) * mesh->num_vertex * 3);
-				
-				glGenBuffers(1, (GLuint*) &(mesh->id_vertex));
-
-				glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_vertex * 3, mesh->vertices, GL_STATIC_DRAW);
-				glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-				LOG("New mesh with %d vertices", mesh->num_vertex);
-
-				if (meshes->HasFaces())
-				{
-					//Setting mesh indices
-					mesh->num_index = meshes->mNumFaces * 3;
-					mesh->indices = new uint[mesh->num_index];
-
-					for (uint j = 0; j < meshes->mNumFaces; ++j)
-					{
-						if (meshes->mFaces[j].mNumIndices != 3)
-						{
-							LOG("WARNING! Geometry face with %d indices", meshes->mFaces[j].mNumIndices);
-						}				
-						
-						//Store the three indices of each face to mesh's array of indices
-						else {
-							memcpy(&mesh->indices[j * 3], meshes->mFaces[j].mIndices, 3 * sizeof(uint));
-						}
-						
-						
-					}
-					glGenBuffers(1, (GLuint*) &(mesh->id_index));
-
-					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_index);
-					glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_index, mesh->indices, GL_STATIC_DRAW);
-					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-				}
-
-				//Setting mesh uvs (textureCoords)
-				if (meshes->HasTextureCoords(0))
-				{
-					mesh->uvs = new float[mesh->num_vertex * 2];
-					mesh->num_uvs = mesh->num_vertex;
-					
-					//Got an acces violation if used:
-					//aiVector3D* buff = &meshes->mTextureCoords[0][mesh->indices[j]];
-					//Copying to mesh->uvs the pair of coords of each vertex
-
-					//Method finally used: getting all textureCoords in an aiVector3D
-					aiVector3D* buff = meshes->mTextureCoords[0];
-
-					//Copying x and y coordinates to its suitable uvs
-					for (uint i = 0; i <( mesh->num_vertex * 2) - 2; i = i + 2)
-					{
-						
-						mesh->uvs[i] = buff->x;
-						mesh->uvs[i + 1] = buff->y;
-						
-						buff++;
-						//I was getting error trying to do it through memcpy
-						//memcpy(&mesh->uvs[j * 2], buff, sizeof(float) * 2);
-					}
-
-					glGenBuffers(1, (GLuint*) &(mesh->id_uvs));
-
-					glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uvs);
-					glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_vertex * 2, mesh->uvs, GL_STATIC_DRAW);
-					glBindBuffer(GL_ARRAY_BUFFER, 0);
-				}
-
-				if (meshes->HasNormals())
-				{
-					mesh->num_normals = mesh->num_vertex;
-					mesh->normals = new float[mesh->num_vertex * 3];
-					memcpy(mesh->normals, meshes->mNormals, sizeof(float) * mesh->num_vertex * 3);
-					
-					glGenBuffers(1, (GLuint*) &(mesh->id_normals));
-
-					glBindBuffer(GL_ARRAY_BUFFER, mesh->id_normals);
-					glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_vertex * 3, mesh->normals, GL_STATIC_DRAW);
-					glBindBuffer(GL_ARRAY_BUFFER, 0);
-				}
-				
-				if(scene->mNumMaterials > 0)
-				{
-					mesh->index_material = meshes->mMaterialIndex;
-
-					material = mesh->index_material;
-				}
-				
-			}
-	
-		}
-		
-		if (scene->mNumMaterials > 0 && node->mNumMeshes > 0)
-		{
-			aiMaterial* mat = scene->mMaterials[material];
-
-			if (mat->GetTextureCount(aiTextureType::aiTextureType_DIFFUSE) > 0)
-			{
-				aiString path;
-				mat->GetTexture(aiTextureType::aiTextureType_DIFFUSE, 0, &path);
-				//TODO: Load texture path in FileSystem
-				MaterialComponent* mat_component = go->CreateMaterialComponent();
-				mat_component->path.clear();
-				mat_component->path.append("Game/Assets/Textures/");
-				
-				//So as to get the name of the texture, not relative to Fbx
-				//Will append to mat_component->path, the last part of the texture path, its name
-				char* buffer = new char[path.length + 1];
-				strcpy(buffer, path.C_Str());
-
-				for (uint i = 0; i < path.length + 1; i++)
-				{
-					if (buffer[i] == '\\')
-					{
-						for (uint j = 0; j <= i; j++)
-						{
-							buffer[j] = '*';
-						}
-					}
-				}
-				buffer[path.length] = '\0';
-
-				while (buffer[0] == '*')
-				{
-					for (uint i = 0; i < path.length; i++)
-					{
-						buffer[i] = buffer[i + 1];
-					}
-				}
-				
-				mat_component->path.append(buffer);
-
-				delete[] buffer;
-		
-				mat_component->material_id = material;
-
-				ilGenImages(1, &mat_component->id_image);
-				ilBindImage(mat_component->id_image);
-
-				ilEnable(IL_ORIGIN_SET);
-				ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
-
-				if (!ilLoadImage(mat_component->path.c_str()))
-				{
-					ilDeleteImages(1, &mat_component->id_image);
-					return false;
-				}
-
-				ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
-
-				mat_component->texture[0] = ilutGLBindTexImage();
-				ilDeleteImages(1, &mat_component->id_image);
-				
-			}
-
-		}
-
-		//Loading transformation for each game object
-		aiMatrix4x4 local_trans = node->mTransformation;
-
-		aiVector3D scale;
-		aiQuaterniont<float> rotation;
-		aiVector3D position;
-
-		local_trans.Decompose(scale, rotation, position);
+		cJSON* translation = cJSON_GetObjectItem(components, "Translation");
+		cJSON* rotation = cJSON_GetObjectItem(components, "Rotation");
+		cJSON* scale = cJSON_GetObjectItem(components, "Scale");
 
 		TransformComponent* transform = go->CreateTransformComponent();
 
-		transform->SetScale(scale.x, scale.y, scale.z);
-		transform->SetRotation(rotation.x, rotation.y, rotation.z, rotation.w);
-		transform->SetTranslation(position.x, position.y, position.z);
+		transform->SetScale(cJSON_GetObjectItem(scale, "x")->valuedouble, cJSON_GetObjectItem(scale, "y")->valuedouble, cJSON_GetObjectItem(scale, "z")->valuedouble);
+		transform->SetRotation(cJSON_GetObjectItem(rotation, "x")->valuedouble, cJSON_GetObjectItem(rotation, "y")->valuedouble, cJSON_GetObjectItem(rotation, "z")->valuedouble, cJSON_GetObjectItem(rotation, "w")->valuedouble);
+		transform->SetTranslation(cJSON_GetObjectItem(translation, "x")->valuedouble, cJSON_GetObjectItem(translation, "y")->valuedouble, cJSON_GetObjectItem(translation, "z")->valuedouble);
 		
 		math::float4x4 matrix = math::float4x4::identity;
 		
 		transform->GetTransform(matrix);
 
-	}*/
+	}
 
 	return ret;
 }

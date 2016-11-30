@@ -5,6 +5,9 @@
 #include "MaterialComponent.h"
 #include "TransformComponent.h"
 
+#include "MeshResource.h"
+#include "MaterialResource.h"
+
 #include "Globals.h"
 #include "Color.h"
 
@@ -32,19 +35,19 @@ GameObject::GameObject(GameObject* _parent, const char* _name, uint uid)
 }
 
 
-MeshComponent* GameObject::CreateMeshComponent()
+MeshComponent* GameObject::CreateMeshComponent(MeshResource* mesh_resource)
 {
-	MeshComponent* ret = new MeshComponent((GameObject*)this);
-	
+	MeshComponent* ret = new MeshComponent((GameObject*)this, mesh_resource);
+
 	Component* comp = ret;
 	components.push_back(comp);
 
 	return ret;
 }
 
-MaterialComponent* GameObject::CreateMaterialComponent()
+MaterialComponent* GameObject::CreateMaterialComponent(MaterialResource* material_resource)
 {
-	MaterialComponent* ret = new MaterialComponent((GameObject*)this);
+	MaterialComponent* ret = new MaterialComponent((GameObject*)this, material_resource);
 
 	Component* comp = ret;
 	components.push_back(comp);
