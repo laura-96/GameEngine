@@ -20,7 +20,7 @@ public:
 	bool Init(cJSON* node);
 	bool CleanUp();
 	
-	GameObject* CreateGo(const char* name, GameObject* parent) const;
+	GameObject* CreateGo(const char* name, uint uid, GameObject* parent) const;
 	
 	bool LoadFBXObjects(const char* FBX);
 	bool LoadComponents(const aiScene* scene, const aiNode* node, GameObject* go) const;

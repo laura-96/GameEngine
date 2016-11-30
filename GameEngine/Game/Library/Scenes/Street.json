@@ -1,0 +1,1132 @@
+{
+	"RootNode":	{
+		"UID":	1794582215,
+		"Parent UID":	0,
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0,
+			"w":	1
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"Sky001_$AssimpFbx$_Translation":	{
+		"UID":	9749874,
+		"Parent UID":	1794582215,
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0,
+			"w":	1
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"Sky001_$AssimpFbx$_PreRotation":	{
+		"UID":	191144986,
+		"Parent UID":	1794582215,
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	-0.707107,
+			"y":	0,
+			"z":	0,
+			"w":	0.707107
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"Sky001_$AssimpFbx$_PostRotation":	{
+		"UID":	1896387298,
+		"Parent UID":	1794582215,
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	-0.707107,
+			"y":	0,
+			"z":	0,
+			"w":	0.707107
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"Sky001":	{
+		"UID":	1085395017,
+		"Parent UID":	1794582215,
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0,
+			"w":	1
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"Dummy001_$AssimpFbx$_PreRotation":	{
+		"UID":	631872732,
+		"Parent UID":	1794582215,
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	-0.707107,
+			"y":	0,
+			"z":	0,
+			"w":	0.707107
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"Dummy001_$AssimpFbx$_Rotation":	{
+		"UID":	2556428940,
+		"Parent UID":	1794582215,
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0,
+			"w":	1
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"Dummy001":	{
+		"UID":	1989452795,
+		"Parent UID":	1794582215,
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0,
+			"w":	1
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"City_building_004":	{
+		"UID":	3587679287,
+		"Parent UID":	1794582215,
+		"Prefab":	"City_building_004_prefab.gl",
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0,
+			"w":	1
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"City_building_001":	{
+		"UID":	3996541347,
+		"Parent UID":	1989452795,
+		"Prefab":	"City_building_001_prefab.gl",
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0,
+			"w":	1
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"City_building_007":	{
+		"UID":	2338782718,
+		"Parent UID":	1989452795,
+		"Prefab":	"City_building_007_prefab.gl",
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0,
+			"w":	1
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"City_building_008":	{
+		"UID":	1886451221,
+		"Parent UID":	1989452795,
+		"Prefab":	"City_building_008_prefab.gl",
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0.707107,
+			"w":	0.707107
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"Line002":	{
+		"UID":	815512856,
+		"Parent UID":	1989452795,
+		"Prefab":	"Line002_prefab.gl",
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	-0.707107,
+			"w":	0.707107
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"Plane001":	{
+		"UID":	1647861752,
+		"Parent UID":	1989452795,
+		"Prefab":	"Plane001_prefab.gl",
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0,
+			"w":	1
+		},
+		"Scale":	{
+			"x":	0.996635,
+			"y":	0.970616,
+			"z":	0.996635
+		}
+	},
+	"City_building_010":	{
+		"UID":	2911592536,
+		"Parent UID":	1989452795,
+		"Prefab":	"City_building_010_prefab.gl",
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0.707107,
+			"w":	0.707107
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"City_building_011":	{
+		"UID":	2707446839,
+		"Parent UID":	1989452795,
+		"Prefab":	"City_building_011_prefab.gl",
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0,
+			"w":	1
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"City_building_013":	{
+		"UID":	1926658466,
+		"Parent UID":	1989452795,
+		"Prefab":	"City_building_013_prefab.gl",
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0.707107,
+			"w":	0.707107
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"City_building_014":	{
+		"UID":	4060407306,
+		"Parent UID":	1989452795,
+		"Prefab":	"City_building_014_prefab.gl",
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	1,
+			"w":	-4.371139e-08
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"City_building_016":	{
+		"UID":	3459562897,
+		"Parent UID":	1989452795,
+		"Prefab":	"City_building_016_prefab.gl",
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	1,
+			"w":	-4.371139e-08
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"City_building_017":	{
+		"UID":	757459652,
+		"Parent UID":	1989452795,
+		"Prefab":	"City_building_017_prefab.gl",
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0.707107,
+			"w":	0.707107
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"City_building_022":	{
+		"UID":	1489971604,
+		"Parent UID":	1989452795,
+		"Prefab":	"City_building_022_prefab.gl",
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	1,
+			"w":	1.947072e-07
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"City_building_023":	{
+		"UID":	1262909091,
+		"Parent UID":	1989452795,
+		"Prefab":	"City_building_023_prefab.gl",
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0,
+			"w":	1
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"City_building_024":	{
+		"UID":	2718308095,
+		"Parent UID":	1989452795,
+		"Prefab":	"City_building_024_prefab.gl",
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	1,
+			"w":	4.371139e-08
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"City_building_026":	{
+		"UID":	2183918346,
+		"Parent UID":	1989452795,
+		"Prefab":	"City_building_026_prefab.gl",
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	1,
+			"w":	4.371139e-08
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"City_building_028":	{
+		"UID":	441921169,
+		"Parent UID":	1989452795,
+		"Prefab":	"City_building_028_prefab.gl",
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0,
+			"w":	1
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"Object010":	{
+		"UID":	2142965701,
+		"Parent UID":	1989452795,
+		"Prefab":	"Object010_prefab.gl",
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0,
+			"w":	1
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"City_building_030":	{
+		"UID":	1136108168,
+		"Parent UID":	1989452795,
+		"Prefab":	"City_building_030_prefab.gl",
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	-0.707107,
+			"w":	0.707107
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"City_building_031":	{
+		"UID":	869041191,
+		"Parent UID":	1989452795,
+		"Prefab":	"City_building_031_prefab.gl",
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	-0.707107,
+			"w":	0.707107
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"City_building_032":	{
+		"UID":	312459858,
+		"Parent UID":	1989452795,
+		"Prefab":	"City_building_032_prefab.gl",
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0,
+			"w":	1
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"City_building_033":	{
+		"UID":	4053386874,
+		"Parent UID":	1989452795,
+		"Prefab":	"City_building_033_prefab.gl",
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0,
+			"w":	1
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"City_building_034":	{
+		"UID":	21371073,
+		"Parent UID":	1989452795,
+		"Prefab":	"City_building_034_prefab.gl",
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	-0.707107,
+			"w":	0.707107
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"City_building_035":	{
+		"UID":	1816788917,
+		"Parent UID":	1989452795,
+		"Prefab":	"City_building_035_prefab.gl",
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0,
+			"w":	1
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"City_building_036":	{
+		"UID":	4169290553,
+		"Parent UID":	1989452795,
+		"Prefab":	"City_building_036_prefab.gl",
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	-0.707107,
+			"w":	0.707107
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"City_building_037":	{
+		"UID":	3402824844,
+		"Parent UID":	1989452795,
+		"Prefab":	"City_building_037_prefab.gl",
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	1,
+			"w":	1.947072e-07
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"City_building_038":	{
+		"UID":	1967384059,
+		"Parent UID":	1989452795,
+		"Prefab":	"City_building_038_prefab.gl",
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	-0.707107,
+			"w":	0.707107
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"City_building_039":	{
+		"UID":	443534902,
+		"Parent UID":	1989452795,
+		"Prefab":	"City_building_039_prefab.gl",
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	-0.707107,
+			"w":	0.707107
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"City_building_040":	{
+		"UID":	2823521198,
+		"Parent UID":	1989452795,
+		"Prefab":	"City_building_040_prefab.gl",
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	-0.707107,
+			"w":	0.707107
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"City_building_041":	{
+		"UID":	11155333,
+		"Parent UID":	1989452795,
+		"Prefab":	"City_building_041_prefab.gl",
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0.707107,
+			"w":	0.707107
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"Camera001_$AssimpFbx$_Translation":	{
+		"UID":	3551325513,
+		"Parent UID":	1794582215,
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0,
+			"w":	1
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"Camera001_$AssimpFbx$_PreRotation":	{
+		"UID":	2746179036,
+		"Parent UID":	1794582215,
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	-0.707107,
+			"y":	0,
+			"z":	0,
+			"w":	0.707107
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"Camera001_$AssimpFbx$_Rotation":	{
+		"UID":	1261483915,
+		"Parent UID":	1794582215,
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	-0.198556,
+			"y":	0.560705,
+			"z":	0.757749,
+			"w":	-0.268333
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1.000000,
+			"z":	1.000000
+		}
+	},
+	"Camera001":	{
+		"UID":	2280377607,
+		"Parent UID":	1794582215,
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0,
+			"w":	1
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"Camera001.Target_$AssimpFbx$_Translation":	{
+		"UID":	2998247603,
+		"Parent UID":	1794582215,
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0,
+			"w":	1
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"Camera001.Target_$AssimpFbx$_PreRotation":	{
+		"UID":	1290815566,
+		"Parent UID":	1794582215,
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	-0.707107,
+			"y":	0,
+			"z":	0,
+			"w":	0.707107
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"Camera001.Target_$AssimpFbx$_Rotation":	{
+		"UID":	4269786278,
+		"Parent UID":	1794582215,
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	-0.198556,
+			"y":	0.560705,
+			"z":	0.757749,
+			"w":	-0.268333
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1.000000,
+			"z":	1
+		}
+	},
+	"Camera001.Target":	{
+		"UID":	3513969885,
+		"Parent UID":	1794582215,
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0,
+			"w":	1
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"Spot001_$AssimpFbx$_Translation":	{
+		"UID":	465216128,
+		"Parent UID":	1794582215,
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0,
+			"w":	1
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"Spot001_$AssimpFbx$_PreRotation":	{
+		"UID":	463668351,
+		"Parent UID":	1794582215,
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	-0.707107,
+			"y":	0,
+			"z":	0,
+			"w":	0.707107
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"Spot001_$AssimpFbx$_Rotation":	{
+		"UID":	80068234,
+		"Parent UID":	1794582215,
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0.154439,
+			"y":	-0.154439,
+			"z":	-0.690035,
+			"w":	0.690035
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"Spot001_$AssimpFbx$_PostRotation":	{
+		"UID":	3857936402,
+		"Parent UID":	1794582215,
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	-0.707107,
+			"y":	0,
+			"z":	0,
+			"w":	0.707107
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"Spot001":	{
+		"UID":	3315420985,
+		"Parent UID":	1794582215,
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0,
+			"w":	1
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"Spot001.Target_$AssimpFbx$_Translation":	{
+		"UID":	2791975052,
+		"Parent UID":	1794582215,
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0,
+			"w":	1
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"Spot001.Target_$AssimpFbx$_PreRotation":	{
+		"UID":	2760180219,
+		"Parent UID":	1794582215,
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	-0.707107,
+			"y":	0,
+			"z":	0,
+			"w":	0.707107
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"Spot001.Target_$AssimpFbx$_Rotation":	{
+		"UID":	1080269366,
+		"Parent UID":	1794582215,
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0.707107,
+			"y":	0,
+			"z":	0,
+			"w":	0.707107
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"Spot001.Target":	{
+		"UID":	261210029,
+		"Parent UID":	1794582215,
+		"Translation":	{
+			"x":	-107374176,
+			"y":	-107374176,
+			"z":	-107374176
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0,
+			"w":	1
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	}
+}

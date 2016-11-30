@@ -13,7 +13,7 @@ class GameObject
 {
 public:
 
-	GameObject(GameObject* _parent, const char* _name);
+	GameObject(GameObject* _parent, const char* _name, uint uid);
 
 	MeshComponent* CreateMeshComponent();
 	MaterialComponent* CreateMaterialComponent();
@@ -21,6 +21,7 @@ public:
 
 	Component* FindComponent(const Component::ComponentType _type) const;
 	const char* GetName() const;
+	uint GetUID() const;
 	const math::float3 GetPosition() const;
 	
 	void Update();
@@ -39,7 +40,7 @@ public:
 	bool active = true;
 
 private:
-
+	uint game_object_uid;
 	math::AABB bounding_box;
 };
 

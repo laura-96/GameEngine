@@ -80,6 +80,7 @@ bool ModuleSceneImporter::ImportScene(const char* file, std::string &output_scen
 		aiNode* node = scene->mRootNode;
 		std::vector<aiNode*> closed_nodes;
 
+		math::LCG random = math::LCG();
 
 		char* buffer = "{}";
 		cJSON* root = cJSON_Parse(buffer);
@@ -99,7 +100,9 @@ bool ModuleSceneImporter::ImportScene(const char* file, std::string &output_scen
 
 
 		App->file_sys->GetFileFromDir(file, file_name);
-		SaveScene(file_name.c_str(), output_json, output_prefab, root);
+		
+		uint parent_uid = random.IntFast();
+		SaveScene(node, file_name.c_str(), parent_uid, NULL, output_json, output_prefab, root);
 
 		while (node != nullptr)
 		{
@@ -134,7 +137,10 @@ bool ModuleSceneImporter::ImportScene(const char* file, std::string &output_scen
 					uint mat_uid = ImportMaterial(scene, node, output_image);
 					
 					prefab_uid = ImportPrefab(node, im_uid, mat_uid, output_prefab, "gl");
-					SaveScene(file_name.c_str(), output_json, output_prefab, root);
+
+					uint go_uid = random.IntFast();
+
+					SaveScene(node, file_name.c_str(), go_uid, parent_uid, output_json, output_prefab, root);
 
 					if (node->mParent != nullptr)
 					{
@@ -157,6 +163,12 @@ bool ModuleSceneImporter::ImportScene(const char* file, std::string &output_scen
 				if (closed_nodes[j] == node)
 				{
 					node = node->mParent;
+
+					if (node)
+					{
+						cJSON* parent = cJSON_GetObjectItem(root, node->mName.C_Str());
+						parent_uid = cJSON_GetObjectItem(parent, "UID")->valueint;
+					}
 				}
 			}
 		}
@@ -177,17 +189,59 @@ bool ModuleSceneImporter::ImportScene(const char* file, std::string &output_scen
 	return ret;
 }
 
-bool ModuleSceneImporter::SaveScene(const char* name, std::string &output, std::string prefab, cJSON* root) const
+bool ModuleSceneImporter::SaveScene(aiNode* node, const char* name, uint uid, uint p_uid, std::string &output, std::string prefab, cJSON* root) const
 {
+	bool ret = false;
+	
 	char* save = cJSON_Print(root);
 	uint size = 0;
+
+	cJSON* go = cJSON_CreateObject();
+	cJSON* transl = cJSON_CreateObject();
+	cJSON* rotate = cJSON_CreateObject();
+	cJSON* scl = cJSON_CreateObject();
+
+	math::float3 translation;
+	math::Quat rotation;
+	math::float3 scale;
 
 	if (save)
 	{
 		size = strlen(save);
 	}
 
-	cJSON_AddStringToObject(root, "Prefab", prefab.c_str());
+	cJSON_AddItemToObject(root, node->mName.C_Str(), go);
+	
+	cJSON_AddNumberToObject(go, "UID", uid);
+	cJSON_AddNumberToObject(go, "Parent UID", p_uid);
+
+	if (prefab.size() > 0)
+	{
+		cJSON_AddStringToObject(go, "Prefab", prefab.c_str());
+	}
+	
+	LoadTransform(node, translation, rotation, scale);
+
+
+	cJSON_AddItemToObject(go, "Translation", transl);
+
+	cJSON_AddNumberToObject(transl, "x", translation.x);
+	cJSON_AddNumberToObject(transl, "y", translation.y);
+	cJSON_AddNumberToObject(transl, "z", translation.z);
+
+	cJSON_AddItemToObject(go, "Rotation", rotate);
+
+	cJSON_AddNumberToObject(rotate, "x", rotation.x);
+	cJSON_AddNumberToObject(rotate, "y", rotation.y);
+	cJSON_AddNumberToObject(rotate, "z", rotation.z);
+	cJSON_AddNumberToObject(rotate, "w", rotation.w);
+
+	cJSON_AddItemToObject(go, "Scale", scl);
+
+	cJSON_AddNumberToObject(scl, "x", scale.x);
+	cJSON_AddNumberToObject(scl, "y", scale.y);
+	cJSON_AddNumberToObject(scl, "z", scale.z);
+
 
 	save = cJSON_Print(root);
 	size = strlen(save);
@@ -199,8 +253,9 @@ bool ModuleSceneImporter::SaveScene(const char* name, std::string &output, std::
 	output.append(".json");
 
 	App->file_sys->SaveInDir("Game/Library/Scenes", output.c_str(), save, size);
+	ret = true;
 
-	return true;
+	return ret;
 }
 
 uint ModuleSceneImporter::ImportPrefab(aiNode* node, uint mesh, uint material, std::string &output, const char* extension) const

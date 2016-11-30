@@ -8,6 +8,7 @@
 #include "Panel.h"
 #include "PanelConfiguration.h"
 #include "PanelConsole.h"
+#include "ModuleFileSystem.h"
 /*
 #include "Imgui/imgui.h"
 #include "Imgui/imgui_impl_sdl_gl3.h"
@@ -74,7 +75,11 @@ update_status UIEditor::Update(float dt)
 	{
 		if (ImGui::BeginMenu("File"))
 		{
-
+			if (ImGui::MenuItem("Load"))
+			{
+				
+				
+			}
 			if (ImGui::MenuItem("Save"))
 			{
 				App->Save();

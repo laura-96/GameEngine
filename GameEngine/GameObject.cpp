@@ -18,11 +18,12 @@ using namespace std;
 
 
 
-GameObject::GameObject(GameObject* _parent, const char* _name)
+GameObject::GameObject(GameObject* _parent, const char* _name, uint uid)
 {
 	GO_parent = _parent;
 	name = _name;
-	
+	game_object_uid = uid;
+
 	if (GO_parent != nullptr)
 	{
 		GO_parent->children.push_back(this);
@@ -82,6 +83,11 @@ Component* GameObject::FindComponent(const Component::ComponentType _type) const
 const char* GameObject::GetName() const
 {
 	return (name.c_str());
+}
+
+uint GameObject::GetUID() const
+{
+	return (game_object_uid);
 }
 
 const math::float3 GameObject::GetPosition() const

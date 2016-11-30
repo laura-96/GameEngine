@@ -24,7 +24,7 @@ GOManager::~GOManager()
 
 bool GOManager::Init(cJSON* node)
 {
-
+	
 	return true;
 }
 
@@ -36,7 +36,16 @@ update_status GOManager::Update(float dt)
 	{
 		EditorContent();
 	}
+	
+	else if (root_GO == nullptr)
+	{
+		//Collecting files is not necessary here
+		//Just doing this to get all files inside in the search path (then I will be able to work on it)
+		std::vector<std::string> files;
+		App->file_sys->CollectFiles("Library", files);
 
+		LoadFBXObjects("Library/Scenes/Street.FBX.json");
+	}
 	//If right button of the mouse is pressed
 	if (App->input->GetMouseButton(3) == KEY_STATE::KEY_DOWN)
 	{
@@ -69,21 +78,37 @@ bool GOManager::LoadFBXObjects(const char* FBX)
 
 	std::string file;
 	file.append(FBX);
-	file.append(".json\n");
+	//file.append(".json\n");
 
 	uint size = App->file_sys->Load(file.c_str(), &buff);
 
 	if (buff != nullptr)
 	{
 		cJSON* root = cJSON_Parse(buff);
-		cJSON* prefabs = cJSON_GetObjectItem(root, "Prefab");
-		while (prefabs)
-		{
-			//Get name and parent from prefab resource
-			//CreateGo(cJSON_GetObjectItem(prefabs, "Name")->valuestring, cJSON_);
-			prefabs = prefabs->next;
-		}
+		cJSON* gos = root->child;
+		std::vector<GameObject*> objects_created;
+		
+		root_GO = CreateGo(gos->string, cJSON_GetObjectItem(gos, "UID")->valueint, nullptr);
+		objects_created.push_back(root_GO);
 
+		gos = gos->next;
+
+		while (gos)
+		{
+			std::vector<GameObject*>::iterator it = objects_created.begin();
+
+			uint comp_uid = cJSON_GetObjectItem(gos, "Parent UID")->valueint;
+			
+			while (it != objects_created.end() && (*it)->GetUID() != comp_uid)
+			{
+				it++;
+			}
+
+			GameObject* go = CreateGo(gos->string, cJSON_GetObjectItem(gos, "UID")->valueint, (*it));
+			objects_created.push_back(go);
+
+			gos = gos->next;
+		}
 		ret = true;
 	}
 	
@@ -305,9 +330,9 @@ bool GOManager::LoadComponents(const aiScene* scene, const aiNode* node, GameObj
 
 
 
-GameObject* GOManager::CreateGo(const char* name, GameObject* parent) const
+GameObject* GOManager::CreateGo(const char* name, uint uid, GameObject* parent) const
 {
-	GameObject* ret = new GameObject(parent, name);
+	GameObject* ret = new GameObject(parent, name, uid);
 
 	return ret;
 }
@@ -328,7 +353,7 @@ void GOManager::CreateGOEditor(math::float2 editor_pos)
 		{
 			if (ImGui::IsItemClicked(0))
 			{
-				CreateGo("void object", root_GO);
+//				CreateGo("void object", root_GO);
 			}
 
 			ImGui::TreePop();
