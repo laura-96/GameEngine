@@ -140,6 +140,8 @@ bool ModuleSceneImporter::ImportScene(const char* file, std::string &output_scen
 
 					SaveScene(node, file_name.c_str(), go_uid, parent_uid, output_json, output_prefab, root);
 
+					parent_uid = go_uid;
+
 					if (node->mParent != nullptr)
 					{
 						LOG("Parent: %s ---- Node name: %s", node->mParent->mName.C_Str(), node->mName.C_Str());
@@ -160,13 +162,14 @@ bool ModuleSceneImporter::ImportScene(const char* file, std::string &output_scen
 			{
 				if (closed_nodes[j] == node)
 				{
-					node = node->mParent;
 
 					if (node)
 					{
 						cJSON* parent = cJSON_GetObjectItem(root, node->mName.C_Str());
-						parent_uid = cJSON_GetObjectItem(parent, "UID")->valueint;
+						parent_uid = cJSON_GetObjectItem(parent, "Parent UID")->valueint;
 					}
+
+					node = node->mParent;
 				}
 			}
 		}

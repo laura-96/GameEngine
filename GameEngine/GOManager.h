@@ -23,7 +23,7 @@ public:
 	GameObject* CreateGo(const char* name, uint uid, GameObject* parent) const;
 	
 	bool LoadFBXObjects(const char* FBX);
-	bool LoadComponents(cJSON* components, GameObject* go) const;
+	bool LoadComponents(const char* prefab, GameObject* go) const;
 
 	void CreateGOEditor(math::float2 editor_pos);
 	void EditorContent();

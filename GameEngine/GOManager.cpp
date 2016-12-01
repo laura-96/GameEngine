@@ -79,7 +79,7 @@ bool GOManager::LoadFBXObjects(const char* FBX)
 	bool ret = false;
 	char* buff = nullptr;
 
-	std::string file;
+	std::string file("Game/");
 	file.append(FBX);
 	//file.append(".json\n");
 
@@ -88,31 +88,82 @@ bool GOManager::LoadFBXObjects(const char* FBX)
 	if (buff != nullptr)
 	{
 		cJSON* root = cJSON_Parse(buff);
-		cJSON* gos = root->child;
+	
 		std::vector<GameObject*> objects_created;
 		
-		root_GO = CreateGo(gos->string, cJSON_GetObjectItem(gos, "UID")->valueint, nullptr);
+		root_GO = CreateGo(cJSON_GetArrayItem(root, 0)->string, cJSON_GetObjectItem(cJSON_GetArrayItem(root, 0), "UID")->valuedouble, nullptr);
+		cJSON* prefab = cJSON_GetObjectItem(cJSON_GetArrayItem(root, 0), "Prefab");
+		
+		if (prefab != nullptr)
+		{
+			const char* pref_string = prefab->valuestring;
+			LoadComponents(pref_string, root_GO);
+		}
+
+
+		cJSON* translation = cJSON_GetObjectItem(cJSON_GetArrayItem(root, 0), "Translation");
+		cJSON* rotation = cJSON_GetObjectItem(cJSON_GetArrayItem(root, 0), "Rotation");
+		cJSON* scale = cJSON_GetObjectItem(cJSON_GetArrayItem(root, 0), "Scale");
+
+
+		TransformComponent* transform = root_GO->CreateTransformComponent();
+
+		transform->SetScale(cJSON_GetObjectItem(scale, "x")->valuedouble, cJSON_GetObjectItem(scale, "y")->valuedouble, cJSON_GetObjectItem(scale, "z")->valuedouble);
+		transform->SetRotation(cJSON_GetObjectItem(rotation, "x")->valuedouble, cJSON_GetObjectItem(rotation, "y")->valuedouble, cJSON_GetObjectItem(rotation, "z")->valuedouble, cJSON_GetObjectItem(rotation, "w")->valuedouble);
+		transform->SetTranslation(cJSON_GetObjectItem(translation, "x")->valuedouble, cJSON_GetObjectItem(translation, "y")->valuedouble, cJSON_GetObjectItem(translation, "z")->valuedouble);
+
+		math::float4x4 matrix = math::float4x4::identity;
+
+		transform->GetTransform(matrix);
+		//LoadComponents(cJSON_GetArrayItem(root, 0), root_GO);
+
 		objects_created.push_back(root_GO);
+		
+		uint size = cJSON_GetArraySize(root);
+		uint i = 1;
 
-		gos = gos->next;
-
-		while (gos)
+		while (i < size)
 		{
 			std::vector<GameObject*>::iterator it = objects_created.begin();
 
-			uint comp_uid = cJSON_GetObjectItem(gos, "Parent UID")->valueint;
-			
-			while (it != objects_created.end() && (*it)->GetUID() != comp_uid)
+			uint comp_uid = cJSON_GetObjectItem(cJSON_GetArrayItem(root, i), "Parent UID")->valuedouble;
+
+			for (; it != objects_created.end(); it++)
 			{
-				it++;
+				if ((*it)->GetUID() == comp_uid)
+				{
+					break;
+				}
 			}
 
-			GameObject* go = CreateGo(gos->string, cJSON_GetObjectItem(gos, "UID")->valueint, (*it));
-			LoadComponents(gos, go);
+			GameObject* go = CreateGo(cJSON_GetArrayItem(root, i)->string, cJSON_GetObjectItem(cJSON_GetArrayItem(root, i), "UID")->valuedouble, (*it));
+			
+			cJSON* go_prefab = cJSON_GetObjectItem(cJSON_GetArrayItem(root, i), "Prefab");
+
+			if (go_prefab != nullptr)
+			{
+				const char* go_pref_string = go_prefab->valuestring;
+				LoadComponents(go_pref_string, go);
+			}
+
+			cJSON* translation = cJSON_GetObjectItem(cJSON_GetArrayItem(root, i), "Translation");
+			cJSON* rotation = cJSON_GetObjectItem(cJSON_GetArrayItem(root, i), "Rotation");
+			cJSON* scale = cJSON_GetObjectItem(cJSON_GetArrayItem(root, i), "Scale");
+
+
+			TransformComponent* transform = go->CreateTransformComponent();
+
+			transform->SetScale(cJSON_GetObjectItem(scale, "x")->valuedouble, cJSON_GetObjectItem(scale, "y")->valuedouble, cJSON_GetObjectItem(scale, "z")->valuedouble);
+			transform->SetRotation(cJSON_GetObjectItem(rotation, "x")->valuedouble, cJSON_GetObjectItem(rotation, "y")->valuedouble, cJSON_GetObjectItem(rotation, "z")->valuedouble, cJSON_GetObjectItem(rotation, "w")->valuedouble);
+			transform->SetTranslation(cJSON_GetObjectItem(translation, "x")->valuedouble, cJSON_GetObjectItem(translation, "y")->valuedouble, cJSON_GetObjectItem(translation, "z")->valuedouble);
+
+			math::float4x4 matrix = math::float4x4::identity;
+
+			transform->GetTransform(matrix);
+			//LoadComponents(cJSON_GetArrayItem(root, i), go);
 
 			objects_created.push_back(go);
-
-			gos = gos->next;
+			i++;
 		}
 		ret = true;
 	}
@@ -120,7 +171,7 @@ bool GOManager::LoadFBXObjects(const char* FBX)
 	return ret;
 }
 
-bool GOManager::LoadComponents(cJSON* components, GameObject* go) const
+bool GOManager::LoadComponents(const char* prefab, GameObject* go) const
 {
 	
 	bool ret = false;
@@ -129,14 +180,11 @@ bool GOManager::LoadComponents(cJSON* components, GameObject* go) const
 	{
 		ret = true;
 		
-		//We look for the mesh and material associated to a prefab, through getting their UIDs, from the stored information in the prefab archive
-		cJSON* prefab = cJSON_GetObjectItem(components, "Prefab");
-		
 		if (prefab)
 		{
 			char* buffer = nullptr;
 			std::string file("Game/Library/Prefab/");
-			file.append(prefab->valuestring);
+			file.append(prefab);
 
 			uint size = App->file_sys->Load(file.c_str(), &buffer);
 			
@@ -158,24 +206,8 @@ bool GOManager::LoadComponents(cJSON* components, GameObject* go) const
 
 			//mesh->gos_related.push_back(go);
 			//material->gos_related.push_back(go);
-
-
 			
 		}
-
-		cJSON* translation = cJSON_GetObjectItem(components, "Translation");
-		cJSON* rotation = cJSON_GetObjectItem(components, "Rotation");
-		cJSON* scale = cJSON_GetObjectItem(components, "Scale");
-
-		TransformComponent* transform = go->CreateTransformComponent();
-
-		transform->SetScale(cJSON_GetObjectItem(scale, "x")->valuedouble, cJSON_GetObjectItem(scale, "y")->valuedouble, cJSON_GetObjectItem(scale, "z")->valuedouble);
-		transform->SetRotation(cJSON_GetObjectItem(rotation, "x")->valuedouble, cJSON_GetObjectItem(rotation, "y")->valuedouble, cJSON_GetObjectItem(rotation, "z")->valuedouble, cJSON_GetObjectItem(rotation, "w")->valuedouble);
-		transform->SetTranslation(cJSON_GetObjectItem(translation, "x")->valuedouble, cJSON_GetObjectItem(translation, "y")->valuedouble, cJSON_GetObjectItem(translation, "z")->valuedouble);
-		
-		math::float4x4 matrix = math::float4x4::identity;
-		
-		transform->GetTransform(matrix);
 
 	}
 
@@ -207,7 +239,7 @@ void GOManager::CreateGOEditor(math::float2 editor_pos)
 		{
 			if (ImGui::IsItemClicked(0))
 			{
-//				CreateGo("void object", root_GO);
+				CreateGo("void object", 92839399238, nullptr);
 			}
 
 			ImGui::TreePop();
