@@ -223,9 +223,15 @@ bool ModuleResourceManager::IsMeshResource(const char* res) const
 
 MeshResource* ModuleResourceManager::GetMeshResource(uint uid) const
 {
-	std::map<uint, MeshResource*>::const_iterator it = uid_mesh.find(uid);
+	MeshResource* ret = nullptr;
 
-	return (*it).second;
+	std::map<uint, MeshResource*>::const_iterator it = uid_mesh.find(uid);
+	if (it != uid_mesh.end())
+	{
+		ret = (*it).second;
+	}
+
+	return ret;
 }
 
 MaterialResource* ModuleResourceManager::CreateMaterialResource(uint uid, const char* path)

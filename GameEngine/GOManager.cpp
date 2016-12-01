@@ -138,32 +138,28 @@ bool GOManager::LoadComponents(cJSON* components, GameObject* go) const
 			std::string file("Game/Library/Prefab/");
 			file.append(prefab->valuestring);
 
-			App->file_sys->Load(file.c_str(), &buffer);
-			char* cursor = buffer;
-
-			cursor += sizeof(uint);
-
-			uint mesh_uid = NULL;
-			memcpy(&mesh_uid, cursor, sizeof(uint));
-
-			cursor += sizeof(uint);
-
-			uint material_uid = NULL;
-			memcpy(&material_uid, cursor, sizeof(uint));
+			uint size = App->file_sys->Load(file.c_str(), &buffer);
+			
+			uint uids[3];
+			memcpy(uids, buffer, size);
 
 			//We get the suitable resource from resource manager functions
-			MeshResource* mesh = App->resource_manager->GetMeshResource(mesh_uid);
-			MaterialResource* material = App->resource_manager->GetMaterialResource(material_uid);
+			MeshResource* mesh = App->resource_manager->GetMeshResource(uids[2]);
+			//MaterialResource* material = App->resource_manager->GetMaterialResource(material_uid);
 
-			MeshComponent* mesh_comp = go->CreateMeshComponent(mesh);
-			MaterialComponent* material_comp = go->CreateMaterialComponent(material);
+			if (mesh)
+			{
+				MeshComponent* mesh_comp = go->CreateMeshComponent(mesh);
+				//Loading buffers for resources
+				mesh->LoadBuffers();
+			}
+			//MaterialComponent* material_comp = go->CreateMaterialComponent(material);
 
 
-			mesh->gos_related.push_back(go);
-			material->gos_related.push_back(go);
+			//mesh->gos_related.push_back(go);
+			//material->gos_related.push_back(go);
 
-			//Loading buffers for resources
-			mesh->LoadBuffers();
+
 			
 		}
 

@@ -92,15 +92,10 @@ bool ModuleSceneImporter::ImportScene(const char* file, std::string &output_scen
 		std::string output_image;
 		std::string output_prefab;
 
-		uint im_uid = ImportMesh(scene, node, output, "lau");
+		uint rmesh_uid = ImportMesh(scene, node, output, "lau");
 
-		if (im_uid != 0)
-		{
-			App->resource_manager->CreateMeshResource(im_uid, output.c_str());
-		}
-
-		uint mat_uid = ImportMaterial(scene, node, output_image);
-		uint prefab_uid = ImportPrefab(node, im_uid, mat_uid, output_prefab, "gl");
+		uint rmat_uid = ImportMaterial(scene, node, output_image);
+		uint prefab_uid = ImportPrefab(node, rmesh_uid, rmat_uid, output_prefab, "gl");
 
 
 		App->file_sys->GetFileFromDir(file, file_name);
@@ -136,11 +131,6 @@ bool ModuleSceneImporter::ImportScene(const char* file, std::string &output_scen
 					std::string output_prefab;
 
 					uint im_uid = ImportMesh(scene, node, output, "lau");
-					
-					if (im_uid != 0)
-					{
-						App->resource_manager->CreateMeshResource(im_uid, output.c_str());
-					}
 					
 					uint mat_uid = ImportMaterial(scene, node, output_image);
 					
@@ -277,22 +267,14 @@ uint ModuleSceneImporter::ImportPrefab(aiNode* node, uint mesh, uint material, s
 
 	else
 	{
-		uint size = sizeof(uint) + sizeof(uint) + sizeof(uint);
-		char* data = new char[size];
-
-		char* cursor = data;
 		math::LCG random = math::LCG();
 
-		uint ran = ret = random.IntFast();
+		uint uids[3] = {random.IntFast(), mesh, material};
+		
+		uint size = sizeof(uids);
+		char* data = new char[size];
 
-		memcpy(cursor, &ran, sizeof(uint));
-		cursor += sizeof(uint);
-
-		memcpy(cursor, &mesh, sizeof(uint));
-		cursor += sizeof(uint);
-
-		memcpy(cursor, &material, sizeof(uint));
-		cursor += sizeof(uint);
+		memcpy(data, uids, size);
 
 		char result_path[250];
 
@@ -403,6 +385,8 @@ uint ModuleSceneImporter::ImportMesh(const aiScene* scene, aiNode* node, std::st
 				{
 					App->file_sys->SaveInDir("Game/Library/Mesh", result_path, data, size);
 					App->resource_manager->ImportMesh(output.c_str(), ret);
+					App->resource_manager->CreateMeshResource(ret, output.c_str());
+
 				}
 				else
 				{
