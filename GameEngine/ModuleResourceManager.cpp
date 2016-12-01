@@ -247,8 +247,7 @@ MaterialResource* ModuleResourceManager::CreateMaterialResource(uint uid, const 
 MeshResource* ModuleResourceManager::CreateMeshResource(uint uid, const char* path)
 {
 	MeshResource* mesh = new MeshResource(uid, path);
-	uid_mesh.insert(std::pair<uint, MeshResource*>(uid, mesh));
-
+	
 	char* buffer = nullptr;
 	std::string dir;
 	dir.append("Game/Library/Mesh/");
@@ -297,7 +296,7 @@ MeshResource* ModuleResourceManager::CreateMeshResource(uint uid, const char* pa
 			cursor += sizeof(float) * attributes[3] * 2;
 		}
 	}
-	
+	uid_mesh.insert(std::pair<uint, MeshResource*>(uid, mesh));
 
 	return mesh;
 }

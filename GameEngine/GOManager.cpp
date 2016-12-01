@@ -144,7 +144,7 @@ bool GOManager::LoadComponents(cJSON* components, GameObject* go) const
 			memcpy(uids, buffer, size);
 
 			//We get the suitable resource from resource manager functions
-			MeshResource* mesh = App->resource_manager->GetMeshResource(uids[2]);
+			MeshResource* mesh = App->resource_manager->GetMeshResource(uids[1]);
 			//MaterialResource* material = App->resource_manager->GetMaterialResource(material_uid);
 
 			if (mesh)
