@@ -7,6 +7,14 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
+void MeshResource::GetId(uint &index, uint &vertex, uint &normal, uint &uv) const
+{
+	index = id_index;
+	vertex = id_vertex;
+	normal = id_normals;
+	uv = id_uvs;
+}
+
 void MeshResource::LoadBuffers()
 {
 

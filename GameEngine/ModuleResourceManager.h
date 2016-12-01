@@ -17,7 +17,12 @@ public:
 	update_status Update(float dt);
 	bool MonitorAssets();
 	bool ImportFile(const char* file);
+	uint ImportMesh(const char* file, uint uid);
+	uint ImportMaterial(const char* file, const char* directory);
 
+	bool IsMeshResource(const char* res) const;
+
+	uint GetUidFromFile(const char* file) const;
 	MeshResource* GetMeshResource(uint uid) const;
 	MaterialResource* GetMaterialResource(uint uid) const;
 
@@ -27,9 +32,16 @@ public:
 private:
 	Timer* monitor_assets = NULL;
 	uint last_file_mod = NULL;
+
+	//Equivalence between original file and the output
 	std::map<std::string, std::string> res_equivalence;
+	//Files and its modification
 	std::map<std::string, uint> files_modifications;
 
+	//Equivalence between resource path and uid
+	std::map<std::string, uint> res_uid;
+
+	//Equivalence between uid and its resource
 	std::map<uint, MeshResource*> uid_mesh;
 	std::map<uint, MaterialResource*> uid_material;
 };

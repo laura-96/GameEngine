@@ -162,42 +162,43 @@ void GameObject::Draw() const
 		{
 			glColor4f(White.r, White.g, White.b, White.a);
 		}
-/*
+
+		uint id_vertex, id_index, id_normals, id_uvs;
+		mesh->mesh_res->GetId(id_index, id_vertex, id_normals, id_uvs);
+
 		glEnableClientState(GL_VERTEX_ARRAY);
-		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertex);
+		glBindBuffer(GL_ARRAY_BUFFER, id_vertex);
 		glVertexPointer(3, GL_FLOAT, 0, NULL);
 		
-		if (mesh->index_material >= 0)
+		MaterialComponent* mat = (MaterialComponent*)FindComponent(Component::ComponentType::Material);
+
+		if (mat != nullptr && mat->enable)
 		{
-			MaterialComponent* mat = (MaterialComponent*)FindComponent(Component::ComponentType::Material);
-
-			if (mat != nullptr && mat->enable)
-			{
-				glEnableClientState(GL_TEXTURE_2D);
-				glBindTexture(GL_TEXTURE_2D, mat->texture[0]);
-				glEnable(GL_TEXTURE_2D);
-			}
+			glEnableClientState(GL_TEXTURE_2D);
+			//glBindTexture(GL_TEXTURE_2D, mat->texture[0]);
+			glEnable(GL_TEXTURE_2D);
 		}
+		
 
-		if (mesh->num_uvs > 0)
+		if (mesh->mesh_res->num_uvs > 0)
 		{
 			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uvs);
+			glBindBuffer(GL_ARRAY_BUFFER, id_uvs);
 			glTexCoordPointer(2, GL_FLOAT, 0, NULL);
 		}
 
-		if (mesh->num_normals > 0)
+		if (mesh->mesh_res->num_normals > 0)
 		{
 			glEnable(GL_LIGHTING);
 			glEnableClientState(GL_NORMAL_ARRAY);
-			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_normals);
+			glBindBuffer(GL_ARRAY_BUFFER, id_normals);
 			glNormalPointer(GL_FLOAT, 0, NULL);
 		}
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_index);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_index);
 
-		glDrawElements(GL_TRIANGLES, mesh->num_index, GL_UNSIGNED_INT, NULL);
-		*/
+		glDrawElements(GL_TRIANGLES, mesh->mesh_res->num_index, GL_UNSIGNED_INT, NULL);
+		
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		glDisableClientState(GL_VERTEX_ARRAY);
 		glDisable(GL_TEXTURE_2D);

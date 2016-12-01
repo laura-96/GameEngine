@@ -126,25 +126,14 @@ bool ModuleResourceManager::ImportFile(const char* directory)
 
 	else if (strcmp(file_type.c_str(), "tga") == 0 || strcmp(file_type.c_str(), "png") == 0)
 	{
-		std::string output;
-		uint uid = App->scene_importer->ImportMaterial(directory, output);
-
-		//Creating equivalence to be used to look for original file from the imported one
-		res_equivalence.insert(std::pair<std::string, std::string>(file, output));
-
-		std::string dir;
-		dir.clear();
-		dir.append("Game/Library/Material/");
-		dir.append(output);
-
-		CreateMaterialResource(uid, dir.c_str());
-
+		ImportMaterial(file.c_str(), directory);
 		LOG("File: %s is an image", file.c_str());
 	}
 
 	else if (strcmp(file_type.c_str(), "fbx") == 0 || strcmp(file_type.c_str(), "FBX") == 0)
 	{
 		std::string output;
+		
 		App->scene_importer->ImportScene(directory, output);
 		
 		LOG("File: %s is a scene", file.c_str());
@@ -159,6 +148,58 @@ bool ModuleResourceManager::ImportFile(const char* directory)
 	return ret;
 }
 
+uint ModuleResourceManager::GetUidFromFile(const char* file) const
+{
+	uint ret = NULL;
+	std::map<std::string, uint>::const_iterator it = res_uid.find(file);
+	
+	if (it != res_uid.end())
+	{
+		ret = it->second;
+	}
+	
+	return ret;
+}
+
+uint ModuleResourceManager::ImportMaterial(const char* file, const char* directory)
+{
+	uint uid = NULL;
+
+	std::string output;
+	std::map<std::string, uint>::iterator it = res_uid.find(file);
+
+	if (it == res_uid.end())
+	{
+		uid = App->scene_importer->ImportMaterial(directory, output);
+		res_uid.insert(std::pair<std::string, uint>(file, uid));
+
+		//Creating equivalence to be used to look for original file from the imported one
+		res_equivalence.insert(std::pair<std::string, std::string>(file, output));
+
+		std::string dir;
+		dir.clear();
+		dir.append("Game/Library/Material/");
+		dir.append(output);
+
+		CreateMaterialResource(uid, dir.c_str());
+
+	}
+
+	else
+	{
+		uid = res_uid.find(file)->second;
+	}
+
+	return uid;
+}
+
+uint ModuleResourceManager::ImportMesh(const char* file, uint uid)
+{
+	res_uid.insert(std::pair<std::string, uint>(file, uid));
+
+	return uid;
+}
+
 MaterialResource* ModuleResourceManager::GetMaterialResource(uint uid) const
 {
 	std::map<uint, MaterialResource*>::const_iterator it = uid_material.find(uid);
@@ -166,6 +207,19 @@ MaterialResource* ModuleResourceManager::GetMaterialResource(uint uid) const
 	return (*it).second;
 }
 
+bool ModuleResourceManager::IsMeshResource(const char* res) const
+{
+	bool ret = false;
+
+	std::map<std::string, uint>::const_iterator it = res_uid.find(res);
+	
+	if (it != res_uid.end())
+	{
+		ret = true;
+	}
+
+	return ret;
+}
 
 MeshResource* ModuleResourceManager::GetMeshResource(uint uid) const
 {

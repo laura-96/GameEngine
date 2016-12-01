@@ -8,7 +8,10 @@
 #include "MeshComponent.h"
 #include "MaterialComponent.h"
 #include "TransformComponent.h"
+#include "MeshResource.h"
+#include "MaterialResource.h"
 #include "ModuleSceneImporter.h"
+#include "ModuleResourceManager.h"
 #include "ModuleInput.h"
 #include "ModuleFileSystem.h"
 
@@ -105,6 +108,8 @@ bool GOManager::LoadFBXObjects(const char* FBX)
 			}
 
 			GameObject* go = CreateGo(gos->string, cJSON_GetObjectItem(gos, "UID")->valueint, (*it));
+			LoadComponents(gos, go);
+
 			objects_created.push_back(go);
 
 			gos = gos->next;
@@ -124,10 +129,43 @@ bool GOManager::LoadComponents(cJSON* components, GameObject* go) const
 	{
 		ret = true;
 		
+		//We look for the mesh and material associated to a prefab, through getting their UIDs, from the stored information in the prefab archive
 		cJSON* prefab = cJSON_GetObjectItem(components, "Prefab");
+		
+		if (prefab)
+		{
+			char* buffer = nullptr;
+			std::string file("Game/Library/Prefab/");
+			file.append(prefab->valuestring);
 
-		//MeshComponent* mesh = go->CreateMeshComponent();
-		//MaterialComponent* material = go->CreateMaterialComponent();
+			App->file_sys->Load(file.c_str(), &buffer);
+			char* cursor = buffer;
+
+			cursor += sizeof(uint);
+
+			uint mesh_uid = NULL;
+			memcpy(&mesh_uid, cursor, sizeof(uint));
+
+			cursor += sizeof(uint);
+
+			uint material_uid = NULL;
+			memcpy(&material_uid, cursor, sizeof(uint));
+
+			//We get the suitable resource from resource manager functions
+			MeshResource* mesh = App->resource_manager->GetMeshResource(mesh_uid);
+			MaterialResource* material = App->resource_manager->GetMaterialResource(material_uid);
+
+			MeshComponent* mesh_comp = go->CreateMeshComponent(mesh);
+			MaterialComponent* material_comp = go->CreateMaterialComponent(material);
+
+
+			mesh->gos_related.push_back(go);
+			material->gos_related.push_back(go);
+
+			//Loading buffers for resources
+			mesh->LoadBuffers();
+			
+		}
 
 		cJSON* translation = cJSON_GetObjectItem(components, "Translation");
 		cJSON* rotation = cJSON_GetObjectItem(components, "Rotation");

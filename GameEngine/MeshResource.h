@@ -9,7 +9,9 @@ class MeshResource : public Resource
 
 public:
 	MeshResource(uint mesh_uid, const char* archive) : Resource(ResourceType::Mesh, mesh_uid, archive) {};
+
 	void LoadBuffers();
+	void GetId(uint &index, uint &vertex, uint &normal, uint &uv) const;
 	void Clear();
 
 

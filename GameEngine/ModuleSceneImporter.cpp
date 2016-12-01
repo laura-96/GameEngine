@@ -93,6 +93,7 @@ bool ModuleSceneImporter::ImportScene(const char* file, std::string &output_scen
 		std::string output_prefab;
 
 		uint im_uid = ImportMesh(scene, node, output, "lau");
+
 		if (im_uid != 0)
 		{
 			App->resource_manager->CreateMeshResource(im_uid, output.c_str());
@@ -398,7 +399,15 @@ uint ModuleSceneImporter::ImportMesh(const aiScene* scene, aiNode* node, std::st
 
 				output = result_path;
 
-				App->file_sys->SaveInDir("Game/Library/Mesh", result_path, data, size);
+				if(App->resource_manager->IsMeshResource(output.c_str()) == false)
+				{
+					App->file_sys->SaveInDir("Game/Library/Mesh", result_path, data, size);
+					App->resource_manager->ImportMesh(output.c_str(), ret);
+				}
+				else
+				{
+					ret = App->resource_manager->GetUidFromFile(output.c_str());
+				}
 			}
 		}
 	}
