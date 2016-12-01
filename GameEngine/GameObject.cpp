@@ -37,8 +37,8 @@ GameObject::GameObject(GameObject* _parent, const char* _name, uint uid)
 
 MeshComponent* GameObject::CreateMeshComponent(MeshResource* mesh_resource)
 {
-	MeshComponent* ret = new MeshComponent((GameObject*)this, mesh_resource);
-
+	MeshComponent* ret = new MeshComponent((GameObject*)this);
+	ret->SetResource(mesh_resource);
 	Component* comp = ret;
 	components.push_back(comp);
 

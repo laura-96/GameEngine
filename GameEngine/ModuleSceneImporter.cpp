@@ -535,6 +535,9 @@ bool ModuleSceneImporter::LoadTransform(aiNode* node, math::float3 &translation,
 	rotation.z = ai_rotation.z;
 	rotation.w = ai_rotation.w;
 
+	translation.x = ai_position.x;
+	translation.y = ai_position.y;
+	translation.z = ai_position.z;
 
 	return true;
 }
