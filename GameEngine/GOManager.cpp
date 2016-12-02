@@ -92,7 +92,7 @@ bool GOManager::LoadFBXObjects(const char* FBX)
 		std::vector<GameObject*> objects_created;
 		
 		root_GO = CreateGo(cJSON_GetArrayItem(root, 0)->string, cJSON_GetObjectItem(cJSON_GetArrayItem(root, 0), "UID")->valuedouble, nullptr);
-		cJSON* prefab = cJSON_GetObjectItem(cJSON_GetArrayItem(root, 0), "Prefab");
+		/*cJSON* prefab = cJSON_GetObjectItem(cJSON_GetArrayItem(root, 0), "Prefab");
 		
 		if (prefab != nullptr)
 		{
@@ -115,7 +115,7 @@ bool GOManager::LoadFBXObjects(const char* FBX)
 		math::float4x4 matrix = math::float4x4::identity;
 
 		transform->GetTransform(matrix);
-		//LoadComponents(cJSON_GetArrayItem(root, 0), root_GO);
+		//LoadComponents(cJSON_GetArrayItem(root, 0), root_GO);*/
 
 		objects_created.push_back(root_GO);
 		
@@ -138,7 +138,7 @@ bool GOManager::LoadFBXObjects(const char* FBX)
 
 			GameObject* go = CreateGo(cJSON_GetArrayItem(root, i)->string, cJSON_GetObjectItem(cJSON_GetArrayItem(root, i), "UID")->valuedouble, (*it));
 			
-			cJSON* go_prefab = cJSON_GetObjectItem(cJSON_GetArrayItem(root, i), "Prefab");
+			/*cJSON* go_prefab = cJSON_GetObjectItem(cJSON_GetArrayItem(root, i), "Prefab");
 
 			if (go_prefab != nullptr)
 			{
@@ -160,12 +160,13 @@ bool GOManager::LoadFBXObjects(const char* FBX)
 			math::float4x4 matrix = math::float4x4::identity;
 
 			transform->GetTransform(matrix);
-			//LoadComponents(cJSON_GetArrayItem(root, i), go);
+			LoadComponents(cJSON_GetArrayItem(root, i), go);*/
 
 			objects_created.push_back(go);
 			i++;
 		}
 		ret = true;
+		cJSON_Delete(root);
 	}
 	
 	return ret;
