@@ -32,6 +32,7 @@ public:
 	
 	void Update();
 	void Draw() const;
+	void DrawBoundingBox() const;
 	void Clear(); //Cleans up GameObject
 
 public:

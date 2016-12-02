@@ -93,7 +93,6 @@ bool ModuleSceneImporter::ImportScene(const char* file, std::string &output_scen
 		std::string output_prefab;
 
 		uint rmesh_uid = ImportMesh(scene, node, output, "lau");
-
 		uint rmat_uid = ImportMaterial(scene, node, output_image);
 		uint prefab_uid = ImportPrefab(node, rmesh_uid, rmat_uid, output_prefab, "gl");
 
@@ -130,11 +129,11 @@ bool ModuleSceneImporter::ImportScene(const char* file, std::string &output_scen
 					std::string output_image;
 					std::string output_prefab;
 
-					uint im_uid = ImportMesh(scene, node, output, "lau");
+					uint mesh_uid = ImportMesh(scene, node, output, "lau");
 					
 					uint mat_uid = ImportMaterial(scene, node, output_image);
 					
-					prefab_uid = ImportPrefab(node, im_uid, mat_uid, output_prefab, "gl");
+					prefab_uid = ImportPrefab(node, mesh_uid, mat_uid, output_prefab, "gl");
 
 					uint go_uid = random.IntFast();
 
@@ -299,7 +298,7 @@ uint ModuleSceneImporter::ImportMesh(const aiScene* scene, aiNode* node, std::st
 				uint index_scene = node->mMeshes[i];
 				aiMesh* meshes = scene->mMeshes[index_scene];
 				
-				uint mesh_uid = ret = random.IntFast();
+				ret = random.IntFast();
 				//Storing number of indices, number of vertices, number of normals, number of texture coordinates (uvs)
 				uint num_attributes[4] = { meshes->mNumFaces * 3, meshes->mNumVertices, NULL, NULL };
 				
@@ -311,13 +310,11 @@ uint ModuleSceneImporter::ImportMesh(const aiScene* scene, aiNode* node, std::st
 					num_attributes[3] = meshes->mNumVertices;
 				}
 
-				uint size = (sizeof(uint) + sizeof(num_attributes) + (sizeof(uint) * num_attributes[0]) + (sizeof(float) * num_attributes[1] * 3) + (sizeof(float) * num_attributes[2] * 3) + (sizeof(float) * num_attributes[3] * 2));
+				uint size = (sizeof(num_attributes) + (sizeof(uint) * num_attributes[0]) + (sizeof(float) * num_attributes[1] * 3) + (sizeof(float) * num_attributes[2] * 3) + (sizeof(float) * num_attributes[3] * 2));
 				
 				char* data = new char[size];
 				//Cursor is used to store each attribute in the correct place of the buffer "data"
 				char* cursor = data;
-				memcpy(cursor, &mesh_uid, sizeof(uint));
-				cursor += sizeof(uint);
 
 				uint bytes = sizeof(num_attributes);
 

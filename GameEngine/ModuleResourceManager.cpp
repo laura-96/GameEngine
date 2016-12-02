@@ -258,7 +258,6 @@ MeshResource* ModuleResourceManager::CreateMeshResource(uint uid, const char* pa
 	if (buffer != nullptr)
 	{
 		char* cursor = buffer;
-		cursor += sizeof(uint);
 
 		uint attributes[4];
 
@@ -296,6 +295,7 @@ MeshResource* ModuleResourceManager::CreateMeshResource(uint uid, const char* pa
 			cursor += sizeof(float) * attributes[3] * 2;
 		}
 	}
+
 	uid_mesh.insert(std::pair<uint, MeshResource*>(uid, mesh));
 
 	return mesh;

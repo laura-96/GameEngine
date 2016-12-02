@@ -3,6 +3,8 @@
 
 #include "Component.h"
 #include "Globals.h"
+#include "MathGeoLib/include/MathGeoLib.h"
+
 class MeshResource;
 
 class MeshComponent : public Component
@@ -15,7 +17,7 @@ public:
 	void SetResource(MeshResource* new_mesh_res);
 	void Clear();
 
-
+	math::AABB mesh_box;
 	MeshResource* mesh_res;
 
 };
