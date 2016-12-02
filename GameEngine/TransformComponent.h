@@ -25,7 +25,7 @@ public:
 	void SetRotation(float x, float y, float z, float w);
 
 	void GetTransform(math::float4x4 &_transform) const;
-
+	void GetGlobalTransform(math::float4x4 &_transform) const;
 	void Clear();
 
 private:

@@ -1,4 +1,5 @@
 #include "TransformComponent.h"
+#include "GameObject.h"
 
 void TransformComponent::SetTranslation(float x, float y, float z)
 {
@@ -46,6 +47,36 @@ void TransformComponent::GetTransform(math::float4x4 &_transform) const
 	//FromTRS returns the matrix that corresponds to specific translation (position), rotation and scale
 	_transform = math::float4x4::FromTRS(translation, rotation.ToFloat3x3(), scale);
 	_transform.Transpose();
+}
+
+void TransformComponent::GetGlobalTransform(math::float4x4 &global_transform) const
+{
+	std::vector<GameObject*> parents;
+	GameObject* gos = GO_belong;
+
+	while (gos != nullptr)
+	{
+		parents.push_back(gos);
+		gos = gos->GO_parent;
+	}
+
+	std::vector<GameObject*>::reverse_iterator it = parents.rbegin();
+	TransformComponent* matrix = (TransformComponent*)(*it)->FindComponent(ComponentType::Transform);
+	matrix->GetTransform(global_transform);
+
+	math::float4x4 local_trans = math::float4x4::identity;
+	while (it != parents.rend())
+	{
+		TransformComponent* matrix = (TransformComponent*)(*it)->FindComponent(ComponentType::Transform);
+		
+		matrix->GetTransform(local_trans);
+
+		global_transform = global_transform * local_trans;
+
+		it++;
+	}
+
+	global_transform.Transpose();
 }
 
 void TransformComponent::Clear()

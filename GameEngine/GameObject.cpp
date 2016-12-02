@@ -140,9 +140,14 @@ void GameObject::Update()
 
 	MeshComponent* mesh = (MeshComponent*)FindComponent(Component::ComponentType::Mesh);
 
-	if (mesh != nullptr)
+	if (mesh != nullptr && matrix != nullptr)
 	{
-		bounding_box.Enclose(mesh->mesh_box);
+		math::float4x4 trans_mat = math::float4x4::identity;
+		matrix->GetGlobalTransform(trans_mat);
+
+		math::OBB obb = mesh->mesh_box.Transform(trans_mat);
+		bounding_box.Enclose(obb);
+		
 	}
 
 	glPopMatrix();
@@ -150,7 +155,7 @@ void GameObject::Update()
 
 void GameObject::Draw() const
 {
-	glPushMatrix();
+	//glPushMatrix();
 	
 	MeshComponent* mesh = (MeshComponent*)FindComponent(Component::ComponentType::Mesh);
 
@@ -208,6 +213,7 @@ void GameObject::Draw() const
 		glDisable(GL_TEXTURE_2D);
 
 	}
+	//glPopMatrix();
 }
 
 void GameObject::DrawBoundingBox() const
