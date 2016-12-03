@@ -35,11 +35,11 @@ bool GOManager::Init(cJSON* node)
 
 update_status GOManager::Update(float dt)
 {
-	
 
 	if (load_fbx && root_GO != nullptr)
 	{
 		EditorContent();
+		root_objects = root_GO->GatherHierarchy(root_GO);
 	}
 	
 	else if (root_GO == nullptr)
@@ -50,13 +50,14 @@ update_status GOManager::Update(float dt)
 		App->file_sys->CollectFiles("Library", files);
 
 		LoadFBXObjects("Library/Scenes/Street.FBX.json");
+		
 	}
+
 	//If right button of the mouse is pressed
 	if (App->input->GetMouseButton(3) == KEY_STATE::KEY_DOWN)
 	{
 		create_go_pos = { (float) App->input->GetMouseX(), (float) App->input->GetMouseY() };
 		create_go_editor = true;
-		LOG("MOUSE PRESSED");
 	}
 
 	if (create_go_editor)
@@ -82,6 +83,9 @@ void GOManager::DrawSceneObjects() const
 	for (uint i = 0; i < created_objects.size(); i++)
 	{
 		created_objects[i]->Update();
+
+		CameraComponent* cam = (CameraComponent*)created_objects[i]->FindComponent(Component::ComponentType::Camera);
+		cam->FrustumCulling(root_objects);
 	}
 }
 
@@ -280,6 +284,7 @@ void GOManager::CreateGOEditor(math::float2 editor_pos)
 
 						CameraComponent* camera = go->CreateCameraComponent();
 						camera->SetPreferences(transform->GetTranslation(), 5, 20, math::pi / 4, 2);
+						camera->ActivateCulling();
 
 						created_objects.push_back(go);
 						create_go_editor = false;
@@ -346,9 +351,11 @@ void GOManager::EditorContent()
 			ImGui::Separator();
 			
 			MeshComponent* mesh = (MeshComponent*)(*selected).FindComponent(Component::ComponentType::Mesh);
-			
+
 			if (mesh != nullptr)
 			{
+				enable_mesh = mesh->enable;
+
 				ImGui::Checkbox("- Mesh", &enable_mesh);
 				mesh->Enable(enable_mesh);
 			}

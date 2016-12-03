@@ -35,6 +35,8 @@ public:
 	void DrawSceneObjects() const;
 
 
+	std::vector<GameObject*> root_objects;
+
 private:
 
 	bool load_fbx = true;

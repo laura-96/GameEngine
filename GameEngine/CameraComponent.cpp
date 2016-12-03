@@ -91,14 +91,21 @@ void CameraComponent::FrustumCulling(std::vector<GameObject*> objects) const
 		std::vector<GameObject*>::iterator it = objects.begin();
 		while (it != objects.end())
 		{
-			if (!IntersectsObject((*it)))
+			//If it has got a mesh component, this one, won't render
+			Component* mesh = (Component*)(*it)->FindComponent(ComponentType::Mesh);
+
+			if (mesh != nullptr)
 			{
-				//If it has got a mesh component, this one, won't render
-				Component* mesh = (Component*)(*it)->FindComponent(ComponentType::Mesh);
-				if (mesh != nullptr)
+				if (!IntersectsObject((*it)))
 				{
 					mesh->Enable(false);
 				}
+
+				else
+				{
+					mesh->Enable(true);
+				}
+
 			}
 			it++;
 		}
@@ -111,28 +118,32 @@ bool CameraComponent::IntersectsObject(GameObject* obj) const
 	math::Plane planes[6];
 	frustum.GetPlanes(planes);
 
-	math::float3* corners = obj->GetBoundingBoxCorners();
+	
+	math::float3 corners[8];
+	obj->GetBoundingBoxCorners(corners);
 
 	//Test each of the points to check they are all under at least one of the planes (if they are, and culling is active, they are rejected)
-	
-	for (uint plane = 0; plane < 6; plane++)
+	if (corners)
 	{
-		uint corner = 0;
-		uint outside = 0;
-
-		while (corner < 8)
+		for (uint plane = 0; plane < 6; plane++)
 		{
-			if (planes[plane].IsOnPositiveSide(corners[corner]))
+			uint corner = 0;
+			uint outside = 0;
+
+			while (corner < 8)
 			{
-				outside++;
+				if (planes[plane].IsOnPositiveSide(corners[corner]) == true)
+				{
+					outside++;
+				}
+
+				corner++;
 			}
 
-			corner++;
-		}
-
-		if (outside == 8)
-		{
-			return false;
+			if (outside == 8)
+			{
+				return false;
+			}
 		}
 	}
 	

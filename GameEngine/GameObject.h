@@ -32,7 +32,7 @@ public:
 	
 	void Update();
 	void Draw() const;
-	math::float3* GetBoundingBoxCorners() const;
+	void GetBoundingBoxCorners(math::float3 ret[8]) const;
 	void DrawBoundingBox() const;
 	void Clear(); //Cleans up GameObject
 
@@ -43,6 +43,7 @@ public:
 
 	GameObject* GO_parent = nullptr;
 	std::string name;
+	//math::float4x4 global_transform = math::float4x4::identity;
 
 	bool selected = false;
 	bool active = true;

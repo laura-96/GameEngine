@@ -1,4 +1,6 @@
 #include "GameObject.h"
+#include "Application.h"
+#include "GOManager.h"
 
 #include "Component.h"
 #include "MeshComponent.h"
@@ -176,6 +178,7 @@ void GameObject::Update()
 	if (camera && camera->enable)
 	{
 		camera->DrawFrustum();
+		
 	}
 
 	glPushMatrix();
@@ -291,14 +294,17 @@ void GameObject::Draw() const
 	//glPopMatrix();
 }
 
-math::float3* GameObject::GetBoundingBoxCorners() const
+void GameObject::GetBoundingBoxCorners(math::float3 ret[8]) const
 {
-	math::float3* ret = NULL;
+
 	bounding_box.GetCornerPoints(ret);
-
-	return ret;
+	
+	if (! ret->IsFinite())
+	{
+		ret = nullptr;
+	}
+	
 }
-
 void GameObject::DrawBoundingBox() const
 {
 	glLineWidth(2.0f);
@@ -341,7 +347,6 @@ void GameObject::DrawBoundingBox() const
 
 	glEnd();
 }
-
 
 void GameObject::Clear()
 {
