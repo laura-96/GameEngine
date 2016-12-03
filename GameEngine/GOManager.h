@@ -30,6 +30,7 @@ public:
 	void ShowToEditor(GameObject* go);
 
 	update_status Update(float dt);
+	bool Save(cJSON* node);
 
 	void Draw() const;
 	void DrawSceneObjects() const;
@@ -37,6 +38,7 @@ public:
 
 	std::vector<GameObject*> root_objects;
 	std::string loaded_fbx;
+	bool save_tmp_file = false;
 
 private:
 

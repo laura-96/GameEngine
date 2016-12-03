@@ -32,6 +32,8 @@ private:
 
 	math::float3 translation;
 	math::float3 scale;
+
+public:
 	math::Quat rotation = math::Quat::identity;
 
 };

@@ -22,8 +22,13 @@ void ModuleTimeManager::ManagementTimeEditor()
 	{
 		if (ImGui::Button("Play", ImVec2(100, 30)))
 		{
+			App->go_manager->save_tmp_file = true;
+			App->Save();
+			App->go_manager->save_tmp_file = false;
+
 			char* buffer;
 			uint size = App->file_sys->Load(App->go_manager->loaded_fbx.c_str(), &buffer);
+
 			std::string file;
 			App->file_sys->GetFileFromDir(App->go_manager->loaded_fbx.c_str(), file);
 

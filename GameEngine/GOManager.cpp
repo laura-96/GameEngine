@@ -69,6 +69,81 @@ update_status GOManager::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
+bool GOManager::Save(cJSON* node)
+{
+	cJSON_AddStringToObject(node, "Scene saved", loaded_fbx.c_str());
+
+	std::vector<GameObject*> objects = root_GO->GatherHierarchy(root_GO);
+
+	char* buffer = nullptr;
+	uint size_load = App->file_sys->Load(loaded_fbx.c_str(), &buffer);
+
+	cJSON* root = cJSON_Parse(buffer);
+
+	uint size = cJSON_GetArraySize(root);
+	uint i = 0;
+
+	while (i < size)
+	{
+		std::vector<GameObject*>::iterator it = objects.begin();
+		uint comp_uid = cJSON_GetObjectItem(cJSON_GetArrayItem(root, i), "UID")->valuedouble;
+
+		while (it != objects.end())
+		{
+			if ((*it)->GetUID() == comp_uid)
+			{
+				break;
+			}
+
+			it++;
+		}
+
+		cJSON* translation = cJSON_GetObjectItem(cJSON_GetArrayItem(root, i), "Translation");
+		cJSON* rotation = cJSON_GetObjectItem(cJSON_GetArrayItem(root, i), "Rotation");
+		cJSON* scale = cJSON_GetObjectItem(cJSON_GetArrayItem(root, i), "Scale");
+
+		TransformComponent* transform = (TransformComponent*)(*it)->FindComponent(Component::ComponentType::Transform);
+		if (transform)
+		{
+			cJSON_GetObjectItem(translation, "x")->valuedouble = transform->GetTranslation().x;
+			cJSON_GetObjectItem(translation, "y")->valuedouble = transform->GetTranslation().y;
+			cJSON_GetObjectItem(translation, "z")->valuedouble = transform->GetTranslation().z;
+
+			cJSON_GetObjectItem(rotation, "x")->valuedouble = transform->rotation.x;
+			cJSON_GetObjectItem(rotation, "y")->valuedouble = transform->rotation.y;
+			cJSON_GetObjectItem(rotation, "z")->valuedouble = transform->rotation.z;
+			cJSON_GetObjectItem(rotation, "w")->valuedouble = transform->rotation.w;
+
+			cJSON_GetObjectItem(scale, "x")->valuedouble = transform->GetScale().x;
+			cJSON_GetObjectItem(scale, "y")->valuedouble = transform->GetScale().y;
+			cJSON_GetObjectItem(scale, "z")->valuedouble = transform->GetScale().z;
+		}
+
+		i++;
+	}
+
+	char* save = cJSON_Print(root);
+	uint size_file = strlen(save);
+
+	cJSON_Parse(save);
+
+	std::string file_to_save;
+	App->file_sys->GetFileFromDir(loaded_fbx.c_str(), file_to_save);
+
+	if (!save_tmp_file)
+	{
+		App->file_sys->SaveInDir("Game/Library/Scenes", file_to_save.c_str(), save, size_file);
+
+	}
+	
+	else
+	{
+		App->file_sys->SaveInDir("Game/Library/Temp", file_to_save.c_str(), save, size_file);
+	}
+
+	return true;
+}
+
 void GOManager::Draw() const
 {
 	if (load_fbx && root_GO != nullptr)

@@ -82,7 +82,7 @@ bool Application::Init()
 	bool ret = true;
 
 	char* buff = nullptr;
-	uint size = file_sys->Load("Config.json", &buff);
+	uint size = file_sys->Load("Game/Settings/Config.json", &buff);
 
 	if (buff != nullptr)
 	{
