@@ -7,6 +7,7 @@ class GameObject;
 class MeshComponent;
 class MaterialComponent;
 class TransformComponent;
+class CameraComponent;
 
 class Component 
 {
@@ -16,6 +17,7 @@ public:
 		Mesh,
 		Transform,
 		Material,
+		Camera,
 		None
 	};
 

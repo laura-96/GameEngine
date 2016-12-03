@@ -51,32 +51,23 @@ void TransformComponent::GetTransform(math::float4x4 &_transform) const
 
 void TransformComponent::GetGlobalTransform(math::float4x4 &global_transform) const
 {
-	std::vector<GameObject*> parents;
-	GameObject* gos = GO_belong;
+	GetTransform(global_transform);
 
-	while (gos != nullptr)
-	{
-		parents.push_back(gos);
-		gos = gos->GO_parent;
-	}
-
-	std::vector<GameObject*>::reverse_iterator it = parents.rbegin();
-	TransformComponent* matrix = (TransformComponent*)(*it)->FindComponent(ComponentType::Transform);
-	matrix->GetTransform(global_transform);
-
-	math::float4x4 local_trans = math::float4x4::identity;
-	while (it != parents.rend())
-	{
-		TransformComponent* matrix = (TransformComponent*)(*it)->FindComponent(ComponentType::Transform);
-		
-		matrix->GetTransform(local_trans);
-
-		global_transform = global_transform * local_trans;
-
-		it++;
-	}
-
+	math::float4x4 local_transform = math::float4x4::identity;
+	GetTransform(local_transform);
+	local_transform.Transpose();
 	global_transform.Transpose();
+
+	if (GO_belong->GO_parent != nullptr)
+	{
+		TransformComponent* parent = (TransformComponent*) GO_belong->GO_parent->FindComponent(ComponentType::Transform);
+		math::float4x4 p_matrix = math::float4x4::identity;
+		parent->GetGlobalTransform(p_matrix);
+		
+		global_transform = local_transform * p_matrix;
+		global_transform.Transpose();
+	}
+
 }
 
 void TransformComponent::Clear()

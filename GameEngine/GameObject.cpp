@@ -4,6 +4,7 @@
 #include "MeshComponent.h"
 #include "MaterialComponent.h"
 #include "TransformComponent.h"
+#include "CameraComponent.h"
 
 #include "MeshResource.h"
 #include "MaterialResource.h"
@@ -58,6 +59,16 @@ MaterialComponent* GameObject::CreateMaterialComponent(MaterialResource* materia
 TransformComponent* GameObject::CreateTransformComponent()
 {
 	TransformComponent* ret = new TransformComponent((GameObject*)this);
+
+	Component* comp = ret;
+	components.push_back(comp);
+
+	return ret;
+}
+
+CameraComponent* GameObject::CreateCameraComponent()
+{
+	CameraComponent* ret = new CameraComponent((GameObject*)this);
 
 	Component* comp = ret;
 	components.push_back(comp);
@@ -126,6 +137,16 @@ void GameObject::Update()
 
 	if (active)
 	{
+		CameraComponent* camera = (CameraComponent*)FindComponent(Component::ComponentType::Camera);
+		
+		if (camera)
+		{
+			
+			camera->SetPreferences(math::float3::zero, 20, 100, 100, 2);
+			camera->DrawFrustum();
+		}
+		
+
 		Draw();
 
 		if (!children.empty())
@@ -239,24 +260,24 @@ void GameObject::DrawBoundingBox() const
 
 	glEnd();
 
-	/*
+	
 	glBegin(GL_LINE_LOOP);
 
-	glVertex3f(bounding_box.CornerPoint(5).x, bounding_box.CornerPoint(5).y, bounding_box.CornerPoint(5).z);
 	glVertex3f(bounding_box.CornerPoint(0).x, bounding_box.CornerPoint(0).y, bounding_box.CornerPoint(0).z);
-	glVertex3f(bounding_box.CornerPoint(6).x, bounding_box.CornerPoint(6).y, bounding_box.CornerPoint(6).z);
 	glVertex3f(bounding_box.CornerPoint(1).x, bounding_box.CornerPoint(1).y, bounding_box.CornerPoint(1).z);
+	glVertex3f(bounding_box.CornerPoint(5).x, bounding_box.CornerPoint(5).y, bounding_box.CornerPoint(5).z);
+	glVertex3f(bounding_box.CornerPoint(4).x, bounding_box.CornerPoint(4).y, bounding_box.CornerPoint(4).z);
 
 	glEnd();
-
+	
 	glBegin(GL_LINE_LOOP);
 
-	glVertex3f(bounding_box.CornerPoint(4).x, bounding_box.CornerPoint(4).y, bounding_box.CornerPoint(4).z);
-	glVertex3f(bounding_box.CornerPoint(7).x, bounding_box.CornerPoint(7).y, bounding_box.CornerPoint(7).z);
 	glVertex3f(bounding_box.CornerPoint(2).x, bounding_box.CornerPoint(2).y, bounding_box.CornerPoint(2).z);
 	glVertex3f(bounding_box.CornerPoint(3).x, bounding_box.CornerPoint(3).y, bounding_box.CornerPoint(3).z);
+	glVertex3f(bounding_box.CornerPoint(7).x, bounding_box.CornerPoint(7).y, bounding_box.CornerPoint(7).z);
+	glVertex3f(bounding_box.CornerPoint(6).x, bounding_box.CornerPoint(6).y, bounding_box.CornerPoint(6).z);
 
-	glEnd();*/
+	glEnd();
 }
 
 

@@ -122,6 +122,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="CameraComponent.h" />
     <ClInclude Include="cJSON.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Component.h" />
@@ -229,6 +230,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="CameraComponent.cpp" />
     <ClCompile Include="cJSON.c" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Component.cpp" />

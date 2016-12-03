@@ -39,6 +39,7 @@ private:
 
 	GameObject* root_GO = nullptr;
 	GameObject* selected = nullptr;
+	std::vector<GameObject*> created_objects;
 
 	bool create_go_editor = false;
 	math::float2 create_go_pos;

@@ -72,6 +72,14 @@ void GOManager::Draw() const
 	{
 		root_GO->Update();
 	}
+	if (created_objects.size() > 0)
+	{
+		created_objects[0]->Update();
+	}
+	/*for (uint i = 0; i < created_objects.size(); i++)
+	{
+		created_objects[i]->Update();
+	}*/
 }
 
 bool GOManager::LoadFBXObjects(const char* FBX)
@@ -238,7 +246,17 @@ void GOManager::CreateGOEditor(math::float2 editor_pos)
 		{
 			if (ImGui::IsItemClicked(0))
 			{
-				CreateGo("void object", 92839399238, nullptr);
+				math::LCG uid = math::LCG();
+				GameObject* go = CreateGo("void object", uid.IntFast(), nullptr);
+				TransformComponent* transform = go->CreateTransformComponent();
+
+				transform->SetTranslation(0, 0, 0);
+				transform->SetScale(1, 1, 1);
+				transform->SetRotation(0, 0, 0, 1);
+
+				CameraComponent* camera = go->CreateCameraComponent();
+
+				created_objects.push_back(go);
 			}
 
 			ImGui::TreePop();
@@ -260,11 +278,22 @@ void GOManager::EditorContent()
 
 	if (ImGui::Begin("Game Objects' Hierarchy:"))
 	{
-		if (root_GO)
+
+		if (ImGui::TreeNode("Scene"))
 		{
-			ShowToEditor(root_GO);
+			if(root_GO)
+				ShowToEditor(root_GO);
+
+			for (uint i = 0; i < created_objects.size(); i++)
+			{
+				ShowToEditor(created_objects[i]);
+			}
+
+			ImGui::TreePop();
 		}
+
 	}
+
 	ImGui::End();
 
 	if (selected != nullptr)

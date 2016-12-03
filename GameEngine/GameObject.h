@@ -21,9 +21,8 @@ public:
 
 	MeshComponent* CreateMeshComponent(MeshResource* mesh_resource);
 	MaterialComponent* CreateMaterialComponent(MaterialResource* material_resource);
-
 	TransformComponent* CreateTransformComponent();
-
+	CameraComponent* CreateCameraComponent();
 
 	Component* FindComponent(const Component::ComponentType _type) const;
 	const char* GetName() const;
