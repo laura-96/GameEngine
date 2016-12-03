@@ -155,6 +155,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	App->scene_intro->Draw();
 	
 	App->go_manager->Draw();
+	App->go_manager->DrawSceneObjects();
 
 	App->imgui->Draw();
 

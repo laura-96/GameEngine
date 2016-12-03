@@ -10,8 +10,15 @@ public:
 	CameraComponent(GameObject* go) : Component(ComponentType::Camera, go) { };
 	void SetPreferences(math::float3 position, float near_plane_dist, float far_plane_dist, float horizontal_fov, float aspect_ratio);
 	void DrawFrustum() const;
+	void ActivateCulling();
+	void DeactivateCulling();
+
+	//Culls every object outside the frustum if culling is active
+	void FrustumCulling(std::vector<GameObject*> game_objects) const;
+	bool IntersectsObject(GameObject* obj) const;
 
 private:
+	bool frustum_culling = false;
 	math::Frustum frustum;
 };
 

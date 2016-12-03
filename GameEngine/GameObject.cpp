@@ -35,6 +35,62 @@ GameObject::GameObject(GameObject* _parent, const char* _name, uint uid)
 
 }
 
+std::vector<GameObject*> GameObject::GatherHierarchy(GameObject* root) const
+{
+	std::vector<GameObject*> ret;
+
+	if (root)
+	{
+		GameObject* it = root;
+		
+		while (it != nullptr)
+		{
+			if (!it->children.empty())
+			{
+				bool closed_child = false;
+				std::list<GameObject*>::iterator i = it->children.begin();
+
+				for (uint j = 0; j < ret.size(); j++)
+				{
+					if (ret[j] == (*i))
+					{
+						if ((*i) == it->children.back())
+						{
+							closed_child = true;
+						}
+						else
+						{
+							i++;
+						}
+					}
+				}
+				if (!closed_child)
+				{
+					it = (*i);
+				}
+				else
+				{
+					ret.push_back(it);
+				}
+			}
+			else
+			{
+				ret.push_back(it);
+			}
+
+			for (uint j = 0; j < ret.size(); j++)
+			{
+				if (ret[j] == it)
+				{
+					it = it->GO_parent;
+				}
+			}
+		}
+
+	}
+	return ret;
+}
+
 
 MeshComponent* GameObject::CreateMeshComponent(MeshResource* mesh_resource)
 {
@@ -115,6 +171,13 @@ void GameObject::Update()
 {
 	DrawBoundingBox();
 
+	CameraComponent* camera = (CameraComponent*)FindComponent(Component::ComponentType::Camera);
+
+	if (camera && camera->enable)
+	{
+		camera->DrawFrustum();
+	}
+
 	glPushMatrix();
 
 	TransformComponent* matrix = (TransformComponent*)FindComponent(Component::ComponentType::Transform);
@@ -136,14 +199,7 @@ void GameObject::Update()
 	}
 
 	if (active)
-	{
-		CameraComponent* camera = (CameraComponent*)FindComponent(Component::ComponentType::Camera);
-		
-		if (camera)
-		{
-			camera->DrawFrustum();
-		}
-		
+	{		
 
 		Draw();
 
@@ -233,6 +289,14 @@ void GameObject::Draw() const
 
 	}
 	//glPopMatrix();
+}
+
+math::float3* GameObject::GetBoundingBoxCorners() const
+{
+	math::float3* ret = NULL;
+	bounding_box.GetCornerPoints(ret);
+
+	return ret;
 }
 
 void GameObject::DrawBoundingBox() const

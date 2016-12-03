@@ -18,6 +18,7 @@ public:
 
 	GameObject(GameObject* _parent, const char* _name, uint uid);
 
+	std::vector<GameObject*> GatherHierarchy(GameObject* root) const;
 
 	MeshComponent* CreateMeshComponent(MeshResource* mesh_resource);
 	MaterialComponent* CreateMaterialComponent(MaterialResource* material_resource);
@@ -31,6 +32,7 @@ public:
 	
 	void Update();
 	void Draw() const;
+	math::float3* GetBoundingBoxCorners() const;
 	void DrawBoundingBox() const;
 	void Clear(); //Cleans up GameObject
 

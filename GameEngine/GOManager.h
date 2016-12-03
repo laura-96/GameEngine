@@ -32,6 +32,8 @@ public:
 	update_status Update(float dt);
 
 	void Draw() const;
+	void DrawSceneObjects() const;
+
 
 private:
 
@@ -48,6 +50,14 @@ private:
 	bool enable = true;
 	bool enable_mesh = true;
 	bool enable_material = true;
+	bool enable_camera = true;
+
+	//Used for camera content in editor
+	bool camera_culling = true;
+	float near_dist;
+	float far_dist;
+	float aspect_ratio;
+	float fov_h;
 
 	//Used for transform content in editor
 	bool scale = false;

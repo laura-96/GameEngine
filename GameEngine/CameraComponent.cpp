@@ -4,6 +4,8 @@
 #include "Globals.h"
 #include "Color.h"
 
+#include "GameObject.h"
+
 #include <Windows.h>
 #include "Glew/include/glew.h"
 #include "SDL/include/SDL_opengl.h"
@@ -64,4 +66,75 @@ void CameraComponent::DrawFrustum() const
 	glVertex3f(frustum.CornerPoint(6).x, frustum.CornerPoint(6).y, frustum.CornerPoint(6).z);
 
 	glEnd();
+}
+
+void CameraComponent::ActivateCulling()
+{
+	if (!frustum_culling)
+	{
+		frustum_culling = true;
+	}
+}
+
+void CameraComponent::DeactivateCulling()
+{
+	if (frustum_culling)
+	{
+		frustum_culling = false;
+	}
+}
+
+void CameraComponent::FrustumCulling(std::vector<GameObject*> objects) const
+{
+	if (frustum_culling)
+	{
+		std::vector<GameObject*>::iterator it = objects.begin();
+		while (it != objects.end())
+		{
+			if (!IntersectsObject((*it)))
+			{
+				//If it has got a mesh component, this one, won't render
+				Component* mesh = (Component*)(*it)->FindComponent(ComponentType::Mesh);
+				if (mesh != nullptr)
+				{
+					mesh->Enable(false);
+				}
+			}
+			it++;
+		}
+	}
+}
+
+bool CameraComponent::IntersectsObject(GameObject* obj) const
+{
+	
+	math::Plane planes[6];
+	frustum.GetPlanes(planes);
+
+	math::float3* corners = obj->GetBoundingBoxCorners();
+
+	//Test each of the points to check they are all under at least one of the planes (if they are, and culling is active, they are rejected)
+	
+	for (uint plane = 0; plane < 6; plane++)
+	{
+		uint corner = 0;
+		uint outside = 0;
+
+		while (corner < 8)
+		{
+			if (planes[plane].IsOnPositiveSide(corners[corner]))
+			{
+				outside++;
+			}
+
+			corner++;
+		}
+
+		if (outside == 8)
+		{
+			return false;
+		}
+	}
+	
+	return true;
 }

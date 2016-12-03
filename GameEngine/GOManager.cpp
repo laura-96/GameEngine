@@ -74,14 +74,15 @@ void GOManager::Draw() const
 	{
 		root_GO->Update();
 	}
-	if (created_objects.size() > 0)
-	{
-		created_objects[0]->Update();
-	}
-	/*for (uint i = 0; i < created_objects.size(); i++)
+
+}
+
+void GOManager::DrawSceneObjects() const
+{
+	for (uint i = 0; i < created_objects.size(); i++)
 	{
 		created_objects[i]->Update();
-	}*/
+	}
 }
 
 bool GOManager::LoadFBXObjects(const char* FBX)
@@ -362,6 +363,44 @@ void GOManager::EditorContent()
 				//ImGui::TextColored(ImVec4(0, 0, 255, 1), material->path.c_str());
 
 				//ImGui::Image((ImTextureID)material->texture[0], ImVec2(100, 100));
+			}
+			
+			CameraComponent* camera = (CameraComponent*)(*selected).FindComponent(Component::ComponentType::Camera);
+
+			if (camera != nullptr)
+			{
+				ImGui::Checkbox("- Camera", &enable_camera);
+				camera->Enable(enable_camera);
+
+				ImGui::Checkbox("	Frustum culling", &camera_culling);
+				
+				if (camera_culling)
+				{
+					camera->ActivateCulling();
+				}
+
+				else
+				{
+					camera->DeactivateCulling();
+				}
+
+				if (ImGui::SliderFloat("Near Plane distance", &near_dist, 0, far_dist))
+				{
+					
+				}
+
+				if (ImGui::SliderFloat("Far Plane distance", &far_dist, near_dist, 100))
+				{
+
+				}
+
+				if (ImGui::SliderFloat("Aspect Ratio", &aspect_ratio, 0, 10))
+				{
+
+				}
+
+
+
 			}
 
 			ImGui::Separator();
