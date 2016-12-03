@@ -49,7 +49,7 @@ update_status GOManager::Update(float dt)
 		std::vector<std::string> files;
 		App->file_sys->CollectFiles("Library", files);
 
-		LoadFBXObjects("Library/Scenes/Street.FBX.json");
+		//LoadFBXObjects("Library/Scenes/Street.FBX.json");
 		
 	}
 

@@ -4,6 +4,7 @@
 #include "UIEditor.h"
 
 #include "ModuleWindow.h"
+#include "GOManager.h"
 
 #include "Panel.h"
 #include "PanelConfiguration.h"
@@ -75,12 +76,12 @@ update_status UIEditor::Update(float dt)
 	{
 		if (ImGui::BeginMenu("File"))
 		{
-			if (ImGui::MenuItem("Load"))
+			if (ImGui::MenuItem("Load", "Ctrl + L"))
 			{
-				
-				
+				select_load = true;
 			}
-			if (ImGui::MenuItem("Save"))
+
+			if (ImGui::MenuItem("Save", "Ctrl + S"))
 			{
 				App->Save();
 			}
@@ -109,6 +110,41 @@ update_status UIEditor::Update(float dt)
 			ImGui::EndMenu();
 		}
 		ImGui::EndMainMenuBar();
+
+	}
+
+	if (select_load)
+	{
+		ImGui::SetNextWindowPosCenter();
+		ImGui::SetNextWindowSize(ImVec2(300, 300));
+		if (ImGui::Begin("FILES: "))
+		{
+			std::vector<std::string> scenes;
+			App->file_sys->CollectFiles("Library/Scenes", scenes);
+
+			std::vector<std::string>::iterator it = scenes.begin();
+
+			while (it != scenes.end())
+			{
+				std::string file;
+				App->file_sys->GetFileFromDir((*it).c_str(), file);
+
+				if (ImGui::Button(file.c_str(), ImVec2(100, 30)))
+				{
+
+					App->go_manager->LoadFBXObjects((*it).c_str());
+					select_load = false;
+				}
+
+				it++;
+			}
+
+			if (ImGui::Button("Close", ImVec2(100, 30)))
+			{
+				select_load = false;
+			}
+		}
+		ImGui::End();
 	}
 
 	/*for (uint i = 0; i < panels.size(); i++)

@@ -26,7 +26,7 @@ public:
 
 	bool capture_mouse = false;
 	bool capture_keyboard = false;
-
+	bool select_load = false;
 	//std::vector<Panel*> panels;
 
 	//PanelConfiguration* conf = nullptr;

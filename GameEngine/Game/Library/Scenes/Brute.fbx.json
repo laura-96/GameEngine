@@ -1,0 +1,43 @@
+{
+	"RootNode":	{
+		"UID":	3588607659,
+		"Parent UID":	0,
+		"Translation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0,
+			"w":	1
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	},
+	"Brute":	{
+		"UID":	4206218919,
+		"Parent UID":	3588607659,
+		"Prefab":	"Brute_prefab.gl",
+		"Translation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0
+		},
+		"Rotation":	{
+			"x":	0,
+			"y":	0,
+			"z":	0,
+			"w":	1
+		},
+		"Scale":	{
+			"x":	1,
+			"y":	1,
+			"z":	1
+		}
+	}
+}
