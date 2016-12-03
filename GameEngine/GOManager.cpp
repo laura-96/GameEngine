@@ -8,6 +8,8 @@
 #include "MeshComponent.h"
 #include "MaterialComponent.h"
 #include "TransformComponent.h"
+#include "CameraComponent.h"
+
 #include "MeshResource.h"
 #include "MaterialResource.h"
 #include "ModuleSceneImporter.h"
@@ -234,8 +236,8 @@ void GOManager::CreateGOEditor(math::float2 editor_pos)
 {
 	ImGuiWindowFlags flags =
 		ImGuiWindowFlags_NoTitleBar |
-		ImGuiWindowFlags_NoMove |
-		ImGuiWindowFlags_NoResize;
+		ImGuiWindowFlags_NoMove;
+		//ImGuiWindowFlags_NoResize;
 
 	ImGui::SetNextWindowPos(ImVec2(editor_pos.x, editor_pos.y));
 	
@@ -244,20 +246,47 @@ void GOManager::CreateGOEditor(math::float2 editor_pos)
 	
 		if (ImGui::TreeNodeEx("Create GO"))
 		{
-			if (ImGui::IsItemClicked(0))
-			{
-				math::LCG uid = math::LCG();
-				GameObject* go = CreateGo("void object", uid.IntFast(), nullptr);
-				TransformComponent* transform = go->CreateTransformComponent();
+			
+				if (ImGui::TreeNode("Void object"))
+				{
+					if (ImGui::IsItemClicked(0))
+					{
+						math::LCG uid = math::LCG();
+						GameObject* go = CreateGo("Void object", uid.IntFast(), nullptr);
+						TransformComponent* transform = go->CreateTransformComponent();
 
-				transform->SetTranslation(0, 0, 0);
-				transform->SetScale(1, 1, 1);
-				transform->SetRotation(0, 0, 0, 1);
+						transform->SetTranslation(0, 0, 0);
+						transform->SetScale(1, 1, 1);
+						transform->SetRotation(0, 0, 0, 1);
 
-				CameraComponent* camera = go->CreateCameraComponent();
+						created_objects.push_back(go);
+						create_go_editor = false;
+					}
+					ImGui::TreePop();
+				}
 
-				created_objects.push_back(go);
-			}
+				if (ImGui::TreeNode("With camera component"))
+				{
+					if (ImGui::IsItemClicked(0))
+					{
+						math::LCG uid = math::LCG();
+						GameObject* go = CreateGo("Camera", uid.IntFast(), nullptr);
+						TransformComponent* transform = go->CreateTransformComponent();
+
+						transform->SetTranslation(0, 0, 0);
+						transform->SetScale(1, 1, 1);
+						transform->SetRotation(0, 0, 0, 1);
+
+						CameraComponent* camera = go->CreateCameraComponent();
+						camera->SetPreferences(transform->GetTranslation(), 5, 20, math::pi / 4, 2);
+
+						created_objects.push_back(go);
+						create_go_editor = false;
+					}
+
+					ImGui::TreePop();
+				}
+				
 
 			ImGui::TreePop();
 		}

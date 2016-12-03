@@ -141,8 +141,6 @@ void GameObject::Update()
 		
 		if (camera)
 		{
-			
-			camera->SetPreferences(math::float3::zero, 20, 100, 100, 2);
 			camera->DrawFrustum();
 		}
 		

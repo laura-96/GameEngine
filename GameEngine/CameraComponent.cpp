@@ -15,6 +15,8 @@ void CameraComponent::SetPreferences(math::float3 position, float near_plane_dis
 {
 	frustum.type = FrustumType::PerspectiveFrustum;
 	frustum.pos = position;
+	frustum.front = float3::unitZ;
+	frustum.up = float3::unitY;
 	frustum.nearPlaneDistance = near_plane_dist;
 	frustum.farPlaneDistance = far_plane_dist;
 	frustum.horizontalFov = horizontal_fov;
