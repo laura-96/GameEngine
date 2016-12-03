@@ -36,6 +36,7 @@ public:
 
 
 	std::vector<GameObject*> root_objects;
+	std::string loaded_fbx;
 
 private:
 

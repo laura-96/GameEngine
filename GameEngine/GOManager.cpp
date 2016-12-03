@@ -102,6 +102,9 @@ bool GOManager::LoadFBXObjects(const char* FBX)
 
 	if (buff != nullptr)
 	{
+		loaded_fbx.clear();
+		loaded_fbx.append(FBX);
+
 		cJSON* root = cJSON_Parse(buff);
 	
 		std::vector<GameObject*> objects_created;

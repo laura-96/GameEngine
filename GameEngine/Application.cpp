@@ -3,6 +3,7 @@
 #include "Module.h"
 #include "ModuleFileSystem.h"
 #include "ModuleWindow.h"
+#include "ModuleTimeManager.h"
 #include "ModuleInput.h"
 #include "ModuleAudio.h"
 #include "ModuleSceneIntro.h"
@@ -21,6 +22,7 @@ Application::Application()
 {
 	file_sys = new ModuleFileSystem(this, "File_System", "Game");
 	window = new ModuleWindow(this, "Window");
+	time_manager = new ModuleTimeManager(this, "Time_Manager");
 	input = new ModuleInput(this, "Input");
 	audio = new ModuleAudio(this, "Audio", true);
 	go_manager = new GOManager(this, "Go_Manager");
@@ -41,6 +43,7 @@ Application::Application()
 	// Main Modules
 	AddModule(file_sys);
 	AddModule(window);
+	AddModule(time_manager);
 	AddModule(camera);
 	AddModule(input);
 	AddModule(audio);

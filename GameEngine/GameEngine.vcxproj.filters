@@ -366,6 +366,9 @@
     <ClInclude Include="CameraComponent.h">
       <Filter>Containers\Component</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleTimeManager.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -592,6 +595,9 @@
     </ClCompile>
     <ClCompile Include="CameraComponent.cpp">
       <Filter>Containers\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleTimeManager.cpp">
+      <Filter>Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

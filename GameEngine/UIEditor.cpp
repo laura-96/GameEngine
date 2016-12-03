@@ -64,6 +64,9 @@ update_status UIEditor::PreUpdate(float dt)
 
 	capture_keyboard = io.WantCaptureKeyboard;
 	capture_mouse = io.WantCaptureMouse;
+	ImGui::GetStyle().Colors[ImGuiCol_Button] = ImVec4(0.48f, 0.72f, 0.89f, 0.49f);
+	ImGui::GetStyle().Colors[ImGuiCol_ButtonHovered] = ImVec4(0.48f, 0.72f, 1.0f, 0.49f);
+	ImGui::GetStyle().Colors[ImGuiCol_ButtonActive] = ImVec4(0.48f, 0.72f, 0.89f, 0.49f);
 
 	return UPDATE_CONTINUE;
 }

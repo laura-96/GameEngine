@@ -8,6 +8,7 @@
 class Module;
 class ModuleFileSystem;
 class ModuleWindow;
+class ModuleTimeManager;
 class ModuleInput;
 class ModuleAudio;
 class GOManager;
@@ -27,6 +28,7 @@ public:
 	
 	ModuleFileSystem* file_sys;
 	ModuleWindow* window;
+	ModuleTimeManager* time_manager;
 	ModuleInput* input;
 	ModuleAudio* audio;
 	GOManager* go_manager;

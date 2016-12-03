@@ -6,6 +6,7 @@
   "File_System": { },
   "Window": { },
   "Input": { },
+  "Time_Manager":  { },
   "Audio": { },
   "Go_Manager": {
     "FBXs": "Game/Assets/Town/Street.FBX"
