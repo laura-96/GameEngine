@@ -264,18 +264,28 @@ bool GOManager::LoadFBXObjects(const char* FBX)
 		{
 			std::vector<GameObject*>::iterator it = objects_created.begin();
 
+			GameObject* go = nullptr;
 			uint comp_uid = cJSON_GetObjectItem(cJSON_GetArrayItem(root, i), "Parent UID")->valuedouble;
-
-			for (; it != objects_created.end(); it++)
+			
+			if (comp_uid != NULL)
 			{
-				if ((*it)->GetUID() == comp_uid)
+				for (; it != objects_created.end(); it++)
 				{
-					break;
+					if ((*it)->GetUID() == comp_uid)
+					{
+						break;
+					}
 				}
+				go = CreateGo(cJSON_GetArrayItem(root, i)->string, cJSON_GetObjectItem(cJSON_GetArrayItem(root, i), "UID")->valuedouble, (*it));
+
 			}
 
-			GameObject* go = CreateGo(cJSON_GetArrayItem(root, i)->string, cJSON_GetObjectItem(cJSON_GetArrayItem(root, i), "UID")->valuedouble, (*it));
+			if(comp_uid == NULL)
+			{
+				go = CreateGo(cJSON_GetArrayItem(root, i)->string, cJSON_GetObjectItem(cJSON_GetArrayItem(root, i), "UID")->valuedouble, nullptr);
+			}
 			
+
 			cJSON* go_prefab = cJSON_GetObjectItem(cJSON_GetArrayItem(root, i), "Prefab");
 
 			if (go_prefab != nullptr)
@@ -298,6 +308,16 @@ bool GOManager::LoadFBXObjects(const char* FBX)
 			math::float4x4 matrix = math::float4x4::identity;
 
 			transform->GetTransform(matrix);
+
+			cJSON* camera = cJSON_GetObjectItem(cJSON_GetArrayItem(root, i), "Camera");
+
+			if (camera != nullptr)
+			{
+				CameraComponent* cam = go->CreateCameraComponent();
+
+				cam->SetPreferences(transform->GetTranslation(), cJSON_GetObjectItem(camera, "Near Plane")->valuedouble, cJSON_GetObjectItem(camera, "Far Plane")->valuedouble, cJSON_GetObjectItem(camera, "FOV")->valuedouble, cJSON_GetObjectItem(camera, "Aspect Ratio")->valuedouble);
+				cam->ActivateCulling();
+			}
 
 			objects_created.push_back(go);
 			i++;
@@ -381,7 +401,7 @@ void GOManager::CreateGOEditor(math::float2 editor_pos)
 					if (ImGui::IsItemClicked(0))
 					{
 						math::LCG uid = math::LCG();
-						GameObject* go = CreateGo("Void object", uid.IntFast(), nullptr);
+						GameObject* go = CreateGo("Void object", uid.IntFast(), root_GO);
 						TransformComponent* transform = go->CreateTransformComponent();
 
 						transform->SetTranslation(0, 0, 0);
@@ -399,7 +419,7 @@ void GOManager::CreateGOEditor(math::float2 editor_pos)
 					if (ImGui::IsItemClicked(0))
 					{
 						math::LCG uid = math::LCG();
-						GameObject* go = CreateGo("Camera", uid.IntFast(), nullptr);
+						GameObject* go = CreateGo("Camera", uid.IntFast(), root_GO);
 						TransformComponent* transform = go->CreateTransformComponent();
 
 						transform->SetTranslation(0, 0, 0);
@@ -442,11 +462,6 @@ void GOManager::EditorContent()
 		{
 			if(root_GO)
 				ShowToEditor(root_GO);
-
-			for (uint i = 0; i < created_objects.size(); i++)
-			{
-				ShowToEditor(created_objects[i]);
-			}
 
 			ImGui::TreePop();
 		}
