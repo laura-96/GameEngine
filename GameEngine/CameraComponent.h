@@ -9,6 +9,12 @@ class CameraComponent : public Component
 public:
 	CameraComponent(GameObject* go) : Component(ComponentType::Camera, go) { };
 	void SetPreferences(math::float3 position, float near_plane_dist, float far_plane_dist, float horizontal_fov, float aspect_ratio);
+	float GetNearPlaneDist() const;
+	float GetHorizontalFOV() const;
+	float GetFarPlaneDist() const;
+	float GetAspectRatio() const;
+
+
 	void DrawFrustum() const;
 	void ActivateCulling();
 	void DeactivateCulling();

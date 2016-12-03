@@ -25,6 +25,26 @@ void CameraComponent::SetPreferences(math::float3 position, float near_plane_dis
 	frustum.verticalFov = horizontal_fov / aspect_ratio;
 }
 
+float CameraComponent::GetNearPlaneDist() const
+{
+	return frustum.nearPlaneDistance;
+}
+
+float CameraComponent::GetFarPlaneDist() const
+{
+	return frustum.farPlaneDistance;
+}
+
+float CameraComponent::GetHorizontalFOV() const
+{
+	return frustum.horizontalFov;
+}
+
+float CameraComponent::GetAspectRatio() const
+{
+	return (frustum.horizontalFov/frustum.verticalFov);
+}
+
 void CameraComponent::DrawFrustum() const
 {
 	glLineWidth(2.0f);

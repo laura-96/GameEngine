@@ -122,6 +122,53 @@ bool GOManager::Save(cJSON* node)
 		i++;
 	}
 
+	for (std::vector<GameObject*>::iterator it = created_objects.begin(); it != created_objects.end(); it++)
+	{
+		TransformComponent* transform_comp = (TransformComponent*)(*it)->FindComponent(Component::ComponentType::Transform);
+		CameraComponent* camera_comp = (CameraComponent*)(*it)->FindComponent(Component::ComponentType::Camera);
+
+		cJSON* item = cJSON_CreateObject();
+		cJSON_AddItemToObject(root, (*it)->name.c_str(), item);
+
+		cJSON_AddNumberToObject(item, "UID", (*it)->GetUID());
+		if ((*it)->GO_parent != nullptr)
+		{
+			cJSON_AddNumberToObject(item, "Parent UID", (*it)->GO_parent->GetUID());
+		}
+		else
+		{
+			cJSON_AddNumberToObject(item, "Parent UID", NULL);
+		}
+
+		cJSON* translation = cJSON_CreateObject();
+		cJSON_AddItemToObject(item, "Translation", translation);
+		cJSON_AddNumberToObject(translation, "x", transform_comp->GetTranslation().x);
+		cJSON_AddNumberToObject(translation, "y", transform_comp->GetTranslation().y);
+		cJSON_AddNumberToObject(translation, "z", transform_comp->GetTranslation().z);
+
+
+		cJSON* rotation = cJSON_CreateObject();
+		cJSON_AddItemToObject(item, "Rotation", rotation);
+		cJSON_AddNumberToObject(rotation, "x", transform_comp->rotation.x);
+		cJSON_AddNumberToObject(rotation, "y", transform_comp->rotation.y);
+		cJSON_AddNumberToObject(rotation, "z", transform_comp->rotation.z);
+		cJSON_AddNumberToObject(rotation, "w", transform_comp->rotation.w);
+
+		cJSON* scale = cJSON_CreateObject();
+		cJSON_AddItemToObject(item, "Scale", scale);
+		cJSON_AddNumberToObject(scale, "x", transform_comp->GetScale().x);
+		cJSON_AddNumberToObject(scale, "y", transform_comp->GetScale().y);
+		cJSON_AddNumberToObject(scale, "z", transform_comp->GetScale().z);
+
+		cJSON* cam = cJSON_CreateObject();
+		cJSON_AddItemToObject(item, "Camera", cam);
+		cJSON_AddNumberToObject(cam, "Near Plane", camera_comp->GetNearPlaneDist());
+		cJSON_AddNumberToObject(cam, "Far Plane", camera_comp->GetFarPlaneDist());
+		cJSON_AddNumberToObject(cam, "FOV", camera_comp->GetHorizontalFOV());
+		cJSON_AddNumberToObject(cam, "Aspect Ratio", camera_comp->GetAspectRatio());
+
+	}
+
 	char* save = cJSON_Print(root);
 	uint size_file = strlen(save);
 
@@ -133,7 +180,6 @@ bool GOManager::Save(cJSON* node)
 	if (!save_tmp_file)
 	{
 		App->file_sys->SaveInDir("Game/Library/Scenes", file_to_save.c_str(), save, size_file);
-
 	}
 	
 	else
