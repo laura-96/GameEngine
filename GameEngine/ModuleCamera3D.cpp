@@ -14,7 +14,11 @@ ModuleCamera3D::ModuleCamera3D(Application* app, const char* name, bool start_en
 	camera = new CameraComponent(cam_object);
 	camera_transform = new TransformComponent(cam_object);
 
+	position = float3(0, 30, 30);
+
 	camera->SetPreferences(position, 20, 1000, math::pi/4, SCREEN_WIDTH / SCREEN_HEIGHT);
+
+	camera->frustum.front = float3::unitZ;
 
 	//As it is the editor, camera may not have culling
 	camera->DeactivateCulling();

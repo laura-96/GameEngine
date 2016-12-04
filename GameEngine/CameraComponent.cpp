@@ -17,7 +17,7 @@ void CameraComponent::SetPreferences(math::float3 position, float near_plane_dis
 {
 	frustum.type = FrustumType::PerspectiveFrustum;
 	frustum.pos = position;
-	frustum.front = - float3::unitZ;
+	frustum.front = float3::unitZ;
 	frustum.up = float3::unitY;
 	frustum.nearPlaneDistance = near_plane_dist;
 	frustum.farPlaneDistance = far_plane_dist;
@@ -60,8 +60,10 @@ void CameraComponent::SetDirection(float3 new_dir)
 
 void CameraComponent::Rotate(float3 euler)
 {
-	math::float3x3 mat = math::float3x3::FromRS(math::Quat::FromEulerXYX(euler.x, euler.y, euler.z) , float3(1, 1, 1));
+
+	math::float3x3 mat = math::float3x3::FromRS(math::Quat::FromEulerXYZ(euler.x, euler.y, euler.z) , float3(1, 1, 1));
 	frustum.Transform(mat);
+
 }
 
 void CameraComponent::DrawFrustum() const

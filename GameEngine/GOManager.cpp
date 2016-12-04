@@ -558,6 +558,11 @@ void GOManager::EditorContent()
 					transform->SetTranslation(_translation.x, _translation.y, _translation.z);
 				}
 
+				if (camera)
+				{
+					camera->frustum.Translate(float3(_translation.x, _translation.y, _translation.z));
+				}
+
 				ImGui::Text("Scale");
 
 				if (!scale)
