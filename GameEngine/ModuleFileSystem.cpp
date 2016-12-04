@@ -266,9 +266,12 @@ unsigned int ModuleFileSystem::SaveInDir(const char* directory, const char* file
 	else
 	{
 		AddPath(".");
+		if (base_path != nullptr)
+		{
+			SDL_free(base_path);
+			SDL_free((void*)write_dir.c_str());
+		}
 
-		SDL_free(base_path);
-		SDL_free((void*)write_dir.c_str());
 	}
 
 
