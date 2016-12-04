@@ -56,8 +56,8 @@ void TransformComponent::GetGlobalTransform(math::float4x4 &global_transform) co
 	math::float4x4 local_transform = math::float4x4::identity;
 	GetTransform(local_transform);
 
-	local_transform.Transpose();
-	global_transform.Transpose();
+	//local_transform.Transpose();
+	
 
 	if (GO_belong->GO_parent != nullptr)
 	{
@@ -68,7 +68,7 @@ void TransformComponent::GetGlobalTransform(math::float4x4 &global_transform) co
 		global_transform = local_transform * p_matrix;
 		//global_transform.Transpose();
 	}
-
+	global_transform.Transpose();
 }
 
 void TransformComponent::Clear()

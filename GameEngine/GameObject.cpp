@@ -187,10 +187,12 @@ void GameObject::Update()
 
 	if (matrix != nullptr)
 	{
-		math::float4x4 mat = math::float4x4::identity;
-		matrix->GetTransform(mat);
+		//math::float4x4 mat = math::float4x4::identity;
+		//matrix->GetTransform(mat);
+		math::float4x4 trans_mat = math::float4x4::identity;
+		matrix->GetGlobalTransform(trans_mat);
 
-		glMultMatrixf(mat.ptr());
+		glMultMatrixf(trans_mat.Transposed().ptr());
 	}
 
 	if (GO_parent != nullptr)
