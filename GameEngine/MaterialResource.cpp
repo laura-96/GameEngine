@@ -3,10 +3,6 @@
 void MaterialResource::Clear()
 {
 	path.clear();
-	if (texture)
-	{
-		delete[] texture;
-	}
 
 	delete this;
 }

@@ -316,3 +316,55 @@ MeshResource* ModuleResourceManager::CreateMeshResource(uint uid, const char* pa
 
 	return mesh;
 }
+
+bool ModuleResourceManager::CleanUp()
+{
+	
+	res_equivalence.clear();
+	files_modifications.clear();
+
+	res_uid.clear();
+
+	std::map<uint, MeshResource*>::iterator it_mesh = uid_mesh.begin();
+
+	while (it_mesh != uid_mesh.end())
+	{
+		std::vector<GameObject*> using_res;
+		
+		uint obj_count = it_mesh->second->Count(using_res);
+
+		if (obj_count == 0)
+		{
+			it_mesh->second->Clear();
+		}
+
+		using_res.clear();
+
+		it_mesh++;
+	}
+
+	uid_mesh.clear();
+
+
+	std::map<uint, MaterialResource*>::iterator it_mat = uid_material.begin();
+
+	while (it_mat != uid_material.end())
+	{
+		std::vector<GameObject*> using_res;
+
+		uint obj_count = it_mat->second->Count(using_res);
+
+		if (obj_count == 0)
+		{
+			it_mat->second->Clear();
+		}
+
+		using_res.clear();
+
+		it_mat++;
+	}
+
+	uid_material.clear();
+
+	return true;
+}

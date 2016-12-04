@@ -748,25 +748,9 @@ bool GOManager::CleanUp()
 
 		clear_nodes.clear();
 	}
-	/*
-	for (uint i = 0; i < created_objects.size(); i++)
-	{
-		if (created_objects[i])
-		{
-			created_objects[i]->Clear();
-		}
-	}*/
 
 	created_objects.clear();
-	/*
-	for (uint i = 0; i < root_objects.size(); i++)
-	{
-		if (root_objects[i])
-		{
-			root_objects[i]->Clear();
-		}
-	}
-	*/
+
 	root_objects.clear();
 
 	return true;

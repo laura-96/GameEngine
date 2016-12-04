@@ -31,6 +31,8 @@ public:
 	MaterialResource* CreateMaterialResource(uint uid, const char* path, uint id_image, uint texture[1]);
 	MeshResource* CreateMeshResource(uint uid, const char* path);
 
+	bool CleanUp();
+
 private:
 	Timer* monitor_assets = NULL;
 	uint last_file_mod = NULL;
