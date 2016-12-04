@@ -56,17 +56,20 @@ update_status ModuleCamera3D::Update(float dt)
 	math::float3 newPos(0, 0, 0);
 	float speed = 10.0f * dt;
 
+	math::float3 right_normal = camera->frustum.RightPlane().normal;
+	math::float3::Orthonormalize(camera->frustum.front, right_normal);
+
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 		speed = 20.0f * dt;
 
 	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) newPos.y += speed;
 	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) newPos.y -= speed;
 
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos += (math::float3::unitZ * speed);
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos -= (math::float3::unitZ * speed);
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos += (camera->frustum.front * speed);
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos -= (camera->frustum.front * speed);
 
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos += (math::float3::unitX * speed);
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos -= (math::float3::unitX * speed);
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= (right_normal * speed);
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += (right_normal * speed);
 
 	position += newPos;
 
