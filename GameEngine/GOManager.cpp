@@ -44,13 +44,20 @@ update_status GOManager::Update(float dt)
 	
 	else if (root_GO == nullptr)
 	{
-		//Collecting files is not necessary here
-		//Just doing this to get all files inside in the search path (then I will be able to work on it)
-		std::vector<std::string> files;
-		App->file_sys->CollectFiles("Library", files);
+		root_objects = root_GO->GatherHierarchy(root_GO);
+		std::vector<GameObject*>::iterator it = root_objects.begin();
+		while (it != root_objects.end())
+		{
+			CameraComponent* cam = (CameraComponent*)(*it)->FindComponent(Component::ComponentType::Camera);
 
-		//LoadFBXObjects("Library/Scenes/Street.FBX.json");
-		
+			if (cam != nullptr)
+			{
+				near_dist = cam->GetNearPlaneDist();
+				far_dist = cam->GetFarPlaneDist();
+				aspect_ratio = cam->GetAspectRatio();
+			}
+			
+		}
 	}
 
 	//If right button of the mouse is pressed
@@ -512,48 +519,13 @@ void GOManager::EditorContent()
 				material->Enable(enable_material);
 
 				ImGui::Text("	Texture path:");
-				//ImGui::TextColored(ImVec4(0, 0, 255, 1), material->path.c_str());
 
-				//ImGui::Image((ImTextureID)material->texture[0], ImVec2(100, 100));
+				ImGui::Image((ImTextureID)material->GetTexture(), ImVec2(100, 100));
 			}
 			
 			CameraComponent* camera = (CameraComponent*)(*selected).FindComponent(Component::ComponentType::Camera);
 
-			if (camera != nullptr)
-			{
-				ImGui::Checkbox("- Camera", &enable_camera);
-				camera->Enable(enable_camera);
-
-				ImGui::Checkbox("	Frustum culling", &camera_culling);
-				
-				if (camera_culling)
-				{
-					camera->ActivateCulling();
-				}
-
-				else
-				{
-					camera->DeactivateCulling();
-				}
-
-				if (ImGui::SliderFloat("Near Plane distance", &near_dist, 0, far_dist))
-				{
-					
-				}
-
-				if (ImGui::SliderFloat("Far Plane distance", &far_dist, near_dist, 100))
-				{
-
-				}
-
-				if (ImGui::SliderFloat("Aspect Ratio", &aspect_ratio, 0, 10))
-				{
-
-				}
-
-
-
-			}
+			
 
 			ImGui::Separator();
 			TransformComponent* transform = (TransformComponent*)(*selected).FindComponent(Component::ComponentType::Transform);
@@ -624,18 +596,30 @@ void GOManager::EditorContent()
 				{
 					rotate = true;
 					transform->Rotate(euler);
+					if (camera)
+					{
+						camera->Rotate(euler);
+					}
 				}
 
 				if (ImGui::SliderAngle("y_rotate", &euler.y))
 				{
 					rotate = true;
 					transform->Rotate(euler);
+					if (camera)
+					{
+						camera->Rotate(euler);
+					}
 				}
 
 				if (ImGui::SliderAngle("z_rotate", &euler.z))
 				{
 					rotate = true;
 					transform->Rotate(euler);
+					if (camera)
+					{
+						camera->Rotate(euler);
+					}
 				}
 
 				if(ImGui::Button("Reset translation"))
@@ -654,8 +638,46 @@ void GOManager::EditorContent()
 				{
 					transform->Rotate(math::float3(0, 0, 0));
 					euler = {0, 0, 0};
+					if (camera)
+					{
+						camera->Rotate(math::float3(0, 0, 0));
+					}
 				}
 				
+			}
+
+			if (camera != nullptr)
+			{
+				ImGui::Checkbox("- Camera", &enable_camera);
+				camera->Enable(enable_camera);
+
+				ImGui::Checkbox("	Frustum culling", &camera_culling);
+
+				if (camera_culling)
+				{
+					camera->ActivateCulling();
+				}
+
+				else
+				{
+					camera->DeactivateCulling();
+				}
+
+				if (ImGui::SliderFloat("Near Plane distance", &near_dist, 0, far_dist))
+				{
+					camera->SetPreferences(transform->GetTranslation(), near_dist, far_dist, camera->GetHorizontalFOV(), aspect_ratio);
+				}
+
+				if (ImGui::SliderFloat("Far Plane distance", &far_dist, near_dist, 1000))
+				{
+					camera->SetPreferences(transform->GetTranslation(), near_dist, far_dist, camera->GetHorizontalFOV(), aspect_ratio);
+				}
+
+				if (ImGui::SliderFloat("Aspect Ratio", &aspect_ratio, 0, 10))
+				{
+					camera->SetPreferences(transform->GetTranslation(), near_dist, far_dist, camera->GetHorizontalFOV(), aspect_ratio);
+				}
+
 			}
 		}
 
