@@ -15,6 +15,11 @@ void MaterialComponent::SetResource(MaterialResource* new_mat_res)
 	material_res = new_mat_res;
 }
 
+uint MaterialComponent::GetTexture() const
+{
+	return material_res->texture[0];
+}
+
 void MaterialComponent::Clear()
 {
 	delete this;

@@ -98,6 +98,7 @@ MeshComponent* GameObject::CreateMeshComponent(MeshResource* mesh_resource)
 {
 	MeshComponent* ret = new MeshComponent((GameObject*)this);
 	ret->SetResource(mesh_resource);
+	mesh_resource->gos_related.push_back(this);
 	Component* comp = ret;
 	components.push_back(comp);
 
@@ -106,8 +107,9 @@ MeshComponent* GameObject::CreateMeshComponent(MeshResource* mesh_resource)
 
 MaterialComponent* GameObject::CreateMaterialComponent(MaterialResource* material_resource)
 {
-	MaterialComponent* ret = new MaterialComponent((GameObject*)this, material_resource);
-
+	MaterialComponent* ret = new MaterialComponent((GameObject*)this);
+	ret->SetResource(material_resource);
+	material_resource->gos_related.push_back(this);
 	Component* comp = ret;
 	components.push_back(comp);
 
@@ -264,7 +266,7 @@ void GameObject::Draw() const
 		if (mat != nullptr && mat->enable)
 		{
 			glEnableClientState(GL_TEXTURE_2D);
-			//glBindTexture(GL_TEXTURE_2D, mat->texture[0]);
+			glBindTexture(GL_TEXTURE_2D, mat->GetTexture());
 			glEnable(GL_TEXTURE_2D);
 		}
 		

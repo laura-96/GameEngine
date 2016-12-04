@@ -71,6 +71,8 @@ update_status GOManager::Update(float dt)
 
 bool GOManager::Save(cJSON* node)
 {
+	bool ret = false;
+
 	cJSON_AddStringToObject(node, "Scene saved", loaded_fbx.c_str());
 
 	std::vector<GameObject*> objects = root_GO->GatherHierarchy(root_GO);
@@ -80,114 +82,119 @@ bool GOManager::Save(cJSON* node)
 
 	cJSON* root = cJSON_Parse(buffer);
 
-	uint size = cJSON_GetArraySize(root);
-	uint i = 0;
-
-	while (i < size)
+	if (root != nullptr)
 	{
-		std::vector<GameObject*>::iterator it = objects.begin();
-		uint comp_uid = cJSON_GetObjectItem(cJSON_GetArrayItem(root, i), "UID")->valuedouble;
+		uint size = cJSON_GetArraySize(root);
+		uint i = 0;
 
-		while (it != objects.end())
+		while (i < size)
 		{
-			if ((*it)->GetUID() == comp_uid)
+			std::vector<GameObject*>::iterator it = objects.begin();
+			uint comp_uid = cJSON_GetObjectItem(cJSON_GetArrayItem(root, i), "UID")->valuedouble;
+
+			while (it != objects.end())
 			{
-				break;
+				if ((*it)->GetUID() == comp_uid)
+				{
+					break;
+				}
+
+				it++;
 			}
 
-			it++;
+			cJSON* translation = cJSON_GetObjectItem(cJSON_GetArrayItem(root, i), "Translation");
+			cJSON* rotation = cJSON_GetObjectItem(cJSON_GetArrayItem(root, i), "Rotation");
+			cJSON* scale = cJSON_GetObjectItem(cJSON_GetArrayItem(root, i), "Scale");
+
+			TransformComponent* transform = (TransformComponent*)(*it)->FindComponent(Component::ComponentType::Transform);
+			if (transform)
+			{
+				cJSON_GetObjectItem(translation, "x")->valuedouble = transform->GetTranslation().x;
+				cJSON_GetObjectItem(translation, "y")->valuedouble = transform->GetTranslation().y;
+				cJSON_GetObjectItem(translation, "z")->valuedouble = transform->GetTranslation().z;
+
+				cJSON_GetObjectItem(rotation, "x")->valuedouble = transform->rotation.x;
+				cJSON_GetObjectItem(rotation, "y")->valuedouble = transform->rotation.y;
+				cJSON_GetObjectItem(rotation, "z")->valuedouble = transform->rotation.z;
+				cJSON_GetObjectItem(rotation, "w")->valuedouble = transform->rotation.w;
+
+				cJSON_GetObjectItem(scale, "x")->valuedouble = transform->GetScale().x;
+				cJSON_GetObjectItem(scale, "y")->valuedouble = transform->GetScale().y;
+				cJSON_GetObjectItem(scale, "z")->valuedouble = transform->GetScale().z;
+			}
+
+			i++;
 		}
 
-		cJSON* translation = cJSON_GetObjectItem(cJSON_GetArrayItem(root, i), "Translation");
-		cJSON* rotation = cJSON_GetObjectItem(cJSON_GetArrayItem(root, i), "Rotation");
-		cJSON* scale = cJSON_GetObjectItem(cJSON_GetArrayItem(root, i), "Scale");
-
-		TransformComponent* transform = (TransformComponent*)(*it)->FindComponent(Component::ComponentType::Transform);
-		if (transform)
+		for (std::vector<GameObject*>::iterator it = created_objects.begin(); it != created_objects.end(); it++)
 		{
-			cJSON_GetObjectItem(translation, "x")->valuedouble = transform->GetTranslation().x;
-			cJSON_GetObjectItem(translation, "y")->valuedouble = transform->GetTranslation().y;
-			cJSON_GetObjectItem(translation, "z")->valuedouble = transform->GetTranslation().z;
+			TransformComponent* transform_comp = (TransformComponent*)(*it)->FindComponent(Component::ComponentType::Transform);
+			CameraComponent* camera_comp = (CameraComponent*)(*it)->FindComponent(Component::ComponentType::Camera);
 
-			cJSON_GetObjectItem(rotation, "x")->valuedouble = transform->rotation.x;
-			cJSON_GetObjectItem(rotation, "y")->valuedouble = transform->rotation.y;
-			cJSON_GetObjectItem(rotation, "z")->valuedouble = transform->rotation.z;
-			cJSON_GetObjectItem(rotation, "w")->valuedouble = transform->rotation.w;
+			cJSON* item = cJSON_CreateObject();
+			cJSON_AddItemToObject(root, (*it)->name.c_str(), item);
 
-			cJSON_GetObjectItem(scale, "x")->valuedouble = transform->GetScale().x;
-			cJSON_GetObjectItem(scale, "y")->valuedouble = transform->GetScale().y;
-			cJSON_GetObjectItem(scale, "z")->valuedouble = transform->GetScale().z;
+			cJSON_AddNumberToObject(item, "UID", (*it)->GetUID());
+			if ((*it)->GO_parent != nullptr)
+			{
+				cJSON_AddNumberToObject(item, "Parent UID", (*it)->GO_parent->GetUID());
+			}
+			else
+			{
+				cJSON_AddNumberToObject(item, "Parent UID", NULL);
+			}
+
+			cJSON* translation = cJSON_CreateObject();
+			cJSON_AddItemToObject(item, "Translation", translation);
+			cJSON_AddNumberToObject(translation, "x", transform_comp->GetTranslation().x);
+			cJSON_AddNumberToObject(translation, "y", transform_comp->GetTranslation().y);
+			cJSON_AddNumberToObject(translation, "z", transform_comp->GetTranslation().z);
+
+
+			cJSON* rotation = cJSON_CreateObject();
+			cJSON_AddItemToObject(item, "Rotation", rotation);
+			cJSON_AddNumberToObject(rotation, "x", transform_comp->rotation.x);
+			cJSON_AddNumberToObject(rotation, "y", transform_comp->rotation.y);
+			cJSON_AddNumberToObject(rotation, "z", transform_comp->rotation.z);
+			cJSON_AddNumberToObject(rotation, "w", transform_comp->rotation.w);
+
+			cJSON* scale = cJSON_CreateObject();
+			cJSON_AddItemToObject(item, "Scale", scale);
+			cJSON_AddNumberToObject(scale, "x", transform_comp->GetScale().x);
+			cJSON_AddNumberToObject(scale, "y", transform_comp->GetScale().y);
+			cJSON_AddNumberToObject(scale, "z", transform_comp->GetScale().z);
+
+			cJSON* cam = cJSON_CreateObject();
+			cJSON_AddItemToObject(item, "Camera", cam);
+			cJSON_AddNumberToObject(cam, "Near Plane", camera_comp->GetNearPlaneDist());
+			cJSON_AddNumberToObject(cam, "Far Plane", camera_comp->GetFarPlaneDist());
+			cJSON_AddNumberToObject(cam, "FOV", camera_comp->GetHorizontalFOV());
+			cJSON_AddNumberToObject(cam, "Aspect Ratio", camera_comp->GetAspectRatio());
+
 		}
 
-		i++;
-	}
 
-	for (std::vector<GameObject*>::iterator it = created_objects.begin(); it != created_objects.end(); it++)
-	{
-		TransformComponent* transform_comp = (TransformComponent*)(*it)->FindComponent(Component::ComponentType::Transform);
-		CameraComponent* camera_comp = (CameraComponent*)(*it)->FindComponent(Component::ComponentType::Camera);
+		char* save = cJSON_Print(root);
+		uint size_file = strlen(save);
 
-		cJSON* item = cJSON_CreateObject();
-		cJSON_AddItemToObject(root, (*it)->name.c_str(), item);
+		cJSON_Parse(save);
 
-		cJSON_AddNumberToObject(item, "UID", (*it)->GetUID());
-		if ((*it)->GO_parent != nullptr)
+		std::string file_to_save;
+		App->file_sys->GetFileFromDir(loaded_fbx.c_str(), file_to_save);
+
+		if (!save_tmp_file)
 		{
-			cJSON_AddNumberToObject(item, "Parent UID", (*it)->GO_parent->GetUID());
+			App->file_sys->SaveInDir("Game/Library/Scenes", file_to_save.c_str(), save, size_file);
 		}
+
 		else
 		{
-			cJSON_AddNumberToObject(item, "Parent UID", NULL);
+			App->file_sys->SaveInDir("Game/Library/Temp", file_to_save.c_str(), save, size_file);
 		}
-
-		cJSON* translation = cJSON_CreateObject();
-		cJSON_AddItemToObject(item, "Translation", translation);
-		cJSON_AddNumberToObject(translation, "x", transform_comp->GetTranslation().x);
-		cJSON_AddNumberToObject(translation, "y", transform_comp->GetTranslation().y);
-		cJSON_AddNumberToObject(translation, "z", transform_comp->GetTranslation().z);
-
-
-		cJSON* rotation = cJSON_CreateObject();
-		cJSON_AddItemToObject(item, "Rotation", rotation);
-		cJSON_AddNumberToObject(rotation, "x", transform_comp->rotation.x);
-		cJSON_AddNumberToObject(rotation, "y", transform_comp->rotation.y);
-		cJSON_AddNumberToObject(rotation, "z", transform_comp->rotation.z);
-		cJSON_AddNumberToObject(rotation, "w", transform_comp->rotation.w);
-
-		cJSON* scale = cJSON_CreateObject();
-		cJSON_AddItemToObject(item, "Scale", scale);
-		cJSON_AddNumberToObject(scale, "x", transform_comp->GetScale().x);
-		cJSON_AddNumberToObject(scale, "y", transform_comp->GetScale().y);
-		cJSON_AddNumberToObject(scale, "z", transform_comp->GetScale().z);
-
-		cJSON* cam = cJSON_CreateObject();
-		cJSON_AddItemToObject(item, "Camera", cam);
-		cJSON_AddNumberToObject(cam, "Near Plane", camera_comp->GetNearPlaneDist());
-		cJSON_AddNumberToObject(cam, "Far Plane", camera_comp->GetFarPlaneDist());
-		cJSON_AddNumberToObject(cam, "FOV", camera_comp->GetHorizontalFOV());
-		cJSON_AddNumberToObject(cam, "Aspect Ratio", camera_comp->GetAspectRatio());
-
+		ret = true;
 	}
 
-	char* save = cJSON_Print(root);
-	uint size_file = strlen(save);
-
-	cJSON_Parse(save);
-
-	std::string file_to_save;
-	App->file_sys->GetFileFromDir(loaded_fbx.c_str(), file_to_save);
-
-	if (!save_tmp_file)
-	{
-		App->file_sys->SaveInDir("Game/Library/Scenes", file_to_save.c_str(), save, size_file);
-	}
-	
-	else
-	{
-		App->file_sys->SaveInDir("Game/Library/Temp", file_to_save.c_str(), save, size_file);
-	}
-
-	return true;
+	return ret;
 }
 
 void GOManager::Draw() const
@@ -351,7 +358,12 @@ bool GOManager::LoadComponents(const char* prefab, GameObject* go) const
 
 			//We get the suitable resource from resource manager functions
 			MeshResource* mesh = App->resource_manager->GetMeshResource(uids[1]);
-			//MaterialResource* material = App->resource_manager->GetMaterialResource(material_uid);
+			MaterialResource* material = App->resource_manager->GetMaterialResource(uids[2]);
+
+			if (material)
+			{
+				MaterialComponent* material_comp = go->CreateMaterialComponent(material);
+			}
 
 			if (mesh)
 			{
@@ -359,12 +371,6 @@ bool GOManager::LoadComponents(const char* prefab, GameObject* go) const
 				//Loading buffers for resources
 				mesh->LoadBuffers();
 			}
-			//MaterialComponent* material_comp = go->CreateMaterialComponent(material);
-
-
-			//mesh->gos_related.push_back(go);
-			//material->gos_related.push_back(go);
-			
 		}
 
 	}

@@ -17,6 +17,7 @@ public:
 	MaterialComponent(GameObject* _GO_belong) : Component(ComponentType::Material, _GO_belong) {};
 	MaterialComponent(GameObject* _GO_belong, MaterialResource* mat_resource);
 
+	uint GetTexture() const;
 
 	void SetResource(MaterialResource* new_mat_res);
 	void Clear();

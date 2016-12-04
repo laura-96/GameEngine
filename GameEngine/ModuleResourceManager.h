@@ -18,15 +18,17 @@ public:
 	bool MonitorAssets();
 	bool ImportFile(const char* file);
 	uint ImportMesh(const char* file, uint uid);
+	uint ImportMaterial(const char* file, uint uid);
 	uint ImportMaterial(const char* file, const char* directory);
 
 	bool IsMeshResource(const char* res) const;
+	bool IsMaterialResource(const char* res) const;
 
 	uint GetUidFromFile(const char* file) const;
 	MeshResource* GetMeshResource(uint uid) const;
 	MaterialResource* GetMaterialResource(uint uid) const;
 
-	MaterialResource* CreateMaterialResource(uint uid, const char* path);
+	MaterialResource* CreateMaterialResource(uint uid, const char* path, uint id_image, uint texture[1]);
 	MeshResource* CreateMeshResource(uint uid, const char* path);
 
 private:

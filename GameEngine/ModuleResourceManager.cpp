@@ -171,18 +171,6 @@ uint ModuleResourceManager::ImportMaterial(const char* file, const char* directo
 	if (it == res_uid.end())
 	{
 		uid = App->scene_importer->ImportMaterial(directory, output);
-		res_uid.insert(std::pair<std::string, uint>(file, uid));
-
-		//Creating equivalence to be used to look for original file from the imported one
-		res_equivalence.insert(std::pair<std::string, std::string>(file, output));
-
-		std::string dir;
-		dir.clear();
-		dir.append("Game/Library/Material/");
-		dir.append(output);
-
-		CreateMaterialResource(uid, dir.c_str());
-
 	}
 
 	else
@@ -200,11 +188,24 @@ uint ModuleResourceManager::ImportMesh(const char* file, uint uid)
 	return uid;
 }
 
+uint ModuleResourceManager::ImportMaterial(const char* file, uint uid)
+{
+	res_uid.insert(std::pair<std::string, uint>(file, uid));
+
+	return uid;
+}
+
 MaterialResource* ModuleResourceManager::GetMaterialResource(uint uid) const
 {
-	std::map<uint, MaterialResource*>::const_iterator it = uid_material.find(uid);
+	MaterialResource* ret = nullptr;
 
-	return (*it).second;
+	std::map<uint, MaterialResource*>::const_iterator it = uid_material.find(uid);
+	if (it != uid_material.end())
+	{
+		ret = (*it).second;
+	}
+
+	return ret;
 }
 
 bool ModuleResourceManager::IsMeshResource(const char* res) const
@@ -213,6 +214,19 @@ bool ModuleResourceManager::IsMeshResource(const char* res) const
 
 	std::map<std::string, uint>::const_iterator it = res_uid.find(res);
 	
+	if (it != res_uid.end())
+	{
+		ret = true;
+	}
+
+	return ret;
+}
+bool ModuleResourceManager::IsMaterialResource(const char* res) const
+{
+	bool ret = false;
+
+	std::map<std::string, uint>::const_iterator it = res_uid.find(res);
+
 	if (it != res_uid.end())
 	{
 		ret = true;
@@ -234,11 +248,13 @@ MeshResource* ModuleResourceManager::GetMeshResource(uint uid) const
 	return ret;
 }
 
-MaterialResource* ModuleResourceManager::CreateMaterialResource(uint uid, const char* path)
+MaterialResource* ModuleResourceManager::CreateMaterialResource(uint uid, const char* path, uint id_image, uint texture[1])
 {
 	MaterialResource* material = new MaterialResource(uid, path);
 	uid_material.insert(std::pair<uint, MaterialResource*>(uid, material));
-
+	
+	material->id_image = id_image;
+	material->texture[0] = texture[0];
 	material->SetPath(path);
 
 	return material;

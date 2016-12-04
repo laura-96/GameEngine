@@ -94,7 +94,7 @@ bool Application::Init()
 		
 	}
 
-
+	LOG("Initializing modules");
 	// Call Init() in all modules
 	list<Module*>::iterator it = list_modules.begin();
 

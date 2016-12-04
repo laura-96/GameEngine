@@ -437,6 +437,7 @@ uint ModuleSceneImporter::ImportMaterial(const aiScene* scene, aiNode* node, std
 
 			ret = ImportMaterial(image_path.c_str(), output);
 
+
 			delete[] buffer;
 			
 		}
@@ -482,6 +483,8 @@ uint ModuleSceneImporter::ImportMaterial(const char* directory, std::string &out
 			{
 				char result_path[250];
 
+				math::LCG random = math::LCG();
+				ret = random.IntFast();
 				//sprintf(result_path, "%s.dds", data);
 
 				char* image_name = new char[strlen(file) - 3];
@@ -493,11 +496,29 @@ uint ModuleSceneImporter::ImportMaterial(const char* directory, std::string &out
 
 				output = result_path;
 
-				App->file_sys->SaveInDir("Game/Library/Material", result_path, data, size);
+				if (App->resource_manager->IsMaterialResource(output.c_str()) == false)
+				{
 
-				math::LCG random = math::LCG();
-				ret = random.IntFast();
+					App->file_sys->SaveInDir("Game/Library/Material", result_path, data, size);
 
+					App->resource_manager->ImportMaterial(output.c_str(), ret);
+
+					ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+
+					GLuint texture[1];
+					texture[0] = ilutGLBindTexImage();
+
+					uint tex[1];
+					tex[0] = texture[0];
+
+					App->resource_manager->CreateMaterialResource(ret, output.c_str(), id_image, tex);
+
+					
+				}
+				else
+				{
+					ret = App->resource_manager->GetUidFromFile(output.c_str());
+				}
 
 			}
 			RELEASE(data);

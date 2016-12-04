@@ -1,24 +1,36 @@
 {
-  "App": {
-    "Title": "Game Engine",
-    "Organization": "Laura upc"
-  },
-  "File_System": { },
-  "Window": { },
-  "Input": { },
-  "Time_Manager":  { },
-  "Audio": { },
-  "Go_Manager": {
-    "FBXs": "Game/Assets/Town/Street.FBX"
-  },
+	"App":	{
+		"Title":	"Game Engine",
+		"Organization":	"Laura upc"
+	},
+	"File_System":	{
+	},
+	"Window":	{
+	},
+	"Input":	{
+	},
+	"Time_Manager":	{
+	},
+	"Audio":	{
+	},
+	"Go_Manager":	{
+		"FBXs":	"Game/Assets/Town/Street.FBX",
+		"Scene saved":	""
+	},
   "Scene_Importer": {
+  },
+  "Resource_Manager": {
 
   },
-  "Scene_Intro": {
-    "Mesh":  "Game/Assets/Brute.fbx"
-  },
-  "Renderer": { },
-  "Camera": { },
-  "Physics": { },
-  "UI_Editor": { }
+	"Scene_Intro":	{
+		"Mesh":	"Game/Assets/Brute.fbx"
+	},
+	"Renderer":	{
+	},
+	"Camera":	{
+	},
+	"Physics":	{
+	},
+	"UI_Editor":	{
+	}
 }
