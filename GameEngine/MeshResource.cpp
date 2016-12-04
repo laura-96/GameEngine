@@ -64,4 +64,6 @@ void MeshResource::Clear()
 
 	if (normals != nullptr)
 		delete[] normals;
+
+	delete this;
 }

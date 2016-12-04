@@ -18,6 +18,7 @@ public:
 	void DrawFrustum() const;
 	void ActivateCulling();
 	void DeactivateCulling();
+	void Clear();
 
 	//Culls every object outside the frustum if culling is active
 	void FrustumCulling(std::vector<GameObject*> game_objects) const;

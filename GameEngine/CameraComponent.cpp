@@ -169,3 +169,8 @@ bool CameraComponent::IntersectsObject(GameObject* obj) const
 	
 	return true;
 }
+
+void CameraComponent::Clear()
+{
+	delete this;
+}

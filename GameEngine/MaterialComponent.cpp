@@ -22,5 +22,17 @@ uint MaterialComponent::GetTexture() const
 
 void MaterialComponent::Clear()
 {
+	std::vector<GameObject*>::iterator go_res = material_res->gos_related.begin();
+	while (go_res != material_res->gos_related.end())
+	{
+		if ((*go_res) == this->GO_belong)
+		{
+			material_res->gos_related.erase(go_res);
+			break;
+		}
+		go_res++;
+	}
+
+	material_res = nullptr;
 	delete this;
 }
