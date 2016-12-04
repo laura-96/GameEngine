@@ -3,13 +3,16 @@
 #include "PhysBody3D.h"
 #include "ModuleCamera3D.h"
 #include "ModuleInput.h"
+#include "GameObject.h"
+#include "CameraComponent.h"
+#include "TransformComponent.h"
 
 ModuleCamera3D::ModuleCamera3D(Application* app, const char* name, bool start_enabled) : Module(app, name, start_enabled)
 {
-	camera = new CameraComponent(nullptr);
-	position = math::float3(0, 20, 20);
+	cam_object = new GameObject(nullptr, "Camera", 0);
 
-	LookAt(math::float3(0, 0, 0));
+	camera = new CameraComponent(cam_object);
+	camera_transform = new TransformComponent(cam_object);
 
 	camera->SetPreferences(position, 20, 1000, math::pi/4, SCREEN_WIDTH / SCREEN_HEIGHT);
 
@@ -40,7 +43,7 @@ bool ModuleCamera3D::Init(cJSON* node)
 bool ModuleCamera3D::CleanUp()
 {
 	LOG("Cleaning camera");
-	camera->Clear();
+	cam_object->Clear();
 	return true;
 }
 
@@ -62,7 +65,6 @@ update_status ModuleCamera3D::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos += (math::float3::unitZ * speed);
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos -= (math::float3::unitZ * speed);
 
-
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos += (math::float3::unitX * speed);
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos -= (math::float3::unitX * speed);
 
@@ -72,26 +74,14 @@ update_status ModuleCamera3D::Update(float dt)
 
 	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
-		int dx = -App->input->GetMouseXMotion();
-		int dy = -App->input->GetMouseYMotion();
+		int dx = -(App->input->GetMouseXMotion());
+		int dy = -(App->input->GetMouseYMotion());
 
-		float Sensitivity = 0.25f;
 
-		if (dx != 0)
-		{
-			float DeltaX = (float)dx * Sensitivity;
+		math::Ray ray = camera->frustum.UnProject(float2(dx/2, dy/2));
+		camera->frustum.front = ray.dir.Normalized();
 
-			camera->Rotate(math::float3(math::DegToRad(DeltaX), math::DegToRad(DeltaX), math::DegToRad(DeltaX)));
-
-		}
-
-		if (dy != 0)
-		{
-			float DeltaY = (float)dy * Sensitivity;
-
-			camera->Rotate(math::float3(math::DegToRad(DeltaY), math::DegToRad(DeltaY), math::DegToRad(DeltaY)));
-
-		}
+		math::float3::Orthonormalize(camera->frustum.front, camera->frustum.up);
 
 	}
 

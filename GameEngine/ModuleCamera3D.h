@@ -26,8 +26,9 @@ public:
 	math::float3 position;
 
 private:
-
+	GameObject* cam_object = nullptr;
 	CameraComponent* camera = nullptr;
+	TransformComponent* camera_transform = nullptr;
 };
 
 #endif // __ModuleCamera3D_H__

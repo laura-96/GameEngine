@@ -29,9 +29,11 @@ public:
 	void FrustumCulling(std::vector<GameObject*> game_objects) const;
 	bool IntersectsObject(GameObject* obj) const;
 
+	math::Frustum frustum;
+
 private:
 	bool frustum_culling = false;
-	math::Frustum frustum;
+	
 };
 
 #endif
