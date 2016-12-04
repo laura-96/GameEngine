@@ -33,6 +33,8 @@ public:
 	uint ImportMaterial(const char* directory, std::string &output) const;
 	bool LoadTransform(aiNode* node, math::float3 &translation, math::Quat &rotation, math::float3 &scale) const;
 
+	uint ReimportMaterial(const char* directory) const;
+
 	~ModuleSceneImporter();
 	
 };

@@ -1,6 +1,6 @@
 {
 	"RootNode":	{
-		"UID":	2304943762,
+		"UID":	646780617,
 		"Parent UID":	0,
 		"Translation":	{
 			"x":	0,
@@ -20,8 +20,8 @@
 		}
 	},
 	"Sky001_$AssimpFbx$_Translation":	{
-		"UID":	3921541050,
-		"Parent UID":	2304943762,
+		"UID":	1076204893,
+		"Parent UID":	646780617,
 		"Translation":	{
 			"x":	18.153732,
 			"y":	0,
@@ -40,8 +40,8 @@
 		}
 	},
 	"Sky001_$AssimpFbx$_PreRotation":	{
-		"UID":	3423337217,
-		"Parent UID":	3921541050,
+		"UID":	756376832,
+		"Parent UID":	1076204893,
 		"Translation":	{
 			"x":	0,
 			"y":	0,
@@ -60,8 +60,8 @@
 		}
 	},
 	"Sky001_$AssimpFbx$_PostRotation":	{
-		"UID":	4130162421,
-		"Parent UID":	3423337217,
+		"UID":	3412371712,
+		"Parent UID":	756376832,
 		"Translation":	{
 			"x":	0,
 			"y":	0,
@@ -80,8 +80,8 @@
 		}
 	},
 	"Sky001":	{
-		"UID":	2272412536,
-		"Parent UID":	4130162421,
+		"UID":	909950207,
+		"Parent UID":	3412371712,
 		"Translation":	{
 			"x":	0,
 			"y":	0,
@@ -100,8 +100,8 @@
 		}
 	},
 	"Dummy001_$AssimpFbx$_PreRotation":	{
-		"UID":	2512820696,
-		"Parent UID":	2304943762,
+		"UID":	875745546,
+		"Parent UID":	646780617,
 		"Translation":	{
 			"x":	0,
 			"y":	0,
@@ -120,8 +120,8 @@
 		}
 	},
 	"Dummy001_$AssimpFbx$_Rotation":	{
-		"UID":	2481775543,
-		"Parent UID":	2512820696,
+		"UID":	3219891346,
+		"Parent UID":	875745546,
 		"Translation":	{
 			"x":	0,
 			"y":	0,
@@ -140,8 +140,8 @@
 		}
 	},
 	"Dummy001":	{
-		"UID":	1455728418,
-		"Parent UID":	2481775543,
+		"UID":	532352441,
+		"Parent UID":	3219891346,
 		"Translation":	{
 			"x":	0,
 			"y":	0,
@@ -160,8 +160,8 @@
 		}
 	},
 	"City_building_004":	{
-		"UID":	924905865,
-		"Parent UID":	1455728418,
+		"UID":	1636497677,
+		"Parent UID":	532352441,
 		"Prefab":	"City_building_004_prefab.gl",
 		"Translation":	{
 			"x":	-41.475891,
@@ -181,8 +181,8 @@
 		}
 	},
 	"City_building_001":	{
-		"UID":	2721525533,
-		"Parent UID":	1455728418,
+		"UID":	2007309425,
+		"Parent UID":	532352441,
 		"Prefab":	"City_building_001_prefab.gl",
 		"Translation":	{
 			"x":	17.707165,
@@ -202,8 +202,8 @@
 		}
 	},
 	"City_building_007":	{
-		"UID":	2846869953,
-		"Parent UID":	1455728418,
+		"UID":	1243600676,
+		"Parent UID":	532352441,
 		"Prefab":	"City_building_007_prefab.gl",
 		"Translation":	{
 			"x":	16.010492,
@@ -223,8 +223,8 @@
 		}
 	},
 	"City_building_008":	{
-		"UID":	2077189300,
-		"Parent UID":	1455728418,
+		"UID":	2771911028,
+		"Parent UID":	532352441,
 		"Prefab":	"City_building_008_prefab.gl",
 		"Translation":	{
 			"x":	40.979996,
@@ -244,8 +244,8 @@
 		}
 	},
 	"Line002":	{
-		"UID":	152431683,
-		"Parent UID":	1455728418,
+		"UID":	1747136515,
+		"Parent UID":	532352441,
 		"Prefab":	"Line002_prefab.gl",
 		"Translation":	{
 			"x":	-2.159772,
@@ -265,8 +265,8 @@
 		}
 	},
 	"Plane001":	{
-		"UID":	3876981023,
-		"Parent UID":	1455728418,
+		"UID":	3917488095,
+		"Parent UID":	532352441,
 		"Prefab":	"Plane001_prefab.gl",
 		"Translation":	{
 			"x":	-0.028603,
@@ -286,8 +286,8 @@
 		}
 	},
 	"City_building_010":	{
-		"UID":	2076085162,
-		"Parent UID":	1455728418,
+		"UID":	425431402,
+		"Parent UID":	532352441,
 		"Prefab":	"City_building_010_prefab.gl",
 		"Translation":	{
 			"x":	25.154011,
@@ -307,8 +307,8 @@
 		}
 	},
 	"City_building_011":	{
-		"UID":	590651313,
-		"Parent UID":	1455728418,
+		"UID":	865165426,
+		"Parent UID":	532352441,
 		"Prefab":	"City_building_011_prefab.gl",
 		"Translation":	{
 			"x":	30.134541,
@@ -328,8 +328,8 @@
 		}
 	},
 	"City_building_013":	{
-		"UID":	1718170469,
-		"Parent UID":	1455728418,
+		"UID":	1060764442,
+		"Parent UID":	532352441,
 		"Prefab":	"City_building_013_prefab.gl",
 		"Translation":	{
 			"x":	-42.288055,
@@ -349,8 +349,8 @@
 		}
 	},
 	"City_building_014":	{
-		"UID":	1612061352,
-		"Parent UID":	1455728418,
+		"UID":	3813529058,
+		"Parent UID":	532352441,
 		"Prefab":	"City_building_014_prefab.gl",
 		"Translation":	{
 			"x":	-19.439707,
@@ -370,8 +370,8 @@
 		}
 	},
 	"City_building_016":	{
-		"UID":	1532975815,
-		"Parent UID":	1455728418,
+		"UID":	4008177482,
+		"Parent UID":	532352441,
 		"Prefab":	"City_building_016_prefab.gl",
 		"Translation":	{
 			"x":	34.270424,
@@ -391,8 +391,8 @@
 		}
 	},
 	"City_building_017":	{
-		"UID":	1666877811,
-		"Parent UID":	1455728418,
+		"UID":	709318609,
+		"Parent UID":	532352441,
 		"Prefab":	"City_building_017_prefab.gl",
 		"Translation":	{
 			"x":	44.260082,
@@ -412,8 +412,8 @@
 		}
 	},
 	"City_building_022":	{
-		"UID":	3978709007,
-		"Parent UID":	1455728418,
+		"UID":	4231875077,
+		"Parent UID":	532352441,
 		"Prefab":	"City_building_022_prefab.gl",
 		"Translation":	{
 			"x":	-20.831324,
@@ -433,8 +433,8 @@
 		}
 	},
 	"City_building_023":	{
-		"UID":	2078988122,
-		"Parent UID":	1455728418,
+		"UID":	1208164808,
+		"Parent UID":	532352441,
 		"Prefab":	"City_building_023_prefab.gl",
 		"Translation":	{
 			"x":	42.130642,
@@ -454,8 +454,8 @@
 		}
 	},
 	"City_building_024":	{
-		"UID":	834166561,
-		"Parent UID":	1455728418,
+		"UID":	1002572903,
+		"Parent UID":	532352441,
 		"Prefab":	"City_building_024_prefab.gl",
 		"Translation":	{
 			"x":	-20.572771,
@@ -475,8 +475,8 @@
 		}
 	},
 	"City_building_026":	{
-		"UID":	3257334165,
-		"Parent UID":	1455728418,
+		"UID":	2614552467,
+		"Parent UID":	532352441,
 		"Prefab":	"City_building_026_prefab.gl",
 		"Translation":	{
 			"x":	31.511889,
@@ -496,8 +496,8 @@
 		}
 	},
 	"City_building_028":	{
-		"UID":	293705368,
-		"Parent UID":	1455728418,
+		"UID":	2748333231,
+		"Parent UID":	532352441,
 		"Prefab":	"City_building_028_prefab.gl",
 		"Translation":	{
 			"x":	13.387990,
@@ -517,8 +517,8 @@
 		}
 	},
 	"Object010":	{
-		"UID":	4017096568,
-		"Parent UID":	1455728418,
+		"UID":	914838650,
+		"Parent UID":	532352441,
 		"Prefab":	"Object010_prefab.gl",
 		"Translation":	{
 			"x":	-2.503353,
@@ -538,8 +538,8 @@
 		}
 	},
 	"City_building_030":	{
-		"UID":	3189714391,
-		"Parent UID":	1455728418,
+		"UID":	1911619266,
+		"Parent UID":	532352441,
 		"Prefab":	"City_building_030_prefab.gl",
 		"Translation":	{
 			"x":	-42.807240,
@@ -559,8 +559,8 @@
 		}
 	},
 	"City_building_031":	{
-		"UID":	4116543427,
-		"Parent UID":	1455728418,
+		"UID":	693317033,
+		"Parent UID":	532352441,
 		"Prefab":	"City_building_031_prefab.gl",
 		"Translation":	{
 			"x":	-34.679482,
@@ -580,8 +580,8 @@
 		}
 	},
 	"City_building_032":	{
-		"UID":	3292203678,
-		"Parent UID":	1455728418,
+		"UID":	2582682045,
+		"Parent UID":	532352441,
 		"Prefab":	"City_building_032_prefab.gl",
 		"Translation":	{
 			"x":	-29.478403,
@@ -601,8 +601,8 @@
 		}
 	},
 	"City_building_033":	{
-		"UID":	1287547701,
-		"Parent UID":	1455728418,
+		"UID":	100807904,
+		"Parent UID":	532352441,
 		"Prefab":	"City_building_033_prefab.gl",
 		"Translation":	{
 			"x":	-32.361496,
@@ -622,8 +622,8 @@
 		}
 	},
 	"City_building_034":	{
-		"UID":	96056504,
-		"Parent UID":	1455728418,
+		"UID":	370522720,
+		"Parent UID":	532352441,
 		"Prefab":	"City_building_034_prefab.gl",
 		"Translation":	{
 			"x":	16.049517,
@@ -643,8 +643,8 @@
 		}
 	},
 	"City_building_035":	{
-		"UID":	285785112,
-		"Parent UID":	1455728418,
+		"UID":	588709344,
+		"Parent UID":	532352441,
 		"Prefab":	"City_building_035_prefab.gl",
 		"Translation":	{
 			"x":	13.387990,
@@ -664,8 +664,8 @@
 		}
 	},
 	"City_building_036":	{
-		"UID":	2356767480,
-		"Parent UID":	1455728418,
+		"UID":	3955300192,
+		"Parent UID":	532352441,
 		"Prefab":	"City_building_036_prefab.gl",
 		"Translation":	{
 			"x":	-31.216331,
@@ -685,8 +685,8 @@
 		}
 	},
 	"City_building_037":	{
-		"UID":	4168083288,
-		"Parent UID":	1455728418,
+		"UID":	126484191,
+		"Parent UID":	532352441,
 		"Prefab":	"City_building_037_prefab.gl",
 		"Translation":	{
 			"x":	-20.317694,
@@ -706,8 +706,8 @@
 		}
 	},
 	"City_building_038":	{
-		"UID":	956206903,
-		"Parent UID":	1455728418,
+		"UID":	1272904811,
+		"Parent UID":	532352441,
 		"Prefab":	"City_building_038_prefab.gl",
 		"Translation":	{
 			"x":	-41.649002,
@@ -727,8 +727,8 @@
 		}
 	},
 	"City_building_039":	{
-		"UID":	87705762,
-		"Parent UID":	1455728418,
+		"UID":	2845628263,
+		"Parent UID":	532352441,
 		"Prefab":	"City_building_039_prefab.gl",
 		"Translation":	{
 			"x":	-42.807240,
@@ -748,8 +748,8 @@
 		}
 	},
 	"City_building_040":	{
-		"UID":	3014328586,
-		"Parent UID":	1455728418,
+		"UID":	1528835730,
+		"Parent UID":	532352441,
 		"Prefab":	"City_building_040_prefab.gl",
 		"Translation":	{
 			"x":	-34.679482,
@@ -769,8 +769,8 @@
 		}
 	},
 	"City_building_041":	{
-		"UID":	4173436050,
-		"Parent UID":	1455728418,
+		"UID":	1192828857,
+		"Parent UID":	532352441,
 		"Prefab":	"City_building_041_prefab.gl",
 		"Translation":	{
 			"x":	30.695278,
@@ -790,8 +790,8 @@
 		}
 	},
 	"Camera001_$AssimpFbx$_Translation":	{
-		"UID":	4253662650,
-		"Parent UID":	2304943762,
+		"UID":	2745185037,
+		"Parent UID":	646780617,
 		"Translation":	{
 			"x":	-78.312431,
 			"y":	45.251217,
@@ -810,8 +810,8 @@
 		}
 	},
 	"Camera001_$AssimpFbx$_PreRotation":	{
-		"UID":	1957329153,
-		"Parent UID":	4253662650,
+		"UID":	777756272,
+		"Parent UID":	2745185037,
 		"Translation":	{
 			"x":	0,
 			"y":	0,
@@ -830,8 +830,8 @@
 		}
 	},
 	"Camera001_$AssimpFbx$_Rotation":	{
-		"UID":	490593524,
-		"Parent UID":	1957329153,
+		"UID":	1516712240,
+		"Parent UID":	777756272,
 		"Translation":	{
 			"x":	0,
 			"y":	0,
@@ -850,8 +850,8 @@
 		}
 	},
 	"Camera001":	{
-		"UID":	2031796612,
-		"Parent UID":	490593524,
+		"UID":	3251888880,
+		"Parent UID":	1516712240,
 		"Translation":	{
 			"x":	0,
 			"y":	0,
@@ -870,8 +870,8 @@
 		}
 	},
 	"Camera001.Target_$AssimpFbx$_Translation":	{
-		"UID":	964030291,
-		"Parent UID":	2304943762,
+		"UID":	3439607728,
+		"Parent UID":	646780617,
 		"Translation":	{
 			"x":	-28.132622,
 			"y":	20.873329,
@@ -890,8 +890,8 @@
 		}
 	},
 	"Camera001.Target_$AssimpFbx$_PreRotation":	{
-		"UID":	3593922415,
-		"Parent UID":	964030291,
+		"UID":	3028042607,
+		"Parent UID":	3439607728,
 		"Translation":	{
 			"x":	0,
 			"y":	0,
@@ -910,8 +910,8 @@
 		}
 	},
 	"Camera001.Target_$AssimpFbx$_Rotation":	{
-		"UID":	562691642,
-		"Parent UID":	3593922415,
+		"UID":	1179585082,
+		"Parent UID":	3028042607,
 		"Translation":	{
 			"x":	0,
 			"y":	0,
@@ -930,8 +930,8 @@
 		}
 	},
 	"Camera001.Target":	{
-		"UID":	758100866,
-		"Parent UID":	562691642,
+		"UID":	4118294402,
+		"Parent UID":	1179585082,
 		"Translation":	{
 			"x":	0,
 			"y":	0,
@@ -950,8 +950,8 @@
 		}
 	},
 	"Spot001_$AssimpFbx$_Translation":	{
-		"UID":	3182258538,
-		"Parent UID":	2304943762,
+		"UID":	642782569,
+		"Parent UID":	646780617,
 		"Translation":	{
 			"x":	-66.721268,
 			"y":	141.934128,
@@ -970,8 +970,8 @@
 		}
 	},
 	"Spot001_$AssimpFbx$_PreRotation":	{
-		"UID":	428677233,
-		"Parent UID":	3182258538,
+		"UID":	1900979325,
+		"Parent UID":	642782569,
 		"Translation":	{
 			"x":	0,
 			"y":	0,
@@ -990,8 +990,8 @@
 		}
 	},
 	"Spot001_$AssimpFbx$_Rotation":	{
-		"UID":	3504866085,
-		"Parent UID":	428677233,
+		"UID":	2959326881,
+		"Parent UID":	1900979325,
 		"Translation":	{
 			"x":	0,
 			"y":	0,
@@ -1010,8 +1010,8 @@
 		}
 	},
 	"Spot001_$AssimpFbx$_PostRotation":	{
-		"UID":	2304716136,
-		"Parent UID":	3504866085,
+		"UID":	1715592980,
+		"Parent UID":	2959326881,
 		"Translation":	{
 			"x":	0,
 			"y":	0,
@@ -1030,8 +1030,8 @@
 		}
 	},
 	"Spot001":	{
-		"UID":	958893191,
-		"Parent UID":	2304716136,
+		"UID":	2553326116,
+		"Parent UID":	1715592980,
 		"Translation":	{
 			"x":	0,
 			"y":	0,
@@ -1050,8 +1050,8 @@
 		}
 	},
 	"Spot001.Target_$AssimpFbx$_Translation":	{
-		"UID":	2426168883,
-		"Parent UID":	2304943762,
+		"UID":	716107891,
+		"Parent UID":	646780617,
 		"Translation":	{
 			"x":	28.890945,
 			"y":	-60.963882,
@@ -1070,8 +1070,8 @@
 		}
 	},
 	"Spot001.Target_$AssimpFbx$_PreRotation":	{
-		"UID":	4124953551,
-		"Parent UID":	2426168883,
+		"UID":	167107342,
+		"Parent UID":	716107891,
 		"Translation":	{
 			"x":	0,
 			"y":	0,
@@ -1090,8 +1090,8 @@
 		}
 	},
 	"Spot001.Target_$AssimpFbx$_Rotation":	{
-		"UID":	402927130,
-		"Parent UID":	4124953551,
+		"UID":	3408819814,
+		"Parent UID":	167107342,
 		"Translation":	{
 			"x":	0,
 			"y":	0,
@@ -1110,8 +1110,8 @@
 		}
 	},
 	"Spot001.Target":	{
-		"UID":	1758307554,
-		"Parent UID":	402927130,
+		"UID":	2731362717,
+		"Parent UID":	3408819814,
 		"Translation":	{
 			"x":	0,
 			"y":	0,

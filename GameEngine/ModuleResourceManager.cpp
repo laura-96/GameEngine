@@ -81,6 +81,17 @@ bool ModuleResourceManager::MonitorAssets()
 					modified = true;
 	
 				LOG("%s has been modified", files[i].c_str());
+
+				std::string file_type;
+				std::string file;
+
+				App->file_sys->GetFileFromDir(files[i].c_str(), file);
+				App->file_sys->GetExtension(file.c_str(), file_type);
+
+				if (strcmp(file_type.c_str(), "tga") == 0 || strcmp(file_type.c_str(), "png") == 0)
+				{
+					App->scene_importer->ReimportMaterial(files[i].c_str());
+				}
 			}
 		}	
 	}
@@ -315,6 +326,25 @@ MeshResource* ModuleResourceManager::CreateMeshResource(uint uid, const char* pa
 	uid_mesh.insert(std::pair<uint, MeshResource*>(uid, mesh));
 
 	return mesh;
+}
+
+void ModuleResourceManager::UpdateInfo(uint uid, uint image_id, uint texture[1])
+{
+	MaterialResource* material = nullptr;
+
+	std::map<uint, MaterialResource*>::iterator it = uid_material.find(uid);
+
+	if (it != uid_material.end())
+	{
+		material = it->second;
+	}
+
+	if (material)
+	{
+		material->id_image = image_id;
+		material->texture[0] = texture[0];
+	}
+
 }
 
 bool ModuleResourceManager::CleanUp()

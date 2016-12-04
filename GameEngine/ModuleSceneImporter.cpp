@@ -528,6 +528,79 @@ uint ModuleSceneImporter::ImportMaterial(const char* directory, std::string &out
 	return ret;
 }
 
+uint ModuleSceneImporter::ReimportMaterial(const char* directory) const
+{
+	char* buff = nullptr;
+	uint ret = NULL;
+
+	std::string image_path(directory);
+
+	uint size = App->file_sys->Load(image_path.c_str(), &buff);
+
+	std::string file_from_dir;
+	App->file_sys->GetFileFromDir(directory, file_from_dir);
+
+	const char* file = file_from_dir.c_str();
+
+	ILuint id_image;
+
+	ilGenImages(1, &id_image);
+	ilBindImage(id_image);
+
+	if (ilLoadL(IL_TYPE_UNKNOWN, buff, size))
+	{
+		ilEnable(IL_FILE_OVERWRITE);
+
+		ILuint size;
+		ILubyte* data;
+
+		ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);
+		size = ilSaveL(IL_DDS, NULL, 0);
+
+		if (size > 0)
+		{
+			data = new ILubyte[size];
+			if (ilSaveL(IL_DDS, data, size) > 0)
+			{
+				char result_path[250];
+
+				char* image_name = new char[strlen(file) - 3];
+				memcpy(image_name, file, strlen(file) - 4);
+
+				image_name[strlen(file) - 4] = '\0';
+
+				sprintf_s(result_path, 250, "%s.dds", image_name);
+
+				if (App->resource_manager->IsMaterialResource(result_path) == true)
+				{
+
+					App->file_sys->SaveInDir("Game/Library/Material", result_path, data, size);
+
+					ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+
+					GLuint texture[1];
+					texture[0] = ilutGLBindTexImage();
+
+					uint tex[1];
+					tex[0] = texture[0];
+
+					ret = App->resource_manager->GetUidFromFile(result_path);
+					App->resource_manager->UpdateInfo(ret, id_image, tex);
+					
+				}
+				else
+				{
+					ret = NULL;
+				}
+
+			}
+			RELEASE(data);
+		}
+		ilDeleteImages(1, &id_image);
+	}
+	return ret;
+}
+
 bool ModuleSceneImporter::LoadTransform(aiNode* node, math::float3 &translation, math::Quat &rotation, math::float3 &scale) const
 {
 	aiMatrix4x4 transform = node->mTransformation;

@@ -20,6 +20,7 @@ public:
 	uint ImportMesh(const char* file, uint uid);
 	uint ImportMaterial(const char* file, uint uid);
 	uint ImportMaterial(const char* file, const char* directory);
+	void UpdateInfo(uint uid, uint image_id, uint texture[1]);
 
 	bool IsMeshResource(const char* res) const;
 	bool IsMaterialResource(const char* res) const;
