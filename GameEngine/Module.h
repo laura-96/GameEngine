@@ -15,6 +15,7 @@ private:
 
 public:
 	Application* App;
+	bool paused = false;
 
 	Module(Application* parent, const char* _name, bool start_enabled = true) : App(parent), name(_name)
 	{}

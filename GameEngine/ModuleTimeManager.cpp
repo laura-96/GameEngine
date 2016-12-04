@@ -22,6 +22,9 @@ void ModuleTimeManager::ManagementTimeEditor()
 	{
 		if (ImGui::Button("Play", ImVec2(100, 30)))
 		{
+			if (App->go_manager->paused == true)
+				paused = false;
+
 			App->go_manager->save_tmp_file = true;
 			App->Save();
 			App->go_manager->save_tmp_file = false;
@@ -38,7 +41,9 @@ void ModuleTimeManager::ManagementTimeEditor()
 
 		if (ImGui::Button("Pause", ImVec2(100, 30)))
 		{
-			dt = 0;
+			//For now, the only module that will be paused is GoManager, so
+			App->go_manager->paused = true;
+
 		} ImGui::SameLine();
 
 		if (ImGui::Button("Stop", ImVec2(100, 30)))
