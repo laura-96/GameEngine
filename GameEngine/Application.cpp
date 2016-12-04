@@ -55,9 +55,9 @@ Application::Application()
 	// Renderer
 	AddModule(renderer3D);
 
+	AddModule(resource_manager);
 	AddModule(go_manager);
 	AddModule(scene_importer);
-	AddModule(resource_manager);
 
 	// GUI
 	AddModule(imgui);
