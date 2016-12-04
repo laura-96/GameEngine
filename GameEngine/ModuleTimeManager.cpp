@@ -23,7 +23,7 @@ void ModuleTimeManager::ManagementTimeEditor()
 		if (ImGui::Button("Play", ImVec2(100, 30)))
 		{
 			if (App->go_manager->paused == true)
-				paused = false;
+				App->go_manager->paused = false;
 
 			App->go_manager->save_tmp_file = true;
 			App->Save();

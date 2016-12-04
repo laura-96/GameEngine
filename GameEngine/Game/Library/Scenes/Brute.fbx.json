@@ -1,6 +1,6 @@
 {
 	"RootNode":	{
-		"UID":	2294942076,
+		"UID":	1640515493,
 		"Parent UID":	0,
 		"Translation":	{
 			"x":	0,
@@ -20,8 +20,8 @@
 		}
 	},
 	"Brute":	{
-		"UID":	3378861996,
-		"Parent UID":	2294942076,
+		"UID":	2558802921,
+		"Parent UID":	1640515493,
 		"Prefab":	"Brute_prefab.gl",
 		"Translation":	{
 			"x":	0,

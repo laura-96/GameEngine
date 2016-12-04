@@ -155,7 +155,15 @@ update_status Application::Update()
 
 	while (it != list_modules.end() && ret == UPDATE_CONTINUE)
 	{
-		ret = (*it)->Update(dt);
+		if ((*it)->paused == false)
+		{
+			ret = (*it)->Update(dt);
+		}
+
+		else
+		{
+			ret = UPDATE_CONTINUE;
+		}
 		it++;
 	}
 

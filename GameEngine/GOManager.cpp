@@ -35,10 +35,6 @@ bool GOManager::Init(cJSON* node)
 
 update_status GOManager::Update(float dt)
 {
-	if (paused)
-	{
-		return UPDATE_CONTINUE;
-	}
 
 	if (load_fbx && root_GO != nullptr)
 	{
