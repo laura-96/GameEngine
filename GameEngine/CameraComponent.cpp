@@ -45,6 +45,25 @@ float CameraComponent::GetAspectRatio() const
 	return (frustum.horizontalFov/frustum.verticalFov);
 }
 
+math::float4x4 CameraComponent::GetView() const
+{
+	return frustum.ViewMatrix();
+}
+
+void CameraComponent::SetDirection(float3 new_dir)
+{
+	math::float4x4 mat = math::float4x4::LookAt(frustum.front, new_dir.Normalized(), frustum.up, float3::unitY);
+
+	frustum.front = mat.TransformDir(frustum.front).Normalized();
+	frustum.up = mat.TransformDir(frustum.up).Normalized();
+}
+
+void CameraComponent::Rotate(float3 euler)
+{
+	math::float3x3 mat = math::float3x3::FromRS(math::Quat::FromEulerXYX(euler.x, euler.y, euler.z) , float3(1, 1, 1));
+	frustum.Transform(mat);
+}
+
 void CameraComponent::DrawFrustum() const
 {
 	glLineWidth(2.0f);
@@ -168,6 +187,11 @@ bool CameraComponent::IntersectsObject(GameObject* obj) const
 	}
 	
 	return true;
+}
+
+void CameraComponent::SetFrustumPos(const math::float3 pos)
+{
+	frustum.pos = pos;
 }
 
 void CameraComponent::Clear()

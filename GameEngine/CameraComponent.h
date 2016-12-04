@@ -13,12 +13,17 @@ public:
 	float GetHorizontalFOV() const;
 	float GetFarPlaneDist() const;
 	float GetAspectRatio() const;
+	math::float4x4 GetView() const;
 
+	void SetDirection(float3 new_dir);
+	void Rotate(float3 euler);
 
 	void DrawFrustum() const;
 	void ActivateCulling();
 	void DeactivateCulling();
 	void Clear();
+
+	void SetFrustumPos(const math::float3 pos);
 
 	//Culls every object outside the frustum if culling is active
 	void FrustumCulling(std::vector<GameObject*> game_objects) const;
